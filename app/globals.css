@@ -6,22 +6,58 @@
   --foreground-rgb: 0, 0, 0;
   --background-start-rgb: 214, 219, 220;
   --background-end-rgb: 255, 255, 255;
+  --main-base-color: 21, 12, 21;
+  --main-accent-color: 154, 17, 23;
+  --main-sub-color: 145, 124, 80;
 }
 
-@media (prefers-color-scheme: dark) {
+@media (prefers-color-scheme: light) {
   :root {
-    --foreground-rgb: 255, 255, 255;
+    --foreground-rgb: 0, 0, 0;
     --background-start-rgb: 0, 0, 0;
     --background-end-rgb: 0, 0, 0;
+    --main-base-color: 21, 12, 21;
+    --main-accent-color: 154, 17, 23;
+    --main-sub-color: 145, 124, 80;
   }
 }
 
 body {
-  color: rgb(var(--foreground-rgb));
+  color: rgb(var(--main-base-color));
   background: linear-gradient(
       to bottom,
       transparent,
-      rgb(var(--background-end-rgb))
+      rgb(var(--main-base-color))
     )
-    rgb(var(--background-start-rgb));
+    rgb(var(--main-base-color));
+}
+
+.text-base {
+  color: rgb(var(--main-base-color));
+}
+.text-accent {
+  color: rgb(var(--main-accent-color));
+}
+.text-sub {
+  color: rgb(var(--main-sub-color));
+}
+
+.bg-base {
+  background: rgb(var(--main-base-color));
+}
+.bg-accent {
+  background: rgb(var(--main-accent-color));
+}
+.bg-sub {
+  background: rgb(var(--main-sub-color));
+}
+
+.bd-base {
+  border-color: rgb(var(--main-base-color));
+}
+.bd-accent {
+  border-color: rgb(var(--main-accent-color));
+}
+.bd-sub {
+  border-color: rgb(var(--main-sub-color));
 }

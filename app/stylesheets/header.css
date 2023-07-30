@@ -1,0 +1,6 @@
+header {
+  border-bottom: solid 10px rgb(var(--main-accent-color));
+}
+#product-list-btn {
+  border: solid 5px rgb(var(--main-accent-color));
+}
