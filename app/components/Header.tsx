@@ -6,7 +6,7 @@ export default function Header() {
       <div className="mx-auto">
         <div className="relative shadow-xl sm:overflow-hidden">
           <div className="absolute inset-0">
-            <div className="absolute inset-0 mix-blend-screen">
+            <div className="absolute inset-0 mix-blend-overlay">
               <img className="h-full w-full object-cover" src="https://pbs.twimg.com/media/F1Kc2s3aQAET0-F?format=jpg&name=large" alt="Itsumoarigatone" />
             </div>
           </div>
