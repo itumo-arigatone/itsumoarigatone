@@ -11,7 +11,7 @@ const Product = ({img, title, price, colors}:ProductProps) => {
   // 必要なデータ
   // 画像、タイトル、値段、色
   return (
-    <a className="text-sub group" href="#">
+    <a className="text-sub group" href={`/product/${encodeURIComponent(title)}`}>
       <img src={img} alt={title} />
       <p>{title}</p>
       <span>{price}</span>
