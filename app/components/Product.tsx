@@ -1,4 +1,4 @@
-import '../stylesheets/product.css';
+import "../stylesheets/product.css";
 
 type ProductProps = {
   img: string,
@@ -13,8 +13,8 @@ const Product = ({img, title, price, colors}:ProductProps) => {
   return (
     <a className="text-sub group" href={`/product/${encodeURIComponent(title)}`}>
       <img src={img} alt={title} />
-      <p>{title}</p>
-      <span>{price}</span>
+      <p className="text-xl font-bold">{title}</p>
+      <span>￥{price}</span>
       <div className="colors">
         {colors.map((color, index) => (
           <div style={{background: color}} className="color"></div>
