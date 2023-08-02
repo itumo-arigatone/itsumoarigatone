@@ -22,12 +22,6 @@ export default function Header() {
                 いつもありがとね
               </span>
             </h1>
-            <div className="mx-auto mt-10 max-w-xs flex max-w-none justify-center">
-              <button id="product-list-btn"
-                className="flex items-center justify-center rounded-md border border-transparent bg-base px-4 py-3 text-base font-medium text-sub shadow-sm sm:px-8">
-                商品一覧へ
-              </button>
-            </div>
           </div>
         </div>
       </div>
