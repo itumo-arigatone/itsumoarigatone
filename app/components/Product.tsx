@@ -1,20 +1,26 @@
+import '../stylesheets/product.css';
+
 type ProductProps = {
   img: string,
   title: string,
   price: number,
-  color: string,
+  colors: Array<string>,
 }
 
-const Product = ({img, title, price, color}:ProductProps) => {
+const Product = ({img, title, price, colors}:ProductProps) => {
   // 必要なデータ
   // 画像、タイトル、値段、色
   return (
-    <div className="text-sub">
-      {img}
-      {title}
-      {price}
-      {color}
-    </div>
+    <a className="text-sub group" href="#">
+      <img src={img} alt={title} />
+      <p>{title}</p>
+      <span>{price}</span>
+      <div className="colors">
+        {colors.map((color, index) => (
+          <div style={{background: color}} className="color"></div>
+        ))}
+      </div>
+    </a>
   )
 }
 
