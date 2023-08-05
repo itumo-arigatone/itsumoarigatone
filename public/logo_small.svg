@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg id="_レイヤー_2" data-name="レイヤー 2" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 27.97 36.43">
+  <defs>
+    <style>
+      .cls-1 {
+        fill: none;
+      }
+
+      .cls-1, .cls-2 {
+        stroke: #231815;
+        stroke-miterlimit: 10;
+      }
+
+      .cls-2 {
+        fill: #231815;
+      }
+    </style>
+  </defs>
+  <g id="_レイヤー_1-2" data-name="レイヤー 1">
+    <g>
+      <ellipse class="cls-2" cx="13.97" cy="11.93" rx="2.95" ry="3.72"/>
+      <ellipse class="cls-2" cx="13.97" cy="19.63" rx="2.95" ry="4.4"/>
+      <ellipse class="cls-2" cx="13.97" cy="29.88" rx="4.9" ry="6.06"/>
+      <line class="cls-1" x1="27.97" y1="19.63" x2="17.34" y2="19.63"/>
+      <path class="cls-1" d="m22.65,22.51c.27.76.47,1.32.47,1.32l1.45,11.12"/>
+      <line class="cls-1" x1="15.31" y1="8.74" x2="18.54" y2="3.14"/>
+      <ellipse class="cls-2" cx="18.75" cy="2.78" rx="2.51" ry="1.06" transform="translate(6.89 17.57) rotate(-59.72)"/>
+      <path class="cls-1" d="m22.45,16.71c.26-.52.45-.91.45-.91l3.78-7.62"/>
+      <line class="cls-1" x1="0" y1="19.63" x2="10.63" y2="19.63"/>
+      <path class="cls-1" d="m5.11,22.51c-.27.76-.47,1.32-.47,1.32l-1.45,11.12"/>
+      <path class="cls-1" d="m5.31,16.71c-.26-.52-.45-.91-.45-.91l-3.78-7.62"/>
+      <line class="cls-1" x1="12.45" y1="8.7" x2="9.22" y2="3.11"/>
+      <ellipse class="cls-2" cx="9.01" cy="2.73" rx="1.06" ry="2.5" transform="translate(-.16 4.87) rotate(-30)"/>
+    </g>
+  </g>
+</svg>
