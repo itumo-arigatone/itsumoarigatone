@@ -7,7 +7,7 @@ export default function Header() {
         <div className="relative shadow-xl sm:overflow-hidden">
           <div className="absolute inset-0">
             <div className="absolute inset-0 mix-blend-overlay">
-              <img className="h-full w-full object-cover" src="https://pbs.twimg.com/media/F1Kc2s3aQAET0-F?format=jpg&name=large" alt="Itsumoarigatone" />
+              <img className="h-full w-full" src="/logo_medium.svg" alt="Itsumoarigatone" />
             </div>
           </div>
           <div className="relative px-4 py-16 sm:px-6 sm:py-24 lg:py-32 lg:px-8">

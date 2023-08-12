@@ -1,4 +1,4 @@
-import icon from '../../public/icons8-amazon.svg'
+import icon from '/public/logo_medium.svg'
 import Image from 'next/image'
 
 export default function SimpleHeader() {
