@@ -18,7 +18,7 @@ const Product = ({img, title, price, colors, product_key}:ProductProps) => {
       <span>￥{price}</span>
       <div className="colors">
         {colors.map((color, index) => (
-          <div style={{background: color}} className="color"></div>
+          <div key={index} style={{background: color}} className="color"></div>
         ))}
       </div>
     </a>
