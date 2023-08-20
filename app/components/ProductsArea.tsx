@@ -6,8 +6,8 @@ export default function ProductsArea() {
   // 画像、タイトル、値段、色
   return (
     <div id="products-area" className="grid grid-cols-1 gap-y-10 gap-x-6 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 xl:gap-x-8">
-      {Object.entries(ProductsInfo).map(([key, product], index) => (
-        <Product img={product.image_path} title={product.name} price={product.price} colors={product.color} product_key={key}/>
+      {Object.entries(ProductsInfo).map(([p_key, product], index) => (
+        <Product img={product.image_path} title={product.name} price={product.price} colors={product.color} product_key={p_key}/>
       ))}
     </div>
   )
