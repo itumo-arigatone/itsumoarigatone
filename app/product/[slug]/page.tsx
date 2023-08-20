@@ -1,10 +1,15 @@
 import Footer from "@/app/components/Footer";
 import Header from "@/app/components/SimpleHeader"
 import ProductsInfo from "@/app/product_info";
+import { notFound } from 'next/navigation'
 
 export default function Page({ params }: { params: { slug: string } }) {
   // fetch
   const product = ProductsInfo[params.slug];
+
+  if (!product) {
+    return notFound();
+  }
 
   const baseLogo = '/base_logo_horizontal_white.png'
   const amazonLogo = '/icons8-amazon.svg'
