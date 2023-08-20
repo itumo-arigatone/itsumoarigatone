@@ -2,13 +2,12 @@ import Footer from "@/app/components/Footer";
 import Header from "@/app/components/SimpleHeader"
 import ProductsInfo from "@/app/product_info";
 
-import baseLogo from 'public/base_logo_horizontal_white.png'
-import amazonLogo from 'public/icons8-amazon.svg'
-import Image from "next/image";
-
 export default function Page({ params }: { params: { slug: string } }) {
   // fetch
-  const product = ProductsInfo[params.slug]
+  const product = ProductsInfo[params.slug];
+
+  const baseLogo = '/base_logo_horizontal_white.png'
+  const amazonLogo = '/icons8-amazon.svg'
 
   return (
     <>
@@ -24,13 +23,13 @@ export default function Page({ params }: { params: { slug: string } }) {
                 <div className="grid grid-cols-2 gap-x-6 gap-y-6 lg:grid-cols-3 xl:grid-cols-4 xl:gap-x-8 pt-6">
                   <a href="#" className="group">
                     <div className="aspect-h-1 aspect-w-1 w-full overflow-hidden rounded-lg bg-accent xl:aspect-h-8 xl:aspect-w-7 flex justify-center">
-                      <Image src={baseLogo} height={48}
+                      <img src={baseLogo} height={48}
                         alt="ベイスリンク" />
                     </div>
                   </a>
                   <a href="#" className="group">
                     <div className="aspect-h-1 aspect-w-1 w-full overflow-hidden rounded-lg bg-accent xl:aspect-h-8 xl:aspect-w-7 flex justify-center">
-                      <Image src={amazonLogo}
+                      <img src={amazonLogo}
                         alt="amazonリンク" />
                     </div>
                   </a>
