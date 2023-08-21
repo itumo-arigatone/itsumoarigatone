@@ -36,14 +36,12 @@ export default function Page({ params }: { params: { slug: string } }) {
                 <div className="grid grid-cols-2 gap-x-6 gap-y-6 lg:grid-cols-3 xl:grid-cols-4 xl:gap-x-8 pt-6">
                   <a href="#" className="group">
                     <div className="aspect-h-1 aspect-w-1 w-full overflow-hidden rounded-lg bg-accent xl:aspect-h-8 xl:aspect-w-7 flex justify-center">
-                      <img src={baseLogo} height={48}
-                        alt="ベイスリンク" />
+                      <img src={baseLogo} height={48} alt="ベイスリンク" className="max-h-12" />
                     </div>
                   </a>
                   <a href="#" className="group">
                     <div className="aspect-h-1 aspect-w-1 w-full overflow-hidden rounded-lg bg-accent xl:aspect-h-8 xl:aspect-w-7 flex justify-center">
-                      <img src={amazonLogo}
-                        alt="amazonリンク" />
+                      <img src={amazonLogo} height={48} alt="amazonリンク" className="max-h-12" />
                     </div>
                   </a>
                 </div>

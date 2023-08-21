@@ -8,13 +8,13 @@ const ShopArea = () => {
       <div className="grid grid-cols-2 gap-x-6 gap-y-6 lg:grid-cols-3 xl:grid-cols-4 xl:gap-x-8">
         <a href="#" className="group">
           <div className="aspect-h-1 aspect-w-1 w-full overflow-hidden rounded-lg bg-accent xl:aspect-h-8 xl:aspect-w-7">
-            <img src={baseLogo} height={48}
+            <img src={baseLogo} height={48} className="max-h-12"
               alt="ベイスリンク" />
           </div>
         </a>
         <a href="#" className="group">
           <div className="aspect-h-1 aspect-w-1 w-full overflow-hidden rounded-lg bg-accent xl:aspect-h-8 xl:aspect-w-7 flex justify-center">
-            <img src={amazonLogo}
+            <img src={amazonLogo} className="max-h-12"
               alt="amazonリンク" />
           </div>
         </a>
