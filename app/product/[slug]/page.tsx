@@ -3,6 +3,14 @@ import Header from "@/app/components/SimpleHeader"
 import ProductsInfo from "@/app/product_info";
 import { notFound } from 'next/navigation'
 
+// 静的ページの場合は事前にどんなキーを使うか与えてあげなければいけない
+export async function generateStaticParams() {
+  return Object.entries(ProductsInfo).map(([p_key, product], index) => ({
+      slug: p_key
+    }
+  ))
+}
+
 export default function Page({ params }: { params: { slug: string } }) {
   // fetch
   const product = ProductsInfo[params.slug];
