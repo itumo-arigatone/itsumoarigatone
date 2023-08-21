@@ -12,7 +12,7 @@ export default function Header() {
           </div>
           <div className="relative px-4 py-16 sm:px-6 sm:py-24 lg:py-32 lg:px-8">
             <p className="relative left-0 right-0 mx-auto mt-5 max-w-xl text-center sm:tracking-tight text-sm sm:text-xl lg:text-4xl font-semibold tracking-wide text-sub">
-              革製品
+              革細工
             </p>
             <h1 className="mt-1 text-center font-bold text-gray-900">
               <span className="block text-sub text-2xl sm:text-4xl sm:tracking-tight lg:text-7xl">

@@ -11,19 +11,26 @@ type Ptype = {
 }
 
 const ProductsInfo: PItype = {
-    dummyProduct: {
-        name: "dummyProduct",
-        price: 10000,
+    wallet: {
+        name: "二つ折り財布",
+        price: 15000,
         image_path: "/logo_small.svg",
-        description: "これからはItsumoarigatoneが流行ります。",
-        color: ["#ff2356"],
+        description: "二つ折り財布になります。\nルガトーという革を使っています。全体的にちょっとキツめだけれど使っていくうちに馴染むかも？\n小銭入れはありません。",
+        color: ["#006400"],
     },
     green_tray: {
         name: "緑のトレー",
         price: 7000,
         image_path: "/logo_small.svg",
         description: "大人な雰囲気の深緑色トレー\n無造作に置かれた鍵などをこのトレーの上に載せたらそれだけで整理されたように見えます。",
-        color: ["#ff2356"],
+        color: ["#006400"],
+    },
+    code_clip: {
+        name: "本革のコードクリップ 8cm",
+        price: 300,
+        image_path: "/logo_small.svg",
+        description: "本革のコードクリップになります。長さは8cmです。USB type-Cを通しておくことができます。",
+        color: ["#006400", "#000000"],
     },
 };
 export default ProductsInfo;
