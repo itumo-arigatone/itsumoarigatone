@@ -6,9 +6,11 @@
     "dev": "next dev",
     "build": "next build && next export",
     "start": "next start",
-    "lint": "next lint"
+    "lint": "next lint",
+    "db_migrate": "npx prisma migrate dev --name init"
   },
   "dependencies": {
+    "@prisma/client": "^5.15.1",
     "@types/node": "20.4.5",
     "@types/react": "18.2.17",
     "@types/react-dom": "18.2.7",
