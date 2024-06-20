@@ -9,7 +9,13 @@
   --main-base-color: 17, 13, 15;
   --main-accent-color: 154, 17, 23;
   --main-sub-color: 145, 124, 80;
+  --paper-color: #fdf5d8;
+  --sp-bp: 767px;
+  --tb-bp: 960px;
+  --pc-bp: 961px;
+  --content-width: 920px;
 }
+
 
 body {
   color: rgb(var(--main-base-color));
