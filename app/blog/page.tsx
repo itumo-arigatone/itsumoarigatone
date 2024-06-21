@@ -1,21 +1,18 @@
-'use client';
-
-import { useState, useEffect } from 'react';
 import Link from 'next/link';
-import Header from "@/app/components/SimpleHeader";
+import Header from "@/app/(components)/SimpleHeader";
+import { PrismaClient } from '@prisma/client';
 import '../stylesheets/blog/page.css';
+import { use } from 'react';
+import {formatDate} from '../../lib/formatDate';
+
+async function GetBlogs() {
+  'use server'
+  const prisma = new PrismaClient();
+  return await prisma.post.findMany();
+}
 
 const BlogList = () => {
-  const [posts, setPosts] = useState([]);
-
-  useEffect(() => {
-    console.log('useEffect')
-    fetch('/api/posts')
-      .then((res) => res.json())
-      .then((data) => {
-        setPosts(data)
-      });
-  }, []);
+  const posts = use(GetBlogs());
 
   return (
     <div>
@@ -29,7 +26,7 @@ const BlogList = () => {
               <Link href={`/blog/${post.id}`}>
                 <h3 className="text-sub">{post.title}</h3>
                 <div className="text-accent blog-created">
-                  {post.created_at}
+                  {formatDate(post.created_at)}
                 </div>
               </Link>
             </li>

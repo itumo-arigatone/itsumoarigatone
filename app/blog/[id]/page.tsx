@@ -1,25 +1,32 @@
-'use client';
-
-import { useState, useEffect } from 'react';
-import Footer from "@/app/components/Footer";
-import Header from "@/app/components/SimpleHeader";
+import Footer from "@/app/(components)/Footer";
+import Header from "@/app/(components)/SimpleHeader";
 import '/app/stylesheets/blog/detail_page.css';
+import { PrismaClient } from '@prisma/client';
+import { useRouter } from 'next/navigation';
+import { use } from 'react';
 
-export default function Page({ params }: { params: { id: string } }) {
-  const [post, setPost] = useState(null);
-  const id = params.id
+async function GetBlog(id: string ) {
+  'use server'
+  
+  const prisma = new PrismaClient();
+  
+  if (!id) {
+    return { error: 'ID is required' };
+  }
 
-  useEffect(() => {
-    fetch(`/api/posts/${id}/`)
-      .then((res) => res.json())
-      .then((data) => {
-        setPost(data)
-      });
-  }, [id]);
+  const post = await prisma.post.findUnique({
+    where: { id: parseInt(id) },
+  });
 
   if (!post) {
-    return null;
+    return { error: 'Post not found' };
   }
+
+  return post;
+}
+
+export default function Page({ params }: { params: { id: string } }) {
+  const post = use(GetBlog(params.id as string))
 
   return (
     <>

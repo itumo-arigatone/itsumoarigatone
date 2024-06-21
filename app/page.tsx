@@ -1,7 +1,7 @@
-import Header from './components/Header';
-import ProductArea from './components/ProductsArea';
-import ShopArea from './components/ShopArea';
-import Footer from './components/Footer';
+import Header from './(components)/Header';
+import ProductArea from './(components)/ProductsArea';
+import ShopArea from './(components)/ShopArea';
+import Footer from './(components)/Footer';
 
 export default function Home() {
   return (

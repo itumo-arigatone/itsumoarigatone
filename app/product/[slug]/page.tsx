@@ -1,5 +1,5 @@
-import Footer from "@/app/components/Footer";
-import Header from "@/app/components/SimpleHeader"
+import Footer from "@/app/(components)/Footer";
+import Header from "@/app/(components)/SimpleHeader"
 import ProductsInfo from "@/app/product_info";
 import { notFound } from 'next/navigation'
 
