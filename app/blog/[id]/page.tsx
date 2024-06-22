@@ -1,5 +1,6 @@
 import Footer from "@/app/(components)/Footer";
 import Header from "@/app/(components)/SimpleHeader";
+import SafeHTML from '@/app/(components)/SafeHTML';
 import '/app/stylesheets/blog/detail_page.css';
 import { PrismaClient } from '@prisma/client';
 import { use } from 'react';
@@ -9,11 +10,11 @@ interface Post {
   content: string;
 }
 
-async function GetBlog(id: string ) {
+async function GetBlog(id: string) {
   'use server'
-  
+
   const prisma = new PrismaClient();
-  
+
   if (!id) {
     return { error: 'ID is required' };
   }
@@ -35,9 +36,9 @@ export default function Page({ params }: { params: { id: string } }) {
   return (
     <>
       <Header />
-      <div className="blog-content">
+      <div className="blog-contents">
         <h1>{post.title}</h1>
-        <p>{post.content}</p>
+        <SafeHTML className="blog-content" html={post.content} />
       </div>
       <Footer />
     </>

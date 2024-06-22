@@ -1,6 +1,7 @@
 import TipTap from "@/app/(components)/Tiptap";
 import { PrismaClient } from '@prisma/client';
 import { use } from 'react';
+import { redirect } from 'next/navigation'
 import '@/app/stylesheets/console/blogs/page.css'
 
 interface Blog {
@@ -37,17 +38,13 @@ async function PatchBlog(data: FormData) {
   const title = data.get('title')?.toString();
   const content = data.get('content')?.toString();
 
-  console.log(id)
-  console.log(title)
-  console.log(content)
-
   if (!id || !title || !content) {
     return;
   }
 
   const prisma = new PrismaClient();
 
-  await prisma.post.upsert({
+  const result = await prisma.post.upsert({
     where: { id: parseInt(id) },
     update: {
       title: title,
@@ -58,6 +55,10 @@ async function PatchBlog(data: FormData) {
       content: content,
     },
   });
+
+  if (result) {
+    redirect('/console/blogs');
+  }
 }
 
 
