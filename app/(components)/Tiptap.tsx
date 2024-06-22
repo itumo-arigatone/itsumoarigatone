@@ -3,6 +3,7 @@
 import { useState } from 'react'
 import { EditorContent, useEditor } from '@tiptap/react'
 import StarterKit from '@tiptap/starter-kit'
+import Image from '@tiptap/extension-image'
 import '@/app/stylesheets/tiptap.css'
 import TiptapMenuBar from '@/app/(components)/TiptapMenuBar'
 
@@ -23,6 +24,7 @@ const Tiptap = (param: Param) => {
   const editor = useEditor({
     extensions: [
       StarterKit,
+      Image
     ],
     content: content,
     onUpdate({ editor }) {
