@@ -1,0 +1,12 @@
+@import url('/globals.css');
+
+.tiptap {
+  background: var(--paper-color);
+  padding: 64px 24px;
+  min-height: 500px;
+  height: 56vh;
+
+  h2 {
+    font-size: 26px;
+  }
+}

@@ -1,0 +1,9 @@
+{
+	"workbench.settings.useSplitJSON": true,
+	"editor.formatOnSave": true,
+	"emmet.variables": {
+		"lang": "ja"
+	},
+	"editor.tabSize": 2,
+	"files.eol": "\n"
+}

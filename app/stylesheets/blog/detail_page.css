@@ -4,11 +4,11 @@ h1 {
   font-size: 32px;
   margin-bottom: 32px;
 }
-  
+
 h2 {
   font-size: 24px;
 }
-  
+
 h3 {
   font-size: 20px;
 }
@@ -18,6 +18,5 @@ h3 {
   padding: 80px 24px;
   margin: 40px auto;
   max-width: var(--content-width);
-  color: rgb(var(--main-base-color));
+  color: var(--main-base-color);
 }
-  

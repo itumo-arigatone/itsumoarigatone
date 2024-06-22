@@ -2,8 +2,12 @@ import Footer from "@/app/(components)/Footer";
 import Header from "@/app/(components)/SimpleHeader";
 import '/app/stylesheets/blog/detail_page.css';
 import { PrismaClient } from '@prisma/client';
-import { useRouter } from 'next/navigation';
 import { use } from 'react';
+
+interface Post {
+  title: string;
+  content: string;
+}
 
 async function GetBlog(id: string ) {
   'use server'
@@ -26,7 +30,7 @@ async function GetBlog(id: string ) {
 }
 
 export default function Page({ params }: { params: { id: string } }) {
-  const post = use(GetBlog(params.id as string))
+  const post = use(GetBlog(params.id as string)) as Post
 
   return (
     <>
