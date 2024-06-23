@@ -1,19 +1,12 @@
 import Footer from "@/app/(components)/Footer";
 import Header from "@/app/(components)/SimpleHeader"
-import ProductsInfo from "@/app/product_info";
 import { notFound } from 'next/navigation'
 
-// 静的ページの場合は事前にどんなキーを使うか与えてあげなければいけない
-export async function generateStaticParams() {
-  return Object.entries(ProductsInfo).map(([p_key, product], index) => ({
-      slug: p_key
-    }
-  ))
-}
 
 export default function Page({ params }: { params: { slug: string } }) {
   // fetch
-  const product = ProductsInfo[params.slug];
+  // const product = ProductsInfo[params.slug];
+  const product = null;
 
   if (!product) {
     return notFound();
@@ -29,7 +22,7 @@ export default function Page({ params }: { params: { slug: string } }) {
         <div className="flex flex-col justify-between">
           <div className="mx-auto mt-16 max-w-2xl px-4 sm:px-6 lg:max-w-7xl lg:px-8">
             <div className="mx-auto flex flex-col lg:flex-row">
-              <img className="rounded-lg" src={product.image_path} alt={product.name} width={639}/>
+              <img className="rounded-lg" src={product.image_path} alt={product.name} width={639} />
               <div className="mt-10 flex flex-col sm:mt-0 sm:ml-10">
                 <h1 className="mt-1 text-4xl font-bold text-sub sm:text-5xl sm:tracking-tight lg:text-5xl">{product.name}</h1>
                 <h1 className="mt-3 text-xl font-bold text-sub sm:text-3xl sm:tracking-tight lg:text-3xl">￥{product.price}</h1>
