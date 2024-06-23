@@ -5,8 +5,14 @@
   padding: 64px 24px;
   min-height: 500px;
   height: 56vh;
+  overflow: scroll;
 
   h2 {
     font-size: 26px;
+  }
+
+  img {
+    width: 70%;
+    margin: 20px auto;
   }
 }

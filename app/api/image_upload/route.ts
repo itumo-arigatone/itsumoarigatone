@@ -7,13 +7,25 @@ import {
 import { getSignedUrl } from "@aws-sdk/s3-request-presigner";
 
 const Bucket = process.env.AMPLIFY_BUCKET;
-const s3 = new S3Client({
+let s3dev: any;
+if (process.env.NODE_ENV === 'development') {
+  s3dev = new S3Client({
+    region: 'ap-northeast-1',
+    credentials: {
+      accessKeyId: process.env.AWS_ACCESS_KEY_ID || 'minioadmin' as string,
+      secretAccessKey: process.env.AWS_SECRET_ACCESS_KEY || 'minioadmin' as string,
+    },
+    endpoint: 'http://127.0.0.1:9000',
+    forcePathStyle: true,
+  });
+}
+let s3 = new S3Client({
   region: 'ap-northeast-1',
   credentials: {
     accessKeyId: process.env.AWS_ACCESS_KEY_ID || 'minioadmin' as string,
     secretAccessKey: process.env.AWS_SECRET_ACCESS_KEY || 'minioadmin' as string,
   },
-  endpoint: 'http://minio:9000',
+  endpoint: 'http://minio:9000', // TODO: product_endpoint
   forcePathStyle: true,
 });
 
@@ -30,13 +42,25 @@ export async function POST(request: NextRequest) {
   const formData = await request.formData();
   const files = formData.getAll("file") as File[];
 
-  const response = await Promise.all(
+  const responses = await Promise.all(
     files.map(async (file) => {
-      // not sure why I have to override the types here
-      const Body = (await file.arrayBuffer()) as Buffer;
-      s3.send(new PutObjectCommand({ Bucket, Key: file.name, Body }));
+      const Key = file.name;
+      const Body = await file.arrayBuffer() as Buffer;
+
+      // Upload the file to S3
+      await s3.send(new PutObjectCommand({ Bucket, Key, Body }));
+
+      // Generate a signed URL for the uploaded file
+      const command = new GetObjectCommand({ Bucket, Key });
+      const client = process.env.NODE_ENV === 'development' ? s3dev : s3
+      let url = await getSignedUrl(client, command, { expiresIn: 3600 });
+
+      return { [Key]: url };
     })
   );
 
-  return NextResponse.json(response);
+  // responses をマージして、1つのオブジェクトにまとめる
+  const mergedResponse = responses.reduce((acc, obj) => ({ ...acc, ...obj }), {});
+
+  return NextResponse.json(mergedResponse);
 }

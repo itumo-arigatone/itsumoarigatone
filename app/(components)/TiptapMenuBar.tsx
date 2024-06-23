@@ -4,9 +4,14 @@ import React from 'react'
 import { useRef } from 'react'
 import '@/app/stylesheets/tiptap_menu_bar.css'
 
+type ImageResponse = {
+  [key: string]: string;
+};
+
 export default function TiptapMenuBar(param: any) {
   const editor = param.editor;
   const inputFileRef = useRef<HTMLInputElement>(null);
+  const imageUrls = useRef<ImageResponse>({})
 
   const handleFileChange = async (e: any) => {
     const file = e.target.files[0];
@@ -18,23 +23,20 @@ export default function TiptapMenuBar(param: any) {
     const formData = new FormData();
     formData.append('file', file);
 
-    console.log('=====formData====')
-    console.log(formData);
-    console.log(formData.getAll("file"));
-
     const res = await fetch('/api/image_upload', {
       method: 'POST',
       body: formData,
     });
 
-    const data = await res.json();
+    const urls: ImageResponse = await res.json();
 
-    console.log('=====data====')
-    console.log(data)
-    console.log(res)
+    imageUrls.current = urls;
     if (res.status === 200) {
-      // TODO: 画像を表示する。
-      // TODO: bloobを使う感じ？
+      for (const key in imageUrls.current) {
+        if (imageUrls.current.hasOwnProperty(key)) {
+          editor.chain().focus().setImage({ src: imageUrls.current[key] }).run();
+        }
+      }
     } else {
       alert('ファイルのアップロードに失敗しました。');
     }

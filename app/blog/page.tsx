@@ -1,9 +1,10 @@
 import Link from 'next/link';
 import Header from "@/app/(components)/SimpleHeader";
+import Footer from "@/app/(components)/Footer";
 import { PrismaClient } from '@prisma/client';
 import '../stylesheets/blog/page.css';
 import { use } from 'react';
-import {formatDate} from '../../lib/formatDate';
+import { formatDate } from '../../lib/formatDate';
 
 async function GetBlogs() {
   'use server'
@@ -15,8 +16,8 @@ const BlogList = () => {
   const posts = use(GetBlogs());
 
   return (
-    <div>
-      <Header/>
+    <>
+      <Header />
       <section>
         <h1 className="text-center font-bold text-sub">Itsumoarigatoneのブログ</h1>
         <h2 className="text-center font-bold text-sub">趣味でバッグやポーチを作っている人のブログを是非見ていってね</h2>
@@ -33,7 +34,8 @@ const BlogList = () => {
           ))}
         </ul>
       </section>
-    </div>
+      <Footer />
+    </>
   );
 };
 

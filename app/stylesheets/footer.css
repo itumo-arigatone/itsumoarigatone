@@ -1,0 +1,16 @@
+footer {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+
+  .link-area {
+    display: flex;
+    gap: 24px;
+    justify-content: center;
+  }
+
+  .copyright {
+    text-align: center;
+    margin-top: 24px;
+  }
+}
