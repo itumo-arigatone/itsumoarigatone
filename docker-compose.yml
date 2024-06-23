@@ -10,6 +10,8 @@ services:
     environment:
       - WATCHPACK_POLLING=true
     command: sh -c "npm run dev"
+    networks:
+      - mynetwork
   db:
     image: postgres:16.3
     environment:
@@ -20,6 +22,8 @@ services:
       - "5432:5432"
     volumes:
       - postgres-data:/var/lib/postgresql/data
+    networks:
+      - mynetwork
   minio:
     image: minio/minio:latest
     ports:
@@ -29,20 +33,29 @@ services:
       - ./.data/minio/data:/export
       - ./.data/minio/config:/root/.minio
     environment:
-      MINIO_ACCESS_KEY: accesskey
-      MINIO_SECRET_KEY: secretkey
+      MINIO_ACCESS_KEY: minioadmin
+      MINIO_SECRET_KEY: minioadmin
+      MINIO_ENDPOINT: http://minio:9000
+      AWS_REGION: ap-northeast-1
     command: server /export --console-address ":9001"
+    networks:
+      - mynetwork
   minio-setup:
     image: minio/mc
     depends_on:
       - minio
     entrypoint: >
       /bin/sh -c "
-      until (/usr/bin/mc config host add myminio http://minio:9000 accesskey secretkey) do echo '...waiting...' && sleep 1; done;
-      /usr/bin/mc mb myminio/itsumoarigatone;
-      /usr/bin/mc policy download myminio/itsumoarigatone;
+      until (/usr/bin/mc config host add minio http://minio:9000 minioadmin minioadmin) do echo '...waiting...' && sleep 1; done;
+      /usr/bin/mc mb minio/itsumoarigatone;
+      /usr/bin/mc policy download minio/itsumoarigatone;
       exit 0;
       "
+    networks:
+      - mynetwork
 volumes:
   postgres-data:
   minio-data:
+
+networks:
+  mynetwork:

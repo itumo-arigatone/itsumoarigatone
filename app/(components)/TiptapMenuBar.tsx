@@ -1,10 +1,44 @@
 'use client'
 
 import React from 'react'
+import { useRef } from 'react'
 import '@/app/stylesheets/tiptap_menu_bar.css'
 
 export default function TiptapMenuBar(param: any) {
   const editor = param.editor;
+  const inputFileRef = useRef<HTMLInputElement>(null);
+
+  const handleFileChange = async (e: any) => {
+    const file = e.target.files[0];
+
+    if (!file) {
+      return;
+    }
+
+    const formData = new FormData();
+    formData.append('file', file);
+
+    console.log('=====formData====')
+    console.log(formData);
+    console.log(formData.getAll("file"));
+
+    const res = await fetch('/api/image_upload', {
+      method: 'POST',
+      body: formData,
+    });
+
+    const data = await res.json();
+
+    console.log('=====data====')
+    console.log(data)
+    console.log(res)
+    if (res.status === 200) {
+      // TODO: 画像を表示する。
+      // TODO: bloobを使う感じ？
+    } else {
+      alert('ファイルのアップロードに失敗しました。');
+    }
+  };
 
   if (!editor) {
     return null
@@ -13,6 +47,7 @@ export default function TiptapMenuBar(param: any) {
   return (
     <div className="control-group bg-sub">
       <div className="button-group">
+        <input ref={inputFileRef} type="file" id="image" name="file" onChange={handleFileChange} />
         <button type="button"
           onClick={() => editor.chain().focus().toggleBold().run()}
           className={editor.isActive('bold') ? 'is-active' : ''}
