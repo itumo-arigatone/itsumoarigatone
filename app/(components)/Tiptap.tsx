@@ -8,7 +8,7 @@ import '@/app/stylesheets/tiptap.css'
 import TiptapMenuBar from '@/app/(components)/TiptapMenuBar'
 
 interface Param {
-  blog: Blog;
+  blog: Blog | null;
 }
 
 interface Blog {
@@ -19,7 +19,7 @@ interface Blog {
 }
 
 const Tiptap = (param: Param) => {
-  const [content, setContent] = useState(param.blog.content);
+  const [content, setContent] = useState(param.blog?.content || null);
 
   const editor = useEditor({
     extensions: [
@@ -37,7 +37,7 @@ const Tiptap = (param: Param) => {
     <>
       <TiptapMenuBar editor={editor} />
       <EditorContent editor={editor} />
-      <input type='hidden' name='content' defaultValue={content} />
+      <input type='hidden' name='content' defaultValue={content || ''} />
     </>
   )
 }
