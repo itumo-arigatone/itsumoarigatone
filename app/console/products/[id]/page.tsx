@@ -1,7 +1,8 @@
 import { PrismaClient } from '@prisma/client';
 import { use } from 'react';
 import { redirect } from 'next/navigation'
-import '@/app/stylesheets/console/blogs/page.css'
+import Link from 'next/link';
+import '@/app/stylesheets/console/products/edit.css'
 
 interface Product {
   id: number;
@@ -69,15 +70,33 @@ export default function Page({ params }: { params: { id: string } }) {
   const product = use(GetProduct(params.id)) as Product;
 
   return (
-    <form action={PatchProduct} className="product-editor">
-      <input type='hidden' name='id' value={product.id.toString()} />
-      <input type='text' name='name' defaultValue={product.name} className='name' />
-      <input type='text' name='price' defaultValue={product.price} className='price' />
-      <input type='text' name='slug' defaultValue={product.slug} className='slug' />
-      <textarea defaultValue={product.description} />
-      <div className="bottom-button-area bg-sub">
-        <button type="submit">登録</button>
-      </div>
-    </form>
+    <>
+      <h1 className="text-sub">商品情報</h1>
+      <Link href='/console/products' className="text-accent">一覧</Link>
+      <form action={PatchProduct} className="product-editor text-sub">
+        <input type='hidden' name='id' value={product.id.toString()} />
+        <section className='input-section'>
+          <div className='input-box'>
+            <label for='name-box'>名前</label>
+            <input type='text' id='name-box' name='name' defaultValue={product.name} className='name bg-sub text-base' />
+          </div>
+          <div className='input-box'>
+            <label for='price-box'>値段</label>
+            <input type='text' id='price-box' name='price-box' defaultValue={product.price} className='price bg-sub text-base' />
+          </div>
+          <div className='input-box'>
+            <label for='slug'>スラグ</label>
+            <input type='text' id='slug' name='slug' defaultValue={product.slug} className='slug bg-sub text-base' />
+          </div>
+          <div className='input-box'>
+            <label for='description'>説明</label>
+            <textarea id='description' name='description' defaultValue={product.description} className='description bg-sub text-base' />
+          </div>
+        </section>
+        <div className="bottom-button-area">
+          <button type="submit" className='text-sub bg-accent submit-button'>登録</button>
+        </div>
+      </form>
+    </>
   );
 };

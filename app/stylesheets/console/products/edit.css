@@ -1,0 +1,43 @@
+h1 {
+  font-size: 32px;
+  font-weight: 600;
+  margin: 32px auto;
+}
+
+.product-editor {
+  max-width: var(--content-width);
+  margin: 0 auto;
+}
+
+.input-section {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  margin-bottom: 32px;
+
+  .input-box {
+    display: flex;
+    flex-direction: column;
+  }
+
+  input,
+  textarea {
+    padding: 8px 16px;
+  }
+
+  .description {
+    height: 400px;
+  }
+}
+
+.bottom-button-area {
+  display: flex;
+  justify-content: center;
+}
+
+.bottom-button-area {
+  .submit-button {
+    padding: 8px 16px;
+    border-radius: 8px;
+  }
+}

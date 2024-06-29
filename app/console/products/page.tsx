@@ -19,7 +19,7 @@ const Page = () => {
         <ul>
           {products.map((product) => (
             <li key={product.id}>
-              <Link href={`${product.slug}`}>
+              <Link href={`${product.id}`}>
                 <h3 className="text-sub">{product.name}</h3>
                 <div className="text-accent blog-created">
                   {formatDate(product.created_at)}
