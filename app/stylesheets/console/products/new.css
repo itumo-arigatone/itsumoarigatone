@@ -1,1 +1,22 @@
-.product-editor {}
+h1 {
+  font-size: 32px;
+  font-weight: 600;
+  margin: 32px auto;
+}
+
+.product-editor {
+  max-width: var(--content-width);
+  margin: 0 auto;
+}
+
+.bottom-button-area {
+  display: flex;
+  justify-content: center;
+}
+
+.bottom-button-area {
+  .submit-button {
+    padding: 8px 16px;
+    border-radius: 8px;
+  }
+}

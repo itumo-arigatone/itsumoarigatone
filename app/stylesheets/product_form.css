@@ -1,0 +1,20 @@
+.input-section {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  margin-bottom: 32px;
+
+  .input-box {
+    display: flex;
+    flex-direction: column;
+  }
+
+  input,
+  textarea {
+    padding: 8px 16px;
+  }
+
+  .description {
+    height: 400px;
+  }
+}

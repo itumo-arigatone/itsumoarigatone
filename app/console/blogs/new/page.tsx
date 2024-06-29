@@ -1,6 +1,5 @@
 import TipTap from "@/app/(components)/Tiptap";
 import { PrismaClient } from '@prisma/client';
-import { use } from 'react';
 import { redirect } from 'next/navigation'
 import '@/app/stylesheets/console/blogs/page.css'
 
@@ -10,8 +9,6 @@ async function PostBlog(data: FormData) {
   const title = data.get('title')?.toString();
   const content = data.get('content')?.toString();
 
-  console.log(title)
-  console.log(content)
   if (!title || !content) {
     return;
   }

@@ -18,9 +18,21 @@ h3 {
 }
 
 ul {
-  border: solid 1px var(--main-sub-color);
   max-width: var(--content-width);
   margin: 40px auto;
+
+  .button-area {
+    display: flex;
+    justify-content: flex-end;
+
+    .create-button {
+      padding: 16px;
+      margin: 8px;
+      color: #fff;
+      padding: 16px;
+      border-radius: 8px;
+    }
+  }
 
   li {
     border: solid 1px var(--main-sub-color);

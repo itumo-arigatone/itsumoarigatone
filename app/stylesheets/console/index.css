@@ -1,0 +1,6 @@
+.menu {
+  display: flex;
+  flex-direction: column;
+  max-width: var(--content-width);
+  font-size: 24px;
+}

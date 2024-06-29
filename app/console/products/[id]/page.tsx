@@ -3,6 +3,7 @@ import { use } from 'react';
 import { redirect } from 'next/navigation'
 import Link from 'next/link';
 import '@/app/stylesheets/console/products/edit.css'
+import ProductForm from '@/app/(components)/ProductForm'
 
 interface Product {
   id: number;
@@ -24,8 +25,6 @@ async function GetProduct(id: string) {
   const product = await prisma.product.findUnique({
     where: { id: parseInt(id) },
   });
-
-  console.log(product)
 
   if (!product) {
     return null;
@@ -74,25 +73,7 @@ export default function Page({ params }: { params: { id: string } }) {
       <h1 className="text-sub">商品情報</h1>
       <Link href='/console/products' className="text-accent">一覧</Link>
       <form action={PatchProduct} className="product-editor text-sub">
-        <input type='hidden' name='id' value={product.id.toString()} />
-        <section className='input-section'>
-          <div className='input-box'>
-            <label for='name-box'>名前</label>
-            <input type='text' id='name-box' name='name' defaultValue={product.name} className='name bg-sub text-base' />
-          </div>
-          <div className='input-box'>
-            <label for='price-box'>値段</label>
-            <input type='text' id='price-box' name='price-box' defaultValue={product.price} className='price bg-sub text-base' />
-          </div>
-          <div className='input-box'>
-            <label for='slug'>スラグ</label>
-            <input type='text' id='slug' name='slug' defaultValue={product.slug} className='slug bg-sub text-base' />
-          </div>
-          <div className='input-box'>
-            <label for='description'>説明</label>
-            <textarea id='description' name='description' defaultValue={product.description} className='description bg-sub text-base' />
-          </div>
-        </section>
+        <ProductForm id={params.id} name={product.name} price={product.price} slug={product.slug} description={product.description} />
         <div className="bottom-button-area">
           <button type="submit" className='text-sub bg-accent submit-button'>登録</button>
         </div>

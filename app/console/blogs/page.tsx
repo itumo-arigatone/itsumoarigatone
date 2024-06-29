@@ -15,9 +15,13 @@ const BlogList = () => {
 
   return (
     <div>
+      <h1 className='text-sub'>ブログ一覧</h1>
+      <Link href="/console" className='text-accent'>一覧へ</Link>
       <section className='text-sub'>
-        <Link href="new">新しいブログを書く</Link>
         <ul>
+          <div className='button-area'>
+            <Link href="new" className='create-button bg-accent'>新しいブログを書く</Link>
+          </div>
           {posts.map((post) => (
             <li key={post.id}>
               <Link href={`${post.id}`}>

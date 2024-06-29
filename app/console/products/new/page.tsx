@@ -1,5 +1,6 @@
 import { PrismaClient } from '@prisma/client';
 import { redirect } from 'next/navigation'
+import ProductForm from '@/app/(components)/ProductForm'
 import '@/app/stylesheets/console/products/new.css'
 
 async function PatchProduct(data: FormData) {
@@ -32,12 +33,9 @@ async function PatchProduct(data: FormData) {
 export default function Page() {
   return (
     <form action={PatchProduct} className="product-editor">
-      <input type='text' name='name' className='name' />
-      <input type='text' name='price' className='price' />
-      <input type='text' name='slug' className='slug' />
-      <textarea name='description' />
-      <div className="bottom-button-area bg-sub">
-        <button type="submit">登録</button>
+      <ProductForm />
+      <div className="bottom-button-area">
+        <button type="submit" className='text-sub bg-accent submit-button'>登録</button>
       </div>
     </form>
   );

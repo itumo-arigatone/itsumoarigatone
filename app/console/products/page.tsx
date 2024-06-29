@@ -15,8 +15,13 @@ const Page = () => {
 
   return (
     <div>
-      <section>
+      <h1 className='text-sub'>商品一覧</h1>
+      <Link href="/console" className='text-accent'>一覧へ</Link>
+      <section className='text-sub'>
         <ul>
+          <div className='button-area'>
+            <Link href={'new'} className='create-button bg-accent'>新しい製品を登録</Link>
+          </div>
           {products.map((product) => (
             <li key={product.id}>
               <Link href={`${product.id}`}>

@@ -41,10 +41,11 @@ export async function GET(_: Request, { params }: { params: { key: string } }) {
 export async function POST(request: NextRequest) {
   const formData = await request.formData();
   const files = formData.getAll("file") as File[];
+  const path = formData.getAll("path");
 
   const responses = await Promise.all(
     files.map(async (file) => {
-      const Key = file.name;
+      const Key = `${path}${file.name}`;
       const Body = await file.arrayBuffer() as Buffer;
 
       // Upload the file to S3

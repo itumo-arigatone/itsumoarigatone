@@ -22,6 +22,7 @@ export default function TiptapMenuBar(param: any) {
 
     const formData = new FormData();
     formData.append('file', file);
+    formData.append('path', 'blogs/');
 
     const res = await fetch('/api/image_upload', {
       method: 'POST',
@@ -79,12 +80,6 @@ export default function TiptapMenuBar(param: any) {
         </button>
         <button type="button" onClick={() => editor.chain().focus().clearNodes().run()}>
           Clear nodes
-        </button>
-        <button type="button"
-          onClick={() => editor.chain().focus().setParagraph().run()}
-          className={editor.isActive('paragraph') ? 'is-active' : ''}
-        >
-          Paragraph
         </button>
         {/* <button type="button"
           onClick={() => editor.chain().focus().toggleHeading({ level: 1 }).run()}
