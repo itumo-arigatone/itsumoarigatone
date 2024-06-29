@@ -22,7 +22,6 @@ const ProductForm = ({ id, name, price, slug, description }: ProductFormProps) =
 
   const handleFileChange = async (e: any) => {
     const file = e.target.files[0];
-    console.log(e.target.files[0])
 
     if (!file) {
       return;

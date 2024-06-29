@@ -1,12 +1,40 @@
 import Footer from "@/app/(components)/Footer";
 import Header from "@/app/(components)/SimpleHeader"
 import { notFound } from 'next/navigation'
+import { PrismaClient } from '@prisma/client';
+import { use } from 'react';
 
+type ProductProps = {
+  id: number;
+  name: string;
+  price: number;
+  description: string;
+  slug: string;
+}
+
+async function GetProduct(slug: string) {
+  'use server'
+
+  const prisma = new PrismaClient();
+
+  if (!slug) {
+    return { error: 'slug is required' };
+  }
+
+  const product = await prisma.product.findUnique({
+    where: { slug: slug },
+  });
+
+  if (!product) {
+    return { error: 'Post not found' };
+  }
+
+  return product;
+}
 
 export default function Page({ params }: { params: { slug: string } }) {
   // fetch
-  // const product = ProductsInfo[params.slug];
-  const product = null;
+  const product = use(GetProduct(params.slug as string)) as ProductProps
 
   if (!product) {
     return notFound();
@@ -22,7 +50,7 @@ export default function Page({ params }: { params: { slug: string } }) {
         <div className="flex flex-col justify-between">
           <div className="mx-auto mt-16 max-w-2xl px-4 sm:px-6 lg:max-w-7xl lg:px-8">
             <div className="mx-auto flex flex-col lg:flex-row">
-              <img className="rounded-lg" src={product.image_path} alt={product.name} width={639} />
+              <img className="rounded-lg" src={''} alt={product.name} width={639} />
               <div className="mt-10 flex flex-col sm:mt-0 sm:ml-10">
                 <h1 className="mt-1 text-4xl font-bold text-sub sm:text-5xl sm:tracking-tight lg:text-5xl">{product.name}</h1>
                 <h1 className="mt-3 text-xl font-bold text-sub sm:text-3xl sm:tracking-tight lg:text-3xl">￥{product.price}</h1>
