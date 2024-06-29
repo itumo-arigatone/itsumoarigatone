@@ -34,7 +34,7 @@ model Product {
 
 model ProductImage {
   id         Int      @id @default(autoincrement())
-  url        String
+  key        String
   productId  Int
   created_at DateTime @default(now())
   updated_at DateTime @default(now())
