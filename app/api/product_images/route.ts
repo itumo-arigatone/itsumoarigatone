@@ -30,17 +30,21 @@ let s3 = new S3Client({
 });
 
 // endpoint to get the list of files in the bucket
-export async function GET(_: Request, { params }: { params: { key: string } }) {
-  const command = new GetObjectCommand({ Bucket, Key: params.key });
-  const src = await getSignedUrl(s3, command, { expiresIn: 3600 });
+export async function GET(params: any) {
+  const { searchParams } = new URL(params.url);
+  const key = searchParams.get("key");
+  const command = new GetObjectCommand({ Bucket, Key: key });
+  const client = process.env.NODE_ENV === 'development' ? s3dev : s3
+  const src = await getSignedUrl(client, command, { expiresIn: 3600 });
 
-  return NextResponse.json({ src });
+  return NextResponse.json(src);
 }
 
 export async function getMultipleImages(keys: Array<string>) {
   const images = await keys.map((key) => {
     const command = new GetObjectCommand({ Bucket, Key: key });
-    return getSignedUrl(s3, command, { expiresIn: 3600 }).then((url) => {
+    const client = process.env.NODE_ENV === 'development' ? s3dev : s3
+    return getSignedUrl(client, command, { expiresIn: 3600 }).then((url) => {
       key
       url
     })

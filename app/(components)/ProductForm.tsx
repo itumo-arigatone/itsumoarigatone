@@ -1,6 +1,6 @@
 'use client'
 
-import { useRef, useState } from 'react'
+import { useRef, useState, useEffect } from 'react'
 import '@/app/stylesheets/product_form.css'
 
 type ProductFormProps = {
@@ -9,17 +9,41 @@ type ProductFormProps = {
   price: string | null,
   slug: string | null,
   description: string | null,
+  keys: Array<string> | null
 }
 
 type ImageResponse = {
   [key: string]: string;
 };
 
-const ProductForm = ({ id, name, price, slug, description }: ProductFormProps) => {
+const ProductForm = ({ id, name, price, slug, description, keys }: ProductFormProps) => {
 
   const inputFileRef = useRef<HTMLInputElement>(null);
   const [imageUrls, setImageUrls] = useState<ImageResponse>({}); // TODO: 初期の段階ですでにアップされている画像を取得しておく。
   const [imageKeys, setImageKeys] = useState<Array<string>>([])
+
+  useEffect(() => {
+    // パラメータをつくる
+    let params = ''
+    keys?.map((key) => (
+      params += `key[]=${key}`
+    ))
+
+    // すでにアップされている画像も表示する
+    getImages().then(data => {
+      setImageUrls(prevImageUrls => ({
+        ...prevImageUrls,
+        [keys[0]]: data
+      }));
+    }).catch(error => {
+      console.error('Error fetching images:', error);
+    });
+  }, []);
+
+  const getImages = async () => {
+    const res = await fetch(`/api/product_images?key=${keys[0]}`);
+    return await res.json();
+  }
 
   const handleFileChange = async (e: any) => {
     const file = e.target.files[0];
@@ -45,8 +69,6 @@ const ProductForm = ({ id, name, price, slug, description }: ProductFormProps) =
       // このキーをもとにS3からデータを取得する
       setImageKeys(notStateKeys)
     });
-
-    console.log(urls)
 
     if (res.status === 200) {
       setImageUrls(urls)

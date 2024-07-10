@@ -12,6 +12,7 @@ interface Product {
   price: string;
   description: string;
   slug: string;
+  images: [key: string]
 }
 
 async function GetProduct(id: string) {
@@ -25,7 +26,12 @@ async function GetProduct(id: string) {
 
   const product = await prisma.product.findUnique({
     where: { id: parseInt(id) },
+    include: {
+      images: true,
+    },
   });
+
+
 
   if (!product) {
     return null;
@@ -87,7 +93,7 @@ export default function Page({ params }: { params: { id: string } }) {
       <h1 className="text-sub">商品情報</h1>
       <Link href='/console/products' className="text-accent">一覧</Link>
       <form action={PatchProduct} className="product-editor text-sub">
-        <ProductForm id={params.id} name={product.name} price={product.price} slug={product.slug} description={product.description} />
+        <ProductForm id={params.id} name={product.name} price={product.price} slug={product.slug} description={product.description} keys={product.images.map(record => (record.key))} />
         <div className="bottom-button-area">
           <button type="submit" className='text-sub bg-accent submit-button'>登録</button>
         </div>
