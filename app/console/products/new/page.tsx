@@ -14,7 +14,6 @@ async function CreateProduct(data: FormData) {
   const slug = data.get('slug')?.toString();
   let images = data.get('images')?.toString();
 
-  console.log(images)
   if (images) {
     images = JSON.parse(images)
   }
@@ -35,7 +34,7 @@ async function CreateProduct(data: FormData) {
       description: description,
       price: price,
       slug: slug,
-      productImages: {
+      images: {
         create: images?.map((key: string) => ({
           key: key
         }))

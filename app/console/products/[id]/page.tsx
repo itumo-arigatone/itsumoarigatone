@@ -1,6 +1,7 @@
 import { PrismaClient } from '@prisma/client';
 import { use } from 'react';
 import { redirect } from 'next/navigation'
+import { isNumber } from '@/lib/isNumber'
 import Link from 'next/link';
 import '@/app/stylesheets/console/products/edit.css'
 import ProductForm from '@/app/(components)/ProductForm'
@@ -39,24 +40,37 @@ async function PatchProduct(data: FormData) {
   const id = data.get('id')?.toString();
   const name = data.get('name')?.toString();
   const description = data.get('description')?.toString();
-  const price = data.get('price')?.toString();
+  const price = Number(data.get('price'));
+  const slug = data.get('slug')?.toString();
+  let images = data.get('images')?.toString();
 
-  if (!id || !name || !description || !price) {
+  if (images) {
+    images = JSON.parse(images)
+  }
+
+  if (!id || !name || !description || !price || !slug) {
+    return;
+  }
+
+  if (!isNumber(price)) {
     return;
   }
 
   const prisma = new PrismaClient();
 
-  const result = await prisma.product.upsert({
+  const result = await prisma.product.update({
     where: { id: parseInt(id) },
-    update: {
+    data: {
       name: name,
       description: description,
-    },
-    create: {
-      name: name,
-      description: description,
-    },
+      price: price,
+      slug: slug,
+      images: {
+        create: images?.map((key: string) => ({
+          key: key
+        }))
+      },
+    }
   });
 
   if (result) {

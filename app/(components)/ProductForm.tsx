@@ -18,7 +18,7 @@ type ImageResponse = {
 const ProductForm = ({ id, name, price, slug, description }: ProductFormProps) => {
 
   const inputFileRef = useRef<HTMLInputElement>(null);
-  const imageUrls = useRef<ImageResponse>({})
+  const [imageUrls, setImageUrls] = useState<ImageResponse>({}); // TODO: 初期の段階ですでにアップされている画像を取得しておく。
   const [imageKeys, setImageKeys] = useState<Array<string>>([])
 
   const handleFileChange = async (e: any) => {
@@ -41,16 +41,15 @@ const ProductForm = ({ id, name, price, slug, description }: ProductFormProps) =
     let notStateKeys = imageKeys
     Object.keys(urls).forEach((key: string) => {
       notStateKeys.push(key)
+      // DBに保存するようにキーを持っておく
+      // このキーをもとにS3からデータを取得する
       setImageKeys(notStateKeys)
     });
 
-    imageUrls.current = urls
+    console.log(urls)
+
     if (res.status === 200) {
-      for (const key in imageUrls.current) {
-        if (imageUrls.current.hasOwnProperty(key)) {
-          // TODO: 画像を表示
-        }
-      }
+      setImageUrls(urls)
     } else {
       alert('ファイルのアップロードに失敗しました。');
     }
@@ -76,6 +75,13 @@ const ProductForm = ({ id, name, price, slug, description }: ProductFormProps) =
           <input type='text' id='slug' name='slug' defaultValue={slug || ''} className='slug bg-sub text-base' />
         </div>
         <input ref={inputFileRef} type="file" id="image" name="file" onChange={handleFileChange} />
+        <div className='image-preview-area'>
+          {
+            Object.keys(imageUrls).map((key) => (
+              <img key={key} src={imageUrls[key]} alt={key} />
+            ))
+          }
+        </div>
         <div className='input-box'>
           <label htmlFor='description' className='text-sub'>説明</label>
           <textarea id='description' name='description' defaultValue={description || ''} className='description bg-sub text-base' />

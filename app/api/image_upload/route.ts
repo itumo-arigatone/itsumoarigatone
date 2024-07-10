@@ -61,6 +61,12 @@ export async function POST(request: NextRequest) {
   );
 
   // responses をマージして、1つのオブジェクトにまとめる
+  /**
+   * {
+   *  [key(ファイル名)]: "認証済みURL",
+   *  [key(ファイル名)]: "認証済みURL",
+   * }
+   */
   const mergedResponse = responses.reduce((acc, obj) => ({ ...acc, ...obj }), {});
 
   return NextResponse.json(mergedResponse);
