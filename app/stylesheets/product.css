@@ -1,9 +1,13 @@
-.colors {
-  
-}
+.colors {}
 
 .color {
   width: 20px;
   height: 20px;
   border-radius: 50%;
+}
+
+.slide-image-area {
+  img {
+    max-height: 230px;
+  }
 }

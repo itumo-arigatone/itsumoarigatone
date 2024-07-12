@@ -54,8 +54,6 @@ const ProductForm = ({ id, name, price, slug, description, imgSrc }: ProductForm
           [key]: urls[key]
         }))
       })
-      console.log(imageKeys);
-      console.log(imageUrls);
     } else {
       alert('ファイルのアップロードに失敗しました。');
     }
@@ -82,7 +80,6 @@ const ProductForm = ({ id, name, price, slug, description, imgSrc }: ProductForm
         </div>
         <input ref={inputFileRef} type="file" id="image" name="file" onChange={handleFileChange} />
         <div className='image-preview-area'>
-          {imageKeys}
           {
             Object.keys(imageUrls).map((key) => (
               <img key={key} src={imageUrls[key]} alt={key} />
