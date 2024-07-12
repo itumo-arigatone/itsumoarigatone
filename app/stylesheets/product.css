@@ -9,5 +9,6 @@
 .slide-image-area {
   img {
     max-height: 230px;
+    margin: auto;
   }
 }

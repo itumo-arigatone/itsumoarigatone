@@ -1,3 +1,9 @@
+"use client"
+
+import { Swiper, SwiperSlide } from 'swiper/react';
+import { Autoplay } from 'swiper/modules';
+
+import 'swiper/css';
 import "../stylesheets/product.css";
 
 type ProductProps = {
@@ -18,11 +24,23 @@ const Product = ({ images, title, price, colors, product_key }: ProductProps) =>
   return (
     <a className="text-sub group" href={`/product/${encodeURIComponent(product_key)}`}>
       <div className="slide-image-area">
-        {
-          Object.keys(images).map((key) => (
-            <img key={key} src={images[key]} alt={key} />
-          ))
-        }
+        <Swiper
+          spaceBetween={0}
+          centeredSlides={true}
+          autoplay={{
+            delay: 2500,
+            disableOnInteraction: false,
+          }}
+          modules={[Autoplay]}
+        >
+          {
+            Object.keys(images).map((key) => (
+              <SwiperSlide>
+                <img key={key} src={images[key]} alt={key} />
+              </SwiperSlide>
+            ))
+          }
+        </Swiper>
       </div>
       <p className="text-xl font-bold">{title}</p>
       <span>￥{price}</span>
