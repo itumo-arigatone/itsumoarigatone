@@ -17,4 +17,10 @@
   .description {
     height: 400px;
   }
+
+  .image-preview-area {
+    img {
+      max-height: 450px;
+    }
+  }
 }

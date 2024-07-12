@@ -5,20 +5,30 @@ import { isNumber } from '@/lib/isNumber'
 import Link from 'next/link';
 import '@/app/stylesheets/console/products/edit.css'
 import ProductForm from '@/app/(components)/ProductForm'
+import {
+  GetObjectCommand,
+} from "@aws-sdk/client-s3";
+import { getSignedUrl } from "@aws-sdk/s3-request-presigner";
+import { s3Client } from "@/lib/s3Client"
 
 interface Product {
-  id: number;
+  id: string;
   name: string;
-  price: string;
+  price: number;
   description: string;
   slug: string;
   images: [key: string]
+}
+
+interface ImgSrc {
+  [src: string]: string | {};
 }
 
 async function GetProduct(id: string) {
   'use server'
 
   const prisma = new PrismaClient();
+  const Bucket = process.env.AMPLIFY_BUCKET;
 
   if (!id) {
     return null;
@@ -31,16 +41,20 @@ async function GetProduct(id: string) {
     },
   });
 
-
-
   if (!product) {
     return null;
   }
 
-  return product;
+  let imgSrc = {} as ImgSrc
+  product.images.forEach(async record => {
+    let command = new GetObjectCommand({ Bucket, Key: record.key })
+    imgSrc[record.key] = await getSignedUrl(s3Client(), command, { expiresIn: 3600 });
+  })
+
+  return { product: product, images: imgSrc };
 }
 
-async function PatchProduct(data: FormData) {
+async function UpdateProduct(data: FormData) {
   'use server'
 
   const id = data.get('id')?.toString();
@@ -80,20 +94,27 @@ async function PatchProduct(data: FormData) {
   });
 
   if (result) {
-    redirect('/console/blogs');
+    redirect('/console/products');
   }
 }
 
 
 export default function Page({ params }: { params: { id: string } }) {
-  const product = use(GetProduct(params.id)) as Product;
+  const productInfo = use(GetProduct(params.id))
+  const product = productInfo?.product
 
   return (
     <>
       <h1 className="text-sub">商品情報</h1>
       <Link href='/console/products' className="text-accent">一覧</Link>
-      <form action={PatchProduct} className="product-editor text-sub">
-        <ProductForm id={params.id} name={product.name} price={product.price} slug={product.slug} description={product.description} keys={product.images.map(record => (record.key))} />
+      <form action={UpdateProduct} className="product-editor text-sub">
+        <ProductForm
+          id={params.id}
+          name={product?.name || null}
+          price={product?.price || null}
+          slug={product?.slug || null}
+          description={product?.description || null}
+          imgSrc={productInfo?.images} />
         <div className="bottom-button-area">
           <button type="submit" className='text-sub bg-accent submit-button'>登録</button>
         </div>
