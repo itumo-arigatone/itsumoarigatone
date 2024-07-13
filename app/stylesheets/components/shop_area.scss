@@ -1,0 +1,14 @@
+.link-section {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 24px;
+
+  a {
+    display: flex;
+    width: 120px;
+    height: 50px;
+    justify-content: center;
+    align-items: center;
+    border-radius: 8px;
+  }
+}

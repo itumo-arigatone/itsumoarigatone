@@ -63,17 +63,12 @@ export default function Page({ params }: { params: { slug: string } }) {
         <div className="product">
           <ProductSlider images={productInfo.images || {}} />
           <div className="flex flex-col">
-            <h1 className="mt-1 text-4xl font-bold text-sub sm:text-5xl sm:tracking-tight lg:text-5xl">{productInfo.product.name || 'eeeeee'}</h1>
+            <h1 className="mt-1 text-4xl font-bold text-sub sm:text-5xl sm:tracking-tight lg:text-5xl">{productInfo.product.name}</h1>
             <div className="mt-3 text-xl font-bold text-sub sm:text-3xl sm:tracking-tight lg:text-3xl">￥{productInfo.product.price}</div>
             <div className="grid grid-cols-2 gap-x-6 gap-y-6 lg:grid-cols-3 xl:grid-cols-4 xl:gap-x-8 pt-6">
-              <a href="#" className="group">
+              <a href="https://itsumogatone.base.ec/" className="group">
                 <div className="aspect-h-1 aspect-w-1 w-full overflow-hidden rounded-lg bg-accent xl:aspect-h-8 xl:aspect-w-7 flex justify-center">
                   <img src={baseLogo} height={48} alt="ベイスリンク" className="max-h-12" />
-                </div>
-              </a>
-              <a href="#" className="group">
-                <div className="aspect-h-1 aspect-w-1 w-full overflow-hidden rounded-lg bg-accent xl:aspect-h-8 xl:aspect-w-7 flex justify-center">
-                  <img src={amazonLogo} height={48} alt="amazonリンク" className="max-h-12" />
                 </div>
               </a>
             </div>
