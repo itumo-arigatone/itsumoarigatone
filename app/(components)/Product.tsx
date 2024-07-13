@@ -14,10 +14,6 @@ type ProductProps = {
   product_key: string,
 }
 
-interface ImgSrcProps {
-  [src: string]: string | {};
-}
-
 const Product = ({ images, title, price, colors, product_key }: ProductProps) => {
   // 必要なデータ
   // 画像、タイトル、値段、色

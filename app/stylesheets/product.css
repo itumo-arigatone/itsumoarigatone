@@ -1,5 +1,3 @@
-.colors {}
-
 .color {
   width: 20px;
   height: 20px;
@@ -7,6 +5,8 @@
 }
 
 .slide-image-area {
+  background: var(--main-sub-color);
+
   img {
     max-height: 230px;
     margin: auto;

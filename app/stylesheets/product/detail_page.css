@@ -1,0 +1,12 @@
+.product {
+  gap: 50px;
+
+  .product-slide-area {
+    width: 50%;
+
+    img {
+      max-height: 680px;
+      margin: auto;
+    }
+  }
+}
