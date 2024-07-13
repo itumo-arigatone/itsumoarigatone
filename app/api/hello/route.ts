@@ -17,8 +17,6 @@ export async function GET() {
 
   const { Buckets } = await client.send(command);
   if (Buckets) {
-    console.log("Buckets: ");
-    console.log(Buckets.map((bucket) => bucket.Name).join("\n"));
     return NextResponse.json({ bukets: Buckets });
   } else {
     return NextResponse.json({ bukets: 'not found' });

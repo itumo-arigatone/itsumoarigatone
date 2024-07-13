@@ -1,0 +1,24 @@
+@use '@/app/stylesheets/config/mixin' as m;
+
+.product {
+  gap: 50px;
+  display: flex;
+  margin: 64px 24px;
+
+  @include m.under-lg {
+    flex-direction: column;
+  }
+
+  .product-slide-area {
+    width: 50%;
+
+    @include m.under-lg {
+      width: auto;
+    }
+
+    img {
+      max-height: 680px;
+      margin: auto;
+    }
+  }
+}
