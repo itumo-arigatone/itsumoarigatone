@@ -7,11 +7,15 @@ import 'swiper/css';
 import "../stylesheets/product.css";
 
 type ProductProps = {
-  images: Array<string>,
+  images: ImgSrcProps,
   title: string,
   price: number,
   colors: Array<string>,
   product_key: string,
+}
+
+interface ImgSrcProps {
+  [key: string]: string;
 }
 
 const Product = ({ images, title, price, colors, product_key }: ProductProps) => {
@@ -30,9 +34,9 @@ const Product = ({ images, title, price, colors, product_key }: ProductProps) =>
           modules={[Autoplay]}
         >
           {
-            Object.keys(images).map((key) => (
-              <SwiperSlide>
-                <img key={key} src={images[key]} alt={key} />
+            Object.keys(images).map((key: string) => (
+              <SwiperSlide key={key}>
+                <img key={key} src={images[key] || ''} alt={key} />
               </SwiperSlide>
             ))
           }

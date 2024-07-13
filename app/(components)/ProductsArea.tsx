@@ -16,7 +16,7 @@ interface ProductProps {
 }
 
 interface ImgSrcProps {
-  [src: string]: string | {};
+  [src: string]: string;
 }
 
 interface ProductPropsWithImg {

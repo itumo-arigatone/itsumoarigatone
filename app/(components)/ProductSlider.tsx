@@ -6,11 +6,15 @@ import { Autoplay } from 'swiper/modules';
 import 'swiper/css';
 import "../stylesheets/product.css";
 
-interface ImgSrcProps {
-  [src: string]: string | {};
+interface ProductSliderProps {
+  images: ImgSrcProps;
 }
 
-const ProductSlider = ({ images }: ImgSrcProps) => {
+interface ImgSrcProps {
+  [key: string]: string;
+}
+
+const ProductSlider = ({ images }: ProductSliderProps) => {
   return (
     <div className="product-slide-area">
       <Swiper
@@ -24,7 +28,7 @@ const ProductSlider = ({ images }: ImgSrcProps) => {
       >
         {
           Object.keys(images).map((key) => (
-            <SwiperSlide>
+            <SwiperSlide key={key}>
               <img key={key} src={images[key]} alt={key} />
             </SwiperSlide>
           ))

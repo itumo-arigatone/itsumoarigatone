@@ -14,7 +14,7 @@ import 'swiper/css';
 import '@/app/stylesheets/product/detail_page.css'
 
 interface ImgSrcProps {
-  [src: string]: string | {};
+  [src: string]: string;
 }
 
 async function GetProduct(slug: string) {
