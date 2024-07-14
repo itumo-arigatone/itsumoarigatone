@@ -1,7 +1,7 @@
 'use client'
 
 import { useRef, useState } from 'react'
-import '@/app/stylesheets/product_form.css'
+import '@/app/stylesheets/product_form.scss'
 
 type ProductFormProps = {
   id: string | null,
@@ -19,8 +19,8 @@ type ImageResponse = {
 const ProductForm = ({ id, name, price, slug, description, imgSrc }: ProductFormProps) => {
 
   const inputFileRef = useRef<HTMLInputElement>(null);
-  const [imageUrls, setImageUrls] = useState<ImageResponse>(imgSrc);
-  const [imageKeys, setImageKeys] = useState<Array<string>>(Object.keys(imgSrc).map((key) => key))
+  const [imageUrls, setImageUrls] = useState<ImageResponse>(imgSrc || {});
+  const [imageKeys, setImageKeys] = useState<Array<string>>(Object.keys(imgSrc || {}).map((key) => key))
 
   const handleFileChange = async (e: any) => {
     const file = e.target.files[0];
@@ -59,6 +59,15 @@ const ProductForm = ({ id, name, price, slug, description, imgSrc }: ProductForm
     }
   };
 
+  const deleteImage = (event: React.MouseEvent<HTMLDivElement, MouseEvent>) => {
+    const clickedElement = event.target as HTMLDivElement;
+    const deleteKey = clickedElement.getAttribute('data-filename') || '';
+    setImageKeys(imageKeys.filter(key => key !== deleteKey));
+    const newUrls = { ...imageUrls }
+    delete newUrls[deleteKey]
+    setImageUrls(newUrls)
+  }
+
   // 必要なデータ
   // 画像、タイトル、値段、色
   return (
@@ -82,7 +91,10 @@ const ProductForm = ({ id, name, price, slug, description, imgSrc }: ProductForm
         <div className='image-preview-area'>
           {
             Object.keys(imageUrls).map((key) => (
-              <img key={key} src={imageUrls[key]} alt={key} />
+              <div className="product-image">
+                <div className={`delete ${key}`} data-filename={key} onClick={deleteImage}>x</div>
+                <img key={key} src={imageUrls[key]} alt={key} />
+              </div>
             ))
           }
         </div>

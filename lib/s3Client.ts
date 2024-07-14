@@ -3,7 +3,7 @@ import {
 } from "@aws-sdk/client-s3";
 
 export function s3Client() {
-  let s3: any;
+  let s3;
   if (process.env.NODE_ENV === 'development') {
     s3 = new S3Client({
       region: 'ap-northeast-1',
