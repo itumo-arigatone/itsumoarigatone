@@ -20,12 +20,15 @@ type ImageResponse = {
 const ProductForm = ({ id, name, price, slug, description, imgSrc }: ProductFormProps) => {
 
   const inputFileRef = useRef<HTMLInputElement>(null);
+  const [imageFiles, setImageFiles] = useState<File[]>([])
   const [imageUrls, setImageUrls] = useState<ImageResponse>(imgSrc || {});
   const [imageKeys, setImageKeys] = useState<Array<string>>(Object.keys(imgSrc || {}).map((key) => key))
 
   const handleFileChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
     if (e.currentTarget?.files && e.currentTarget.files[0]) {
       const targetFile = e.currentTarget.files[0];
+      setImageFiles(prevImageFiles => [...prevImageFiles, targetFile]);
+
       const url = await createImagePreviewUrl(targetFile)
       let notStateKeys = imageKeys
       notStateKeys.push(targetFile.name)
@@ -67,7 +70,7 @@ const ProductForm = ({ id, name, price, slug, description, imgSrc }: ProductForm
           <label htmlFor='slug' className='text-sub'>スラグ</label>
           <input type='text' id='slug' name='slug' defaultValue={slug || ''} className='slug bg-sub text-base' />
         </div>
-        <input ref={inputFileRef} type="file" id="image" name="file" onChange={handleFileChange} />
+        <input ref={inputFileRef} type="file" id="image" name="file" multiple={true} onChange={handleFileChange} />
         <div className='image-preview-area'>
           {
             Object.keys(imageUrls).map((key) => (

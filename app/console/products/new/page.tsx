@@ -3,7 +3,7 @@ import { redirect } from 'next/navigation'
 import ProductForm from '@/app/(components)/ProductForm'
 import { isNumber } from '@/lib/isNumber'
 import Link from 'next/link';
-import { syncS3Image } from '@/lib/syncS3Image';
+import { uploadImages } from '@/lib/uploadImages';
 import '@/app/stylesheets/console/products/new.css'
 
 async function CreateProduct(data: FormData) {
@@ -47,8 +47,7 @@ async function CreateProduct(data: FormData) {
 
 
   if (result) {
-    // delete do not use s3 object
-    syncS3Image(images, result.id.toString())
+    uploadImages(`product/${result.id}/`, data.files)
     redirect('/console/products');
   }
 }
