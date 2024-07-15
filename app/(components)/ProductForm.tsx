@@ -4,7 +4,7 @@ import { useRef, useState } from 'react'
 import '@/app/stylesheets/product_form.scss'
 
 type ProductFormProps = {
-  id: string | null,
+  id: string,
   name: string | null,
   price: number | null,
   slug: string | null,
@@ -31,7 +31,7 @@ const ProductForm = ({ id, name, price, slug, description, imgSrc }: ProductForm
 
     const formData = new FormData();
     formData.append('file', file);
-    formData.append('path', 'products/');
+    formData.append('path', `products/${id}`);
 
     const res = await fetch('/api/image_upload', {
       method: 'POST',
@@ -72,7 +72,7 @@ const ProductForm = ({ id, name, price, slug, description, imgSrc }: ProductForm
   // 画像、タイトル、値段、色
   return (
     <>
-      <input type='hidden' name='id' value={id?.toString() || ''} />
+      <input type='hidden' name='id' value={id} />
       <input type='hidden' name='images' value={JSON.stringify(imageKeys)} />
       <section className='input-section'>
         <div className='input-box'>
