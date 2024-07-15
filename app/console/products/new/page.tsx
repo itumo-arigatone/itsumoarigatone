@@ -6,25 +6,6 @@ import Link from 'next/link';
 import { syncS3Image } from '@/lib/syncS3Image';
 import '@/app/stylesheets/console/products/new.css'
 
-async function CreateProductPage() {
-  const prisma = new PrismaClient();
-  const result = await prisma.product.create({
-    data: {
-      name: '',
-      description: '',
-      price: null,
-      slug: '',
-    },
-  })
-
-  if (result) {
-    console.log("create new product page")
-    return result.id.toString()
-  }
-
-  return ''
-}
-
 async function CreateProduct(data: FormData) {
   'use server'
 
@@ -50,8 +31,7 @@ async function CreateProduct(data: FormData) {
 
   const prisma = new PrismaClient();
 
-  const result = await prisma.product.update({
-    where: { id: parseInt(id) },
+  const result = await prisma.product.create({
     data: {
       name: name,
       description: description,
@@ -74,15 +54,12 @@ async function CreateProduct(data: FormData) {
 }
 
 export default function Page() {
-  // 画像をs3にアップしたいので初期表示の段階でcreateしておく
-  const id = CreateProductPage()
-
   return (
     <>
       <h1 className="text-sub">商品情報</h1>
       <Link href='/console/products' className="text-accent">一覧</Link>
       <form action={CreateProduct} className="product-editor">
-        <ProductForm id={id} />
+        <ProductForm />
         <div className="bottom-button-area">
           <button type="submit" className='text-sub bg-accent submit-button'>登録</button>
         </div>

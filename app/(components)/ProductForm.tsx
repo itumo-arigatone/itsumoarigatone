@@ -2,6 +2,7 @@
 
 import { useRef, useState } from 'react'
 import '@/app/stylesheets/product_form.scss'
+import { createImagePreviewUrl } from '@/lib/createImagePreviewUrl'
 
 type ProductFormProps = {
   id: string,
@@ -22,40 +23,19 @@ const ProductForm = ({ id, name, price, slug, description, imgSrc }: ProductForm
   const [imageUrls, setImageUrls] = useState<ImageResponse>(imgSrc || {});
   const [imageKeys, setImageKeys] = useState<Array<string>>(Object.keys(imgSrc || {}).map((key) => key))
 
-  const handleFileChange = async (e: any) => {
-    const file = e.target.files[0];
-
-    if (!file) {
-      return;
-    }
-
-    const formData = new FormData();
-    formData.append('file', file);
-    formData.append('path', `products/${id}`);
-
-    const res = await fetch('/api/image_upload', {
-      method: 'POST',
-      body: formData,
-    });
-
-    if (res.status === 200) {
-      const urls: ImageResponse = await res.json();
+  const handleFileChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
+    if (e.currentTarget?.files && e.currentTarget.files[0]) {
+      const targetFile = e.currentTarget.files[0];
+      const url = await createImagePreviewUrl(targetFile)
       let notStateKeys = imageKeys
-      Object.keys(urls).forEach((key: string) => {
-        notStateKeys.push(key)
-        // DBに保存するようにキーを持っておく
-        // このキーをもとにS3からデータを取得する
-        setImageKeys(notStateKeys)
-      });
-
-      Object.keys(urls).forEach((key: string) => {
-        setImageUrls(prevImageUrls => ({
-          ...prevImageUrls,
-          [key]: urls[key]
-        }))
-      })
-    } else {
-      alert('ファイルのアップロードに失敗しました。');
+      notStateKeys.push(targetFile.name)
+      // DBに保存するようにキーを持っておく
+      // このキーをもとにS3からデータを取得する
+      setImageKeys(notStateKeys)
+      setImageUrls(prevImageUrls => ({
+        ...prevImageUrls,
+        [targetFile.name]: url
+      }))
     }
   };
 
