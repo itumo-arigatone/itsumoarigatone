@@ -3,6 +3,7 @@ import { redirect } from 'next/navigation'
 import ProductForm from '@/app/(components)/ProductForm'
 import { isNumber } from '@/lib/isNumber'
 import Link from 'next/link';
+import { syncS3Image } from '@/lib/syncS3Image';
 import '@/app/stylesheets/console/products/new.css'
 
 async function CreateProduct(data: FormData) {
@@ -12,10 +13,11 @@ async function CreateProduct(data: FormData) {
   const description = data.get('description')?.toString();
   const price = Number(data.get('price'));
   const slug = data.get('slug')?.toString();
-  let images = data.get('images')?.toString();
+  const imagesJson = data.get('images')?.toString();
 
-  if (images) {
-    images = JSON.parse(images)
+  let images = [];
+  if (imagesJson) {
+    images = JSON.parse(imagesJson)
   }
 
   if (!name || !description || !price || !slug) {
@@ -42,7 +44,10 @@ async function CreateProduct(data: FormData) {
     },
   });
 
+
   if (result) {
+    // delete do not use s3 object
+    // syncS3Image(images, result.id.toString())
     redirect('/console/products');
   }
 }
