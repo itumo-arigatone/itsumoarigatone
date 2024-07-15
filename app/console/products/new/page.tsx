@@ -68,7 +68,7 @@ async function CreateProduct(data: FormData) {
 
   if (result) {
     // delete do not use s3 object
-    // syncS3Image(images, result.id.toString())
+    syncS3Image(images, result.id.toString())
     redirect('/console/products');
   }
 }

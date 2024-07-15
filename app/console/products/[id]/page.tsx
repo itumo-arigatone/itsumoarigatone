@@ -5,9 +5,7 @@ import { isNumber } from '@/lib/isNumber'
 import Link from 'next/link';
 import '@/app/stylesheets/console/products/edit.css'
 import ProductForm from '@/app/(components)/ProductForm'
-import {
-  GetObjectCommand,
-} from "@aws-sdk/client-s3";
+import { GetObjectCommand } from "@aws-sdk/client-s3";
 import { getSignedUrl } from "@aws-sdk/s3-request-presigner";
 import { s3Client } from "@/lib/s3Client"
 
@@ -86,8 +84,10 @@ async function UpdateProduct(data: FormData) {
       price: price,
       slug: slug,
       images: {
-        create: images?.map((key: string) => ({
-          key: key
+        upsert: images?.map((key: string) => ({
+          where: { key: key },
+          update: { key: key },
+          create: { key: key },
         }))
       },
     }
