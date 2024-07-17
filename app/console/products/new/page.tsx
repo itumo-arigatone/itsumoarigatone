@@ -3,22 +3,25 @@ import { redirect } from 'next/navigation'
 import ProductForm from '@/app/(components)/ProductForm'
 import { isNumber } from '@/lib/isNumber'
 import Link from 'next/link';
+import { uploadImages } from '@/lib/uploadImages';
 import '@/app/stylesheets/console/products/new.css'
 
 async function CreateProduct(data: FormData) {
   'use server'
 
-  const name = data.get('name')?.toString();
-  const description = data.get('description')?.toString();
-  const price = Number(data.get('price'));
-  const slug = data.get('slug')?.toString();
-  let images = data.get('images')?.toString();
+  const id = data.get('id')?.toString()
+  const name = data.get('name')?.toString()
+  const description = data.get('description')?.toString()
+  const price = Number(data.get('price'))
+  const slug = data.get('slug')?.toString()
+  const imagesJson = data.get('images')?.toString()
 
-  if (images) {
-    images = JSON.parse(images)
+  let images = []
+  if (imagesJson) {
+    images = JSON.parse(imagesJson)
   }
 
-  if (!name || !description || !price || !slug) {
+  if (!id || !name || !description || !price || !slug) {
     return;
   }
 
@@ -42,7 +45,9 @@ async function CreateProduct(data: FormData) {
     },
   });
 
+
   if (result) {
+    uploadImages(`product/${result.id}/`, data.files)
     redirect('/console/products');
   }
 }

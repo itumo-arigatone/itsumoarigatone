@@ -1,10 +1,11 @@
 'use client'
 
 import { useRef, useState } from 'react'
-import '@/app/stylesheets/product_form.css'
+import '@/app/stylesheets/product_form.scss'
+import { createImagePreviewUrl } from '@/lib/createImagePreviewUrl'
 
 type ProductFormProps = {
-  id: string | null,
+  id: string,
   name: string | null,
   price: number | null,
   slug: string | null,
@@ -19,51 +20,42 @@ type ImageResponse = {
 const ProductForm = ({ id, name, price, slug, description, imgSrc }: ProductFormProps) => {
 
   const inputFileRef = useRef<HTMLInputElement>(null);
-  const [imageUrls, setImageUrls] = useState<ImageResponse>(imgSrc);
-  const [imageKeys, setImageKeys] = useState<Array<string>>(Object.keys(imgSrc).map((key) => key))
+  const [imageFiles, setImageFiles] = useState<File[]>([])
+  const [imageUrls, setImageUrls] = useState<ImageResponse>(imgSrc || {});
+  const [imageKeys, setImageKeys] = useState<Array<string>>(Object.keys(imgSrc || {}).map((key) => key))
 
-  const handleFileChange = async (e: any) => {
-    const file = e.target.files[0];
+  const handleFileChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
+    if (e.currentTarget?.files && e.currentTarget.files[0]) {
+      const targetFile = e.currentTarget.files[0];
+      setImageFiles(prevImageFiles => [...prevImageFiles, targetFile]);
 
-    if (!file) {
-      return;
-    }
-
-    const formData = new FormData();
-    formData.append('file', file);
-    formData.append('path', 'products/');
-
-    const res = await fetch('/api/image_upload', {
-      method: 'POST',
-      body: formData,
-    });
-
-    if (res.status === 200) {
-      const urls: ImageResponse = await res.json();
+      const url = await createImagePreviewUrl(targetFile)
       let notStateKeys = imageKeys
-      Object.keys(urls).forEach((key: string) => {
-        notStateKeys.push(key)
-        // DBに保存するようにキーを持っておく
-        // このキーをもとにS3からデータを取得する
-        setImageKeys(notStateKeys)
-      });
-
-      Object.keys(urls).forEach((key: string) => {
-        setImageUrls(prevImageUrls => ({
-          ...prevImageUrls,
-          [key]: urls[key]
-        }))
-      })
-    } else {
-      alert('ファイルのアップロードに失敗しました。');
+      notStateKeys.push(targetFile.name)
+      // DBに保存するようにキーを持っておく
+      // このキーをもとにS3からデータを取得する
+      setImageKeys(notStateKeys)
+      setImageUrls(prevImageUrls => ({
+        ...prevImageUrls,
+        [targetFile.name]: url
+      }))
     }
   };
+
+  const deleteImage = (event: React.MouseEvent<HTMLDivElement, MouseEvent>) => {
+    const clickedElement = event.target as HTMLDivElement;
+    const deleteKey = clickedElement.getAttribute('data-filename') || '';
+    setImageKeys(imageKeys.filter(key => key !== deleteKey));
+    const newUrls = { ...imageUrls }
+    delete newUrls[deleteKey]
+    setImageUrls(newUrls)
+  }
 
   // 必要なデータ
   // 画像、タイトル、値段、色
   return (
     <>
-      <input type='hidden' name='id' value={id?.toString() || ''} />
+      <input type='hidden' name='id' value={id} />
       <input type='hidden' name='images' value={JSON.stringify(imageKeys)} />
       <section className='input-section'>
         <div className='input-box'>
@@ -78,11 +70,14 @@ const ProductForm = ({ id, name, price, slug, description, imgSrc }: ProductForm
           <label htmlFor='slug' className='text-sub'>スラグ</label>
           <input type='text' id='slug' name='slug' defaultValue={slug || ''} className='slug bg-sub text-base' />
         </div>
-        <input ref={inputFileRef} type="file" id="image" name="file" onChange={handleFileChange} />
+        <input ref={inputFileRef} type="file" id="image" name="file" multiple={true} onChange={handleFileChange} />
         <div className='image-preview-area'>
           {
             Object.keys(imageUrls).map((key) => (
-              <img key={key} src={imageUrls[key]} alt={key} />
+              <div className="product-image">
+                <div className={`delete ${key}`} data-filename={key} onClick={deleteImage}>x</div>
+                <img key={key} src={imageUrls[key]} alt={key} />
+              </div>
             ))
           }
         </div>
