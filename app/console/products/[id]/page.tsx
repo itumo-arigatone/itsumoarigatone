@@ -3,11 +3,11 @@ import { use } from 'react';
 import { redirect } from 'next/navigation'
 import { isNumber } from '@/lib/isNumber'
 import Link from 'next/link';
-import '@/app/stylesheets/console/products/edit.css'
 import ProductForm from '@/app/(components)/ProductForm'
 import { GetObjectCommand } from "@aws-sdk/client-s3";
 import { getSignedUrl } from "@aws-sdk/s3-request-presigner";
 import { s3Client } from "@/lib/s3Client"
+import '@/app/stylesheets/console/products/edit.css'
 
 interface Product {
   id: string;

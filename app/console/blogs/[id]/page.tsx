@@ -1,7 +1,13 @@
+import { use } from 'react';
 import TipTap from "@/app/(components)/Tiptap";
 import { PrismaClient } from '@prisma/client';
-import { use } from 'react';
 import { redirect } from 'next/navigation'
+import { parse, HTMLElement } from 'node-html-parser';
+import { viewS3Client } from "@/lib/viewS3Client"
+import { getSignedUrl } from "@aws-sdk/s3-request-presigner";
+import { GetObjectCommand } from "@aws-sdk/client-s3";
+import { replaceImgSrc } from '@/lib/replaceImgSrc';
+
 import '@/app/stylesheets/console/blogs/page.css'
 
 interface Blog {
@@ -11,10 +17,16 @@ interface Blog {
   created_at: Date;
 }
 
+interface ImgSrc {
+  [src: string]: string | {};
+}
+
+
 async function GetBlog(id: string) {
   'use server'
 
   const prisma = new PrismaClient();
+  const Bucket = process.env.AMPLIFY_BUCKET;
 
   if (!id) {
     return null;
@@ -22,11 +34,31 @@ async function GetBlog(id: string) {
 
   const post = await prisma.post.findUnique({
     where: { id: parseInt(id) },
-  });
+    include: {
+      images: true,
+    },
+  })
 
   if (!post) {
     return null;
   }
+
+  const domContent = parse(post.content)
+
+  // タグからキーを取得する
+  let imgSrc = {} as ImgSrc
+  const imgElements = domContent.querySelectorAll('img.uploaded-image');
+
+  for (const img of imgElements) {
+    const key = img.getAttribute('alt');
+
+    if (key) {
+      const command = new GetObjectCommand({ Bucket, Key: `blog/${id}/${key}` });
+      imgSrc[key] = await getSignedUrl(viewS3Client(), command, { expiresIn: 3600 });
+    }
+  }
+
+  post.content = replaceImgSrc(domContent, imgSrc)
 
   return post;
 }

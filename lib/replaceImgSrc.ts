@@ -1,11 +1,14 @@
 import { HTMLElement } from 'node-html-parser';
 
-export function replaceImgSrc(doc: HTMLElement, srcs: any) {
+interface ImgSrc {
+  [key: string]: string | {};
+}
+
+export function replaceImgSrc(doc: HTMLElement, srcs: ImgSrc) {
 
   // 特定のクラスを持つ<img>タグを検索する
   const images = doc.querySelectorAll('img.uploaded-image');
 
-  console.log(srcs)
   if (Object.keys(srcs).length > 0) {
     images.forEach(img => {
       const key = img.getAttribute('alt')
