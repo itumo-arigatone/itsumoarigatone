@@ -14,7 +14,7 @@ export async function uploadImages(path: string, files: File[]) {
       const Body = await file.arrayBuffer() as Buffer;
 
       // Upload the file to S3
-      await s3Client.send(new PutObjectCommand({ Bucket, Key, Body }));
+      await s3Client().send(new PutObjectCommand({ Bucket, Key, Body }));
     })
   );
 }

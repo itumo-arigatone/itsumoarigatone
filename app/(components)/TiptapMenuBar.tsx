@@ -1,46 +1,28 @@
 'use client'
 
 import React from 'react'
-import { useRef } from 'react'
-import '@/app/stylesheets/tiptap_menu_bar.css'
+import { useRef, useState } from 'react'
+import { createImagePreviewUrl } from '@/lib/createImagePreviewUrl'
 
-type ImageResponse = {
-  [key: string]: string;
-};
+import '@/app/stylesheets/tiptap_menu_bar.css'
 
 export default function TiptapMenuBar(param: any) {
   const editor = param.editor;
   const inputFileRef = useRef<HTMLInputElement>(null);
-  const imageUrls = useRef<ImageResponse>({})
 
   const handleFileChange = async (e: any) => {
     const file = e.target.files[0];
-
     if (!file) {
       return;
     }
 
-    const formData = new FormData();
-    formData.append('file', file);
-    formData.append('path', 'blogs/');
+    const src = await createImagePreviewUrl(file)
+    param.setImage((prevImages: File[]) => [...prevImages, file]);
 
-    const res = await fetch('/api/image_upload', {
-      method: 'POST',
-      body: formData,
-    });
-
-    const urls: ImageResponse = await res.json();
-
-    imageUrls.current = urls;
-    if (res.status === 200) {
-      for (const key in imageUrls.current) {
-        if (imageUrls.current.hasOwnProperty(key)) {
-          editor.chain().focus().setImage({ src: imageUrls.current[key] }).run();
-        }
-      }
-    } else {
-      alert('ファイルのアップロードに失敗しました。');
-    }
+    editor.chain().focus().setImage({
+      src: src,
+      alt: file.name
+    }).run();
   };
 
   if (!editor) {
@@ -81,12 +63,6 @@ export default function TiptapMenuBar(param: any) {
         <button type="button" onClick={() => editor.chain().focus().clearNodes().run()}>
           Clear nodes
         </button>
-        {/* <button type="button"
-          onClick={() => editor.chain().focus().toggleHeading({ level: 1 }).run()}
-          className={editor.isActive('heading', { level: 1 }) ? 'is-active' : ''}
-        >
-          H1
-        </button> */}
         <button type="button"
           onClick={() => editor.chain().focus().toggleHeading({ level: 2 }).run()}
           className={editor.isActive('heading', { level: 2 }) ? 'is-active' : ''}

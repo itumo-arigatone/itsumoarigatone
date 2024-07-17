@@ -14,11 +14,21 @@ datasource db {
 }
 
 model Post {
-  id        Int      @id @default(autoincrement())
-  title     String
-  content   String
+  id          Int      @id @default(autoincrement())
+  title       String
+  content     String
+  images      PostImage[]
+  created_at  DateTime @default(now())
+  updated_at  DateTime @default(now())
+}
+
+model PostImage {
+  id         Int      @id @default(autoincrement())
+  key        String
+  postId     Int
   created_at DateTime @default(now())
   updated_at DateTime @default(now())
+  post       Post  @relation(fields: [postId], references: [id])
 }
 
 model Product {
@@ -34,7 +44,7 @@ model Product {
 
 model ProductImage {
   id         Int      @id @default(autoincrement())
-  key        String   @unique
+  key        String
   productId  Int
   created_at DateTime @default(now())
   updated_at DateTime @default(now())

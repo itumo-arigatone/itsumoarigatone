@@ -4,11 +4,12 @@ import { useState } from 'react'
 import { EditorContent, useEditor } from '@tiptap/react'
 import StarterKit from '@tiptap/starter-kit'
 import Image from '@tiptap/extension-image'
-import '@/app/stylesheets/tiptap.css'
 import TiptapMenuBar from '@/app/(components)/TiptapMenuBar'
+import '@/app/stylesheets/tiptap.css'
 
 interface Param {
   blog: Blog | null;
+  setImage: any;
 }
 
 interface Blog {
@@ -24,7 +25,12 @@ const Tiptap = (param: Param) => {
   const editor = useEditor({
     extensions: [
       StarterKit,
-      Image
+      Image.configure({
+        HTMLAttributes: {
+          allowBase64: true,
+          class: 'uploaded-image',
+        },
+      })
     ],
     content: content,
     onUpdate({ editor }) {
@@ -35,7 +41,7 @@ const Tiptap = (param: Param) => {
 
   return (
     <>
-      <TiptapMenuBar editor={editor} />
+      <TiptapMenuBar editor={editor} setImage={param.setImage} />
       <EditorContent editor={editor} />
       <input type='hidden' name='content' defaultValue={content || ''} />
     </>
