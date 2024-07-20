@@ -21,7 +21,12 @@ interface Product {
 }
 
 interface ImgSrc {
-  [src: string]: string | {};
+  [src: string]: Urls,
+}
+
+type Urls = {
+  url?: string,
+  id?: string,
 }
 
 type ImageKey = {
@@ -57,7 +62,11 @@ async function GetProduct(id: string) {
   let imgSrc: ImgSrc = {}
   product.images.forEach(async record => {
     let command = new GetObjectCommand({ Bucket, Key: `product/${id}/${record.key}` })
-    imgSrc[record.key] = await getSignedUrl(viewS3Client(), command, { expiresIn: 3600 });
+    if (!imgSrc[record.key]) {
+      imgSrc[record.key] = {}
+    }
+    imgSrc[record.key].url = await getSignedUrl(viewS3Client(), command, { expiresIn: 3600 });
+    imgSrc[record.key].id = record.id.toString()
   })
 
   let imageKeys: ImageKey = {}
@@ -65,7 +74,7 @@ async function GetProduct(id: string) {
     imageKeys[record.id.toString()] = record.key;
   })
 
-  return { product: product, images: imgSrc, imageKeys: imageKeys };
+  return { product: product, imgSrc: imgSrc, imageKeys: imageKeys };
 }
 
 function imageUpdate(keyObj: ImageKeyWithId) {
@@ -97,10 +106,16 @@ async function UpdateProduct(data: FormData) {
   const slug = data.get('slug')?.toString();
   const imageKeysJson = data.get('imageKeys')?.toString()
   const imageFiles = data.getAll('imageData')
+  const deletedImageIdsJson = data.get('deletedImageIds')?.toString()
 
-  let imageKeys = []
+  let imageKeys = {}
   if (imageKeysJson) {
     imageKeys = JSON.parse(imageKeysJson)
+  }
+
+  let deletedImageIds = []
+  if (deletedImageIdsJson) {
+    deletedImageIds = JSON.parse(deletedImageIdsJson)
   }
 
   if (!id || !name || !description || !price || !slug) {
@@ -124,9 +139,19 @@ async function UpdateProduct(data: FormData) {
         upsert: imageUpdate(imageKeys)
       },
     }
+  })
+
+  const deletedRecord = await prisma.productImage.deleteMany({
+    where: {
+      id: {
+        in: deletedImageIds,
+      },
+    },
   });
 
-  if (result) {
+  console.log('========= deletedRecord ============')
+  console.log(deletedImageIdsJson)
+  if (result && deletedRecord) {
     const syncedFiles = syncKeyAndFile(imageKeys, imageFiles)
     uploadImages(`product/${result.id}/`, syncedFiles)
     redirect('/console/products');
@@ -148,7 +173,7 @@ export default function Page({ params }: { params: { id: string } }) {
         price={product?.price || null}
         slug={product?.slug || null}
         description={product?.description || null}
-        imgSrc={productInfo?.images}
+        imgSrc={productInfo?.imgSrc}
         uploadedImageKeys={productInfo?.imageKeys || {}}
         serverAction={UpdateProduct} />
     </>

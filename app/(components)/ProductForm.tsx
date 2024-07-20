@@ -15,8 +15,13 @@ type ProductFormProps = {
   serverAction: any | null,
 }
 
-type ImageResponse = {
-  [key: string]: string;
+interface ImgSrc {
+  [src: string]: Urls,
+}
+
+type Urls = {
+  url?: string,
+  id?: number,
 }
 
 type ImageKey = {
@@ -41,8 +46,9 @@ const ProductForm = ({ id, name, price, slug, description, imgSrc, uploadedImage
 
   const inputFileRef = useRef<HTMLInputElement>(null);
   const [imageFiles, setImageFiles] = useState<File[]>([])
-  const [imageUrls, setImageUrls] = useState<ImageResponse>(imgSrc || {});
+  const [imageUrls, setImageUrls] = useState<ImgSrc>(imgSrc || {});
   const [imageKeys, setImageKeys] = useState<ImageKeyWithId>({ new: [], already: uploadedImageKeys || {} })
+  const [deletedImageIds, setDeletedImageIds] = useState<number[]>([])
 
   const handleSubmit = async (event: any) => {
     event.preventDefault();
@@ -66,7 +72,9 @@ const ProductForm = ({ id, name, price, slug, description, imgSrc, uploadedImage
       setImageKeys(notStateKeys)
       setImageUrls(prevImageUrls => ({
         ...prevImageUrls,
-        [targetFile.name]: url
+        [targetFile.name]: {
+          url: url
+        }
       }))
     }
   };
@@ -74,10 +82,12 @@ const ProductForm = ({ id, name, price, slug, description, imgSrc, uploadedImage
   const deleteImage = (event: React.MouseEvent<HTMLDivElement, MouseEvent>) => {
     const clickedElement = event.target as HTMLDivElement;
     const deleteKey = clickedElement.getAttribute('data-filename') || '';
+    const deleteId = clickedElement.getAttribute('data-image-id') || '';
     // imageKeys.newから削除
     const filterdNew = imageKeys.new.filter(key => key !== deleteKey)
     // imageKeys.alreadyから削除
     const filterdAlready = deleteValueFromAlready(imageKeys.already, deleteKey)
+    setDeletedImageIds([...deletedImageIds, Number(deleteId)])
     setImageKeys({ new: filterdNew, already: filterdAlready });
     const newUrls = { ...imageUrls }
     delete newUrls[deleteKey]
@@ -90,6 +100,7 @@ const ProductForm = ({ id, name, price, slug, description, imgSrc, uploadedImage
     <form onSubmit={handleSubmit} className="product-editor">
       <input type='hidden' name='id' value={id} />
       <input type='hidden' name='imageKeys' value={JSON.stringify(imageKeys)} />
+      <input type='hidden' name='deletedImageIds' value={JSON.stringify(deletedImageIds)} />
       <section className='input-section'>
         <div className='input-box'>
           <label htmlFor='name-box' className='text-sub'>名前</label>
@@ -108,8 +119,8 @@ const ProductForm = ({ id, name, price, slug, description, imgSrc, uploadedImage
           {
             Object.keys(imageUrls).map((key) => (
               <div className="product-image">
-                <div className={`delete ${key}`} data-filename={key} onClick={deleteImage}>x</div>
-                <img key={key} src={imageUrls[key]} alt={key} />
+                <div className={`delete ${key}`} data-filename={key} data-image-id={imageUrls[key]?.id} onClick={deleteImage}>x</div>
+                <img key={key} src={imageUrls[key].url} alt={key} />
               </div>
             ))
           }

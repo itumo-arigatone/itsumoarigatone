@@ -49,8 +49,6 @@ async function CreateProduct(data: FormData) {
 
   if (result) {
     const syncedFiles = syncKeyAndFile(imageKeys, imageFiles)
-    console.log('=============== syncedFiles ===================')
-    console.log(syncedFiles)
     uploadImages(`product/${result.id}/`, syncedFiles)
     redirect('/console/products')
   }
