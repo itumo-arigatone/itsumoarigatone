@@ -6,7 +6,9 @@ import Link from 'next/link';
 import ProductForm from '@/app/(components)/ProductForm'
 import { GetObjectCommand } from "@aws-sdk/client-s3";
 import { getSignedUrl } from "@aws-sdk/s3-request-presigner";
-import { s3Client } from "@/lib/s3Client"
+import { uploadImages } from '@/lib/uploadImages';
+import { viewS3Client } from "@/lib/viewS3Client"
+import { syncKeyAndFile } from '@/lib/syncKeyAndFile'
 import '@/app/stylesheets/console/products/edit.css'
 
 interface Product {
@@ -45,8 +47,8 @@ async function GetProduct(id: string) {
 
   let imgSrc = {} as ImgSrc
   product.images.forEach(async record => {
-    let command = new GetObjectCommand({ Bucket, Key: record.key })
-    imgSrc[record.key] = await getSignedUrl(s3Client(), command, { expiresIn: 3600 });
+    let command = new GetObjectCommand({ Bucket, Key: `product/${id}/${record.key}` })
+    imgSrc[record.key] = await getSignedUrl(viewS3Client(), command, { expiresIn: 3600 });
   })
 
   return { product: product, images: imgSrc };
@@ -60,10 +62,12 @@ async function UpdateProduct(data: FormData) {
   const description = data.get('description')?.toString();
   const price = Number(data.get('price'));
   const slug = data.get('slug')?.toString();
-  let images = data.get('images')?.toString();
+  const imageKeysJson = data.get('imageKeys')?.toString()
+  const imageFiles = data.getAll('imageData')
 
-  if (images) {
-    images = JSON.parse(images)
+  let imageKeys = []
+  if (imageKeysJson) {
+    imageKeys = JSON.parse(imageKeysJson)
   }
 
   if (!id || !name || !description || !price || !slug) {
@@ -84,7 +88,7 @@ async function UpdateProduct(data: FormData) {
       price: price,
       slug: slug,
       images: {
-        upsert: images?.map((key: string) => ({
+        upsert: imageKeys?.map((key: string) => ({
           where: { key: key },
           update: { key: key },
           create: { key: key },
@@ -94,6 +98,8 @@ async function UpdateProduct(data: FormData) {
   });
 
   if (result) {
+    const syncedFiles = syncKeyAndFile(imageKeys, imageFiles)
+    uploadImages(`product/${result.id}/`, syncedFiles)
     redirect('/console/products');
   }
 }
@@ -107,18 +113,14 @@ export default function Page({ params }: { params: { id: string } }) {
     <>
       <h1 className="text-sub">商品情報</h1>
       <Link href='/console/products' className="text-accent">一覧</Link>
-      <form action={UpdateProduct} className="product-editor text-sub">
-        <ProductForm
-          id={params.id}
-          name={product?.name || null}
-          price={product?.price || null}
-          slug={product?.slug || null}
-          description={product?.description || null}
-          imgSrc={productInfo?.images} />
-        <div className="bottom-button-area">
-          <button type="submit" className='text-sub bg-accent submit-button'>登録</button>
-        </div>
-      </form>
+      <ProductForm
+        id={params.id}
+        name={product?.name || null}
+        price={product?.price || null}
+        slug={product?.slug || null}
+        description={product?.description || null}
+        imgSrc={productInfo?.images}
+        serverAction={UpdateProduct} />
     </>
   );
 };

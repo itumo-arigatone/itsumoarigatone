@@ -10,19 +10,29 @@ type ProductFormProps = {
   price: number | null,
   slug: string | null,
   description: string | null,
-  imgSrc: any
+  imgSrc: any,
+  serverAction: any | null,
 }
 
 type ImageResponse = {
   [key: string]: string;
 };
 
-const ProductForm = ({ id, name, price, slug, description, imgSrc }: ProductFormProps) => {
+const ProductForm = ({ id, name, price, slug, description, imgSrc, serverAction }: ProductFormProps) => {
 
   const inputFileRef = useRef<HTMLInputElement>(null);
   const [imageFiles, setImageFiles] = useState<File[]>([])
   const [imageUrls, setImageUrls] = useState<ImageResponse>(imgSrc || {});
   const [imageKeys, setImageKeys] = useState<Array<string>>(Object.keys(imgSrc || {}).map((key) => key))
+
+  const handleSubmit = async (event: any) => {
+    event.preventDefault();
+    const formData = new FormData(event.target);
+    imageFiles.forEach(img => {
+      formData.append('imageData', img)
+    })
+    serverAction(formData)
+  }
 
   const handleFileChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
     if (e.currentTarget?.files && e.currentTarget.files[0]) {
@@ -54,9 +64,9 @@ const ProductForm = ({ id, name, price, slug, description, imgSrc }: ProductForm
   // 必要なデータ
   // 画像、タイトル、値段、色
   return (
-    <>
+    <form onSubmit={handleSubmit} className="product-editor">
       <input type='hidden' name='id' value={id} />
-      <input type='hidden' name='images' value={JSON.stringify(imageKeys)} />
+      <input type='hidden' name='imageKeys' value={JSON.stringify(imageKeys)} />
       <section className='input-section'>
         <div className='input-box'>
           <label htmlFor='name-box' className='text-sub'>名前</label>
@@ -86,7 +96,10 @@ const ProductForm = ({ id, name, price, slug, description, imgSrc }: ProductForm
           <textarea id='description' name='description' defaultValue={description || ''} className='description bg-sub text-base' />
         </div>
       </section>
-    </>
+      <div className="bottom-button-area">
+        <button type="submit" className='text-sub bg-accent submit-button'>登録</button>
+      </div>
+    </form>
   )
 }
 

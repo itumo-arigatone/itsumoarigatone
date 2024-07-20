@@ -4,24 +4,25 @@ import ProductForm from '@/app/(components)/ProductForm'
 import { isNumber } from '@/lib/isNumber'
 import Link from 'next/link';
 import { uploadImages } from '@/lib/uploadImages';
+import { syncKeyAndFile } from '@/lib/syncKeyAndFile'
 import '@/app/stylesheets/console/products/new.css'
 
 async function CreateProduct(data: FormData) {
   'use server'
 
-  const id = data.get('id')?.toString()
   const name = data.get('name')?.toString()
   const description = data.get('description')?.toString()
   const price = Number(data.get('price'))
   const slug = data.get('slug')?.toString()
-  const imagesJson = data.get('images')?.toString()
+  const imageKeysJson = data.get('imageKeys')?.toString()
+  const imageFiles = data.getAll('imageData')
 
-  let images = []
-  if (imagesJson) {
-    images = JSON.parse(imagesJson)
+  let imageKeys = []
+  if (imageKeysJson) {
+    imageKeys = JSON.parse(imageKeysJson)
   }
 
-  if (!id || !name || !description || !price || !slug) {
+  if (!name || !description || !price || !slug) {
     return;
   }
 
@@ -38,17 +39,18 @@ async function CreateProduct(data: FormData) {
       price: price,
       slug: slug,
       images: {
-        create: images?.map((key: string) => ({
+        create: imageKeys?.map((key: string) => ({
           key: key
         }))
       },
     },
-  });
+  })
 
 
   if (result) {
-    uploadImages(`product/${result.id}/`, data.files)
-    redirect('/console/products');
+    const syncedFiles = syncKeyAndFile(imageKeys, imageFiles)
+    uploadImages(`product/${result.id}/`, syncedFiles)
+    redirect('/console/products')
   }
 }
 
@@ -57,12 +59,7 @@ export default function Page() {
     <>
       <h1 className="text-sub">商品情報</h1>
       <Link href='/console/products' className="text-accent">一覧</Link>
-      <form action={CreateProduct} className="product-editor">
-        <ProductForm />
-        <div className="bottom-button-area">
-          <button type="submit" className='text-sub bg-accent submit-button'>登録</button>
-        </div>
-      </form>
+      <ProductForm serverAction={CreateProduct} />
     </>
   );
 };

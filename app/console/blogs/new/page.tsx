@@ -4,21 +4,8 @@ import { parse, HTMLElement } from 'node-html-parser';
 import { BlogEditor } from '@/app/(components)/BlogEditor';
 import { replaceImgSrc } from '@/lib/replaceImgSrc';
 import { uploadImages } from '@/lib/uploadImages';
+import { syncKeyAndFile } from '@/lib/syncKeyAndFile'
 import '@/app/stylesheets/console/blogs/page.css'
-
-const syncFile = (imageKeys: string[], imageFiles: File[]) => {
-  const result = [];
-  for (const key of imageKeys) {
-    for (let i = 0; i < imageFiles.length; i++) {
-      const file = imageFiles[i];
-      if (file.name === key) {
-        result.push(file);
-        break;
-      }
-    }
-  }
-  return result;
-}
 
 async function PostBlog(data: FormData) {
   'use server'
@@ -57,7 +44,7 @@ async function PostBlog(data: FormData) {
 
   if (result) {
     // s3にアップロード
-    const syncedFiles = syncFile(imageKeys, imageFiles)
+    const syncedFiles = syncKeyAndFile(imageKeys, imageFiles)
     await uploadImages(`blog/${result.id}/`, syncedFiles)
     redirect('/console/blogs');
   }
