@@ -39,7 +39,7 @@ async function CreateProduct(data: FormData) {
       price: price,
       slug: slug,
       images: {
-        create: imageKeys?.map((key: string) => ({
+        create: imageKeys.new?.map((key: string) => ({
           key: key
         }))
       },
@@ -49,6 +49,8 @@ async function CreateProduct(data: FormData) {
 
   if (result) {
     const syncedFiles = syncKeyAndFile(imageKeys, imageFiles)
+    console.log('=============== syncedFiles ===================')
+    console.log(syncedFiles)
     uploadImages(`product/${result.id}/`, syncedFiles)
     redirect('/console/products')
   }

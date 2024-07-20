@@ -24,6 +24,15 @@ interface ImgSrc {
   [src: string]: string | {};
 }
 
+type ImageKey = {
+  [id: string]: string,
+}
+
+type ImageKeyWithId = {
+  new: string[],
+  already: ImageKey
+}
+
 async function GetProduct(id: string) {
   'use server'
 
@@ -45,13 +54,37 @@ async function GetProduct(id: string) {
     return null;
   }
 
-  let imgSrc = {} as ImgSrc
+  let imgSrc: ImgSrc = {}
   product.images.forEach(async record => {
     let command = new GetObjectCommand({ Bucket, Key: `product/${id}/${record.key}` })
     imgSrc[record.key] = await getSignedUrl(viewS3Client(), command, { expiresIn: 3600 });
   })
 
-  return { product: product, images: imgSrc };
+  let imageKeys: ImageKey = {}
+  product.images.forEach(record => {
+    imageKeys[record.id.toString()] = record.key;
+  })
+
+  return { product: product, images: imgSrc, imageKeys: imageKeys };
+}
+
+function imageUpdate(keyObj: ImageKeyWithId) {
+
+  const newArray = keyObj.new.map(key => (
+    {
+      where: { id: 0 },
+      update: { key: key },
+      create: { key: key },
+    }
+  ))
+
+  const alreadyArray = Object.entries(keyObj.already).map(([id, key]) => ({
+    where: { id: Number(id) },
+    update: { key: key },
+    create: { key: key },
+  }))
+
+  return [...newArray, ...alreadyArray];
 }
 
 async function UpdateProduct(data: FormData) {
@@ -88,11 +121,7 @@ async function UpdateProduct(data: FormData) {
       price: price,
       slug: slug,
       images: {
-        upsert: imageKeys?.map((key: string) => ({
-          where: { key: key },
-          update: { key: key },
-          create: { key: key },
-        }))
+        upsert: imageUpdate(imageKeys)
       },
     }
   });
@@ -120,6 +149,7 @@ export default function Page({ params }: { params: { id: string } }) {
         slug={product?.slug || null}
         description={product?.description || null}
         imgSrc={productInfo?.images}
+        uploadedImageKeys={productInfo?.imageKeys || {}}
         serverAction={UpdateProduct} />
     </>
   );

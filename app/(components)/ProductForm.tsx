@@ -11,19 +11,38 @@ type ProductFormProps = {
   slug: string | null,
   description: string | null,
   imgSrc: any,
+  uploadedImageKeys: ImageKey,
   serverAction: any | null,
 }
 
 type ImageResponse = {
   [key: string]: string;
-};
+}
 
-const ProductForm = ({ id, name, price, slug, description, imgSrc, serverAction }: ProductFormProps) => {
+type ImageKey = {
+  [id: string]: string,
+}
+
+type ImageKeyWithId = {
+  new: string[],
+  already: ImageKey
+}
+
+function deleteValueFromAlready(obj: ImageKey, valueToDelete: string) {
+  for (const [key, value] of Object.entries(obj)) {
+    if (value === valueToDelete) {
+      delete obj[key];
+    }
+  }
+  return obj
+}
+
+const ProductForm = ({ id, name, price, slug, description, imgSrc, uploadedImageKeys, serverAction }: ProductFormProps) => {
 
   const inputFileRef = useRef<HTMLInputElement>(null);
   const [imageFiles, setImageFiles] = useState<File[]>([])
   const [imageUrls, setImageUrls] = useState<ImageResponse>(imgSrc || {});
-  const [imageKeys, setImageKeys] = useState<Array<string>>(Object.keys(imgSrc || {}).map((key) => key))
+  const [imageKeys, setImageKeys] = useState<ImageKeyWithId>({ new: [], already: uploadedImageKeys || {} })
 
   const handleSubmit = async (event: any) => {
     event.preventDefault();
@@ -41,7 +60,7 @@ const ProductForm = ({ id, name, price, slug, description, imgSrc, serverAction 
 
       const url = await createImagePreviewUrl(targetFile)
       let notStateKeys = imageKeys
-      notStateKeys.push(targetFile.name)
+      notStateKeys.new.push(targetFile.name)
       // DBに保存するようにキーを持っておく
       // このキーをもとにS3からデータを取得する
       setImageKeys(notStateKeys)
@@ -55,7 +74,11 @@ const ProductForm = ({ id, name, price, slug, description, imgSrc, serverAction 
   const deleteImage = (event: React.MouseEvent<HTMLDivElement, MouseEvent>) => {
     const clickedElement = event.target as HTMLDivElement;
     const deleteKey = clickedElement.getAttribute('data-filename') || '';
-    setImageKeys(imageKeys.filter(key => key !== deleteKey));
+    // imageKeys.newから削除
+    const filterdNew = imageKeys.new.filter(key => key !== deleteKey)
+    // imageKeys.alreadyから削除
+    const filterdAlready = deleteValueFromAlready(imageKeys.already, deleteKey)
+    setImageKeys({ new: filterdNew, already: filterdAlready });
     const newUrls = { ...imageUrls }
     delete newUrls[deleteKey]
     setImageUrls(newUrls)
