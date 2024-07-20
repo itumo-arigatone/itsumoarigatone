@@ -1,7 +1,7 @@
 'use client'
 
 import React from 'react'
-import { useRef, useState } from 'react'
+import { useRef } from 'react'
 import { createImagePreviewUrl } from '@/lib/createImagePreviewUrl'
 
 import '@/app/stylesheets/tiptap_menu_bar.css'
@@ -81,18 +81,6 @@ export default function TiptapMenuBar(param: any) {
         >
           H4
         </button>
-        {/* <button type="button"
-          onClick={() => editor.chain().focus().toggleHeading({ level: 5 }).run()}
-          className={editor.isActive('heading', { level: 5 }) ? 'is-active' : ''}
-        >
-          H5
-        </button>
-        <button type="button"
-          onClick={() => editor.chain().focus().toggleHeading({ level: 6 }).run()}
-          className={editor.isActive('heading', { level: 6 }) ? 'is-active' : ''}
-        >
-          H6
-        </button> */}
         <button type="button"
           onClick={() => editor.chain().focus().toggleBulletList().run()}
           className={editor.isActive('bulletList') ? 'is-active' : ''}

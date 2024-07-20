@@ -8,7 +8,7 @@ const Footer = () => {
         <Link href='/'>作品一覧</Link>
         <Link href='blog'>ブログ</Link>
       </div>
-      <div className="copyright">Copyright © 2023 Itsumoarigatone. All Rights Reserved.</div>
+      <div className="copyright">Copyright © 2024 Itsumoarigatone. All Rights Reserved.</div>
     </footer>
   )
 }
