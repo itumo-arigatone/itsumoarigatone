@@ -18,7 +18,7 @@ interface Blog {
 }
 
 interface ImgSrc {
-  [src: string]: string | {};
+  [src: string]: string;
 }
 
 
@@ -46,7 +46,7 @@ async function GetBlog(id: string) {
   const domContent = parse(post.content)
 
   // タグからキーを取得する
-  let imgSrc = {} as ImgSrc
+  let imgSrc: ImgSrc = {}
   const imgElements = domContent.querySelectorAll('img.uploaded-image');
 
   for (const img of imgElements) {

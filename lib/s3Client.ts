@@ -1,7 +1,7 @@
 import { S3Client } from "@aws-sdk/client-s3";
 
-export function s3Client() {
-  let s3 = new S3Client({
+export function s3Client(): S3Client {
+  let s3Client = new S3Client({
     region: 'ap-northeast-1',
     credentials: {
       accessKeyId: process.env.AWS_ACCESS_KEY_ID || 'minioadmin' as string,
@@ -9,6 +9,6 @@ export function s3Client() {
     },
     endpoint: 'http://minio:9000', // TODO: product_endpoint
     forcePathStyle: true,
-  });
-  return s3;
+  })
+  return s3Client
 }

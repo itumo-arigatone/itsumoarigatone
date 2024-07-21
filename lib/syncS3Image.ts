@@ -11,7 +11,7 @@ export async function syncS3Image(exsistKeysArr: Array<string>, prefix: string) 
       Prefix: prefix,
     });
 
-    const response = await s3Client.send(listCommand)
+    const response = await s3Client().send(listCommand)
     let deleteKeysArr = [] as Array<string>
     if (response.Contents) {
       let s3AllKeys = response.Contents.map(object => (object.Key)) as Array<string>
@@ -26,11 +26,11 @@ export async function syncS3Image(exsistKeysArr: Array<string>, prefix: string) 
         Objects: deleteKeys,
       },
     });
-    const { Deleted } = await s3Client.send(deleteCommand);
+    const { Deleted } = await s3Client().send(deleteCommand);
     console.log(
-      `Successfully deleted ${Deleted.length} objects from S3 bucket. Deleted objects:`,
+      `Successfully deleted ${Deleted?.length} objects from S3 bucket. Deleted objects:`,
     );
-    console.log(Deleted.map((d) => ` • ${d.Key}`).join("\n"));
+    console.log(Deleted?.map((d) => ` • ${d.Key}`).join("\n"));
   } catch (err) {
     console.error(err);
   }
