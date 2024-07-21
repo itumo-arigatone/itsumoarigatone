@@ -5,7 +5,7 @@ import {
   GetObjectCommand,
 } from "@aws-sdk/client-s3";
 import { getSignedUrl } from "@aws-sdk/s3-request-presigner";
-import { s3Client } from "@/lib/s3Client"
+import { viewS3Client } from "@/lib/viewS3Client"
 
 interface ProductProps {
   id: number;
@@ -43,8 +43,8 @@ async function GetAllProducts() {
   return products.map(product => {
     let imgSrc = {} as ImgSrcProps
     product.images.forEach(async record => {
-      let command = new GetObjectCommand({ Bucket, Key: record.key })
-      imgSrc[record.key] = await getSignedUrl(s3Client(), command, { expiresIn: 3600 });
+      let command = new GetObjectCommand({ Bucket, Key: `product/${product.id}/${record.key}` })
+      imgSrc[record.key] = await getSignedUrl(viewS3Client(), command, { expiresIn: 3600 });
     })
     return { product: product, images: imgSrc }
   })
