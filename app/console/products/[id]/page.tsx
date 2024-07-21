@@ -9,6 +9,7 @@ import { getSignedUrl } from "@aws-sdk/s3-request-presigner";
 import { uploadImages } from '@/lib/uploadImages';
 import { viewS3Client } from "@/lib/viewS3Client"
 import { syncKeyAndFile } from '@/lib/syncKeyAndFile'
+import { ProductDeleteButton } from '@/app/(components)/ProductDeleteButton'
 import '@/app/stylesheets/console/products/edit.css'
 
 interface Product {
@@ -149,8 +150,6 @@ async function UpdateProduct(data: FormData) {
     },
   });
 
-  console.log('========= deletedRecord ============')
-  console.log(deletedImageIdsJson)
   if (result && deletedRecord) {
     const syncedFiles = syncKeyAndFile(imageKeys, imageFiles)
     uploadImages(`product/${result.id}/`, syncedFiles)
@@ -158,6 +157,29 @@ async function UpdateProduct(data: FormData) {
   }
 }
 
+async function DeleteProduct(id: string) {
+  'use server'
+
+  const prisma = new PrismaClient()
+
+  const deletedImageRecord = await prisma.productImage.deleteMany({
+    where: { productId: Number(id) },
+  });
+
+  if (deletedImageRecord) {
+    const deletedRecord = await prisma.product.delete({
+      where: {
+        id: Number(id),
+      },
+    });
+
+    if (deletedRecord) {
+      redirect('/console/products');
+    }
+  }
+
+  alert('削除に失敗しました')
+}
 
 export default function Page({ params }: { params: { id: string } }) {
   const productInfo = use(GetProduct(params.id))
@@ -167,6 +189,7 @@ export default function Page({ params }: { params: { id: string } }) {
     <>
       <h1 className="text-sub">商品情報</h1>
       <Link href='/console/products' className="text-accent">一覧</Link>
+      <ProductDeleteButton type='button' handleDelete={DeleteProduct} productId={params.id} />
       <ProductForm
         id={params.id}
         name={product?.name || null}
