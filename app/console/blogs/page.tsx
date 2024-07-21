@@ -4,6 +4,13 @@ import '@/stylesheets/blog/page.css';
 import { use } from 'react';
 import { formatDate } from '@/lib/formatDate';
 
+interface Blog {
+  id: number;
+  title: string;
+  content: string;
+  created_at: Date;
+}
+
 async function GetBlogs() {
   'use server'
   const prisma = new PrismaClient();
@@ -11,7 +18,7 @@ async function GetBlogs() {
 }
 
 const BlogList = () => {
-  const posts = use(GetBlogs());
+  const posts: Blog[] = use(GetBlogs());
 
   return (
     <div>

@@ -5,6 +5,7 @@ import { isNumber } from '@/lib/isNumber'
 import Link from 'next/link';
 import { uploadImages } from '@/lib/uploadImages';
 import { syncKeyAndFile } from '@/lib/syncKeyAndFile'
+import { convertToFiles } from '@/lib/convertToFiles'
 import '@/app/stylesheets/console/products/new.css'
 
 async function CreateProduct(data: FormData) {
@@ -50,7 +51,7 @@ async function CreateProduct(data: FormData) {
 
 
   if (result) {
-    const syncedFiles = syncKeyAndFile(imageKeys, imageFiles)
+    const syncedFiles = syncKeyAndFile(imageKeys, convertToFiles(imageFiles))
     uploadImages(`product/${result.id}/`, syncedFiles)
     redirect('/console/products')
   }

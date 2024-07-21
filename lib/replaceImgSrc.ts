@@ -1,7 +1,7 @@
 import { HTMLElement } from 'node-html-parser';
 
 interface ImgSrc {
-  [key: string]: string | {};
+  [key: string]: string;
 }
 
 export function replaceImgSrc(doc: HTMLElement, srcs: ImgSrc) {

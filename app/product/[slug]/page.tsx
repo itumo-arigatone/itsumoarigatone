@@ -11,6 +11,23 @@ import { viewS3Client } from "@/lib/viewS3Client"
 import 'swiper/css';
 import '@/app/stylesheets/product/detail_page.scss'
 
+interface ProductProps {
+  id: number;
+  name?: string;
+  price: number;
+  description: string;
+  slug: string;
+  baseLink?: string;
+  created_at: Date;
+  images?: ImagesProps[]
+}
+
+interface ImagesProps {
+  id: number;
+  key: string;
+  productId: number;
+}
+
 interface ImgSrcProps {
   [src: string]: string;
 }
@@ -25,7 +42,7 @@ async function GetProduct(slug: string) {
     return { error: 'slug is required' };
   }
 
-  const product = await prisma.product.findUnique({
+  const product: ProductProps | null = await prisma.product.findUnique({
     where: { slug: slug },
     include: {
       images: true
@@ -37,7 +54,7 @@ async function GetProduct(slug: string) {
   }
 
   let imgSrc = {} as ImgSrcProps
-  product.images.forEach(async record => {
+  product.images?.forEach(async record => {
     let command = new GetObjectCommand({ Bucket, Key: `product/${product.id}/${record.key}` })
     imgSrc[record.key] = await getSignedUrl(viewS3Client(), command, { expiresIn: 3600 });
   })

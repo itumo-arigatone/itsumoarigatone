@@ -5,7 +5,8 @@ import { BlogEditor } from '@/app/(components)/BlogEditor';
 import { replaceImgSrc } from '@/lib/replaceImgSrc';
 import { uploadImages } from '@/lib/uploadImages';
 import { syncKeyAndFile } from '@/lib/syncKeyAndFile'
-import '@/app/stylesheets/console/blogs/page.css'
+import { convertToFiles } from '@/lib/convertToFiles'
+import '@/app/stylesheets/console/blogs/page.scss'
 
 async function PostBlog(data: FormData) {
   'use server'
@@ -44,7 +45,9 @@ async function PostBlog(data: FormData) {
 
   if (result) {
     // s3にアップロード
-    const syncedFiles = syncKeyAndFile(imageKeys, imageFiles)
+    let newKeys = { already: {}, new: imageKeys }
+    let files = convertToFiles(imageFiles)
+    const syncedFiles = syncKeyAndFile(newKeys, files)
     await uploadImages(`blog/${result.id}/`, syncedFiles)
     redirect('/console/blogs');
   }

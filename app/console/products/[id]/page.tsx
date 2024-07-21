@@ -10,16 +10,23 @@ import { uploadImages } from '@/lib/uploadImages';
 import { viewS3Client } from "@/lib/viewS3Client"
 import { syncKeyAndFile } from '@/lib/syncKeyAndFile'
 import { ProductDeleteButton } from '@/app/(components)/ProductDeleteButton'
-import '@/app/stylesheets/console/products/edit.css'
+import { convertToFiles } from '@/lib/convertToFiles'
+import '@/app/stylesheets/console/products/edit.scss'
 
-interface Product {
-  id: string;
+interface ProductProps {
+  id: number;
   name?: string;
   price: number;
   description: string;
   slug: string;
   baseLink?: string;
-  images: [key: string]
+  images: ImagesProps[]
+}
+
+interface ImagesProps {
+  id: number;
+  key: string;
+  productId: number;
 }
 
 interface ImgSrc {
@@ -28,7 +35,7 @@ interface ImgSrc {
 
 type Urls = {
   url?: string,
-  id?: string,
+  id?: number,
 }
 
 type ImageKey = {
@@ -50,7 +57,7 @@ async function GetProduct(id: string) {
     return null;
   }
 
-  const product = await prisma.product.findUnique({
+  const product: ProductProps | null = await prisma.product.findUnique({
     where: { id: parseInt(id) },
     include: {
       images: true,
@@ -68,7 +75,7 @@ async function GetProduct(id: string) {
       imgSrc[record.key] = {}
     }
     imgSrc[record.key].url = await getSignedUrl(viewS3Client(), command, { expiresIn: 3600 });
-    imgSrc[record.key].id = record.id.toString()
+    imgSrc[record.key].id = record.id
   })
 
   let imageKeys: ImageKey = {}
@@ -111,7 +118,7 @@ async function UpdateProduct(data: FormData) {
   const imageFiles = data.getAll('imageData')
   const deletedImageIdsJson = data.get('deletedImageIds')?.toString()
 
-  let imageKeys = {}
+  let imageKeys = { new: [], already: {} }
   if (imageKeysJson) {
     imageKeys = JSON.parse(imageKeysJson)
   }
@@ -154,7 +161,7 @@ async function UpdateProduct(data: FormData) {
   });
 
   if (result && deletedRecord) {
-    const syncedFiles = syncKeyAndFile(imageKeys, imageFiles)
+    const syncedFiles = syncKeyAndFile(imageKeys, convertToFiles(imageFiles))
     uploadImages(`product/${result.id}/`, syncedFiles)
     redirect('/console/products');
   }

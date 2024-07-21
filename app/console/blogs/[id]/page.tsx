@@ -8,7 +8,7 @@ import { getSignedUrl } from "@aws-sdk/s3-request-presigner";
 import { GetObjectCommand } from "@aws-sdk/client-s3";
 import { replaceImgSrc } from '@/lib/replaceImgSrc';
 
-import '@/app/stylesheets/console/blogs/page.css'
+import '@/app/stylesheets/console/blogs/page.scss'
 
 interface Blog {
   id: number;

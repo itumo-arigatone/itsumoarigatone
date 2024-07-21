@@ -5,15 +5,15 @@ import '@/app/stylesheets/product_form.scss'
 import { createImagePreviewUrl } from '@/lib/createImagePreviewUrl'
 
 type ProductFormProps = {
-  id: string,
+  id?: string,
   name?: string,
   price?: number,
   slug?: string,
   description?: string,
   baseLink?: string,
-  imgSrc: any,
-  uploadedImageKeys: ImageKey,
-  serverAction: any | null,
+  imgSrc?: ImgSrc,
+  uploadedImageKeys?: ImageKey,
+  serverAction?: any,
 }
 
 interface ImgSrc {
@@ -123,7 +123,7 @@ const ProductForm = ({ id, name, price, slug, description, baseLink, imgSrc, upl
         <div className='image-preview-area'>
           {
             Object.keys(imageUrls).map((key) => (
-              <div className="product-image">
+              <div className="product-image" key={key}>
                 <div className={`delete ${key}`} data-filename={key} data-image-id={imageUrls[key]?.id} onClick={deleteImage}>x</div>
                 <img key={key} src={imageUrls[key].url} alt={key} />
               </div>

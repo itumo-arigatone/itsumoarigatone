@@ -13,6 +13,13 @@ interface ProductProps {
   price: number;
   description: string;
   slug: string;
+  images: ImagesProps[];
+}
+
+interface ImagesProps {
+  id: number;
+  key: string;
+  productId: number;
 }
 
 interface ImgSrcProps {
@@ -30,7 +37,7 @@ async function GetAllProducts() {
   const prisma = new PrismaClient();
   const Bucket = process.env.AMPLIFY_BUCKET;
 
-  const products = await prisma.product.findMany({
+  const products: ProductProps[] = await prisma.product.findMany({
     include: {
       images: true
     }
@@ -42,7 +49,7 @@ async function GetAllProducts() {
 
   return products.map(product => {
     let imgSrc = {} as ImgSrcProps
-    product.images.forEach(async record => {
+    product.images.forEach(async (record: ImagesProps) => {
       let command = new GetObjectCommand({ Bucket, Key: `product/${product.id}/${record.key}` })
       imgSrc[record.key] = await getSignedUrl(viewS3Client(), command, { expiresIn: 3600 });
     })

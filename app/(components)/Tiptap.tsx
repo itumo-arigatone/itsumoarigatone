@@ -8,8 +8,8 @@ import TiptapMenuBar from '@/app/(components)/TiptapMenuBar'
 import '@/app/stylesheets/tiptap.css'
 
 interface Param {
-  blog: Blog | null;
-  setImage: any;
+  blog?: Blog;
+  setImage?: any;
 }
 
 interface Blog {
