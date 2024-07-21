@@ -38,6 +38,7 @@ model Product {
   images      ProductImage[]
   description String
   slug        String @unique
+  baseLink    String?
   created_at  DateTime @default(now())
   updated_at  DateTime @default(now())
 }

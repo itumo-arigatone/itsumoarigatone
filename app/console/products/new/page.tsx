@@ -13,6 +13,7 @@ async function CreateProduct(data: FormData) {
   const name = data.get('name')?.toString()
   const description = data.get('description')?.toString()
   const price = Number(data.get('price'))
+  const baseLink = Number(data.get('base-link'))?.toString()
   const slug = data.get('slug')?.toString()
   const imageKeysJson = data.get('imageKeys')?.toString()
   const imageFiles = data.getAll('imageData')
@@ -22,7 +23,7 @@ async function CreateProduct(data: FormData) {
     imageKeys = JSON.parse(imageKeysJson)
   }
 
-  if (!name || !description || !price || !slug) {
+  if (!name || !description || !price || !baseLink || !slug) {
     return;
   }
 
@@ -37,6 +38,7 @@ async function CreateProduct(data: FormData) {
       name: name,
       description: description,
       price: price,
+      baseLink: baseLink,
       slug: slug,
       images: {
         create: imageKeys.new?.map((key: string) => ({

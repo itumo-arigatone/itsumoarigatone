@@ -6,10 +6,11 @@ import { createImagePreviewUrl } from '@/lib/createImagePreviewUrl'
 
 type ProductFormProps = {
   id: string,
-  name: string | null,
-  price: number | null,
-  slug: string | null,
-  description: string | null,
+  name?: string,
+  price?: number,
+  slug?: string,
+  description?: string,
+  baseLink?: string,
   imgSrc: any,
   uploadedImageKeys: ImageKey,
   serverAction: any | null,
@@ -42,7 +43,7 @@ function deleteValueFromAlready(obj: ImageKey, valueToDelete: string) {
   return obj
 }
 
-const ProductForm = ({ id, name, price, slug, description, imgSrc, uploadedImageKeys, serverAction }: ProductFormProps) => {
+const ProductForm = ({ id, name, price, slug, description, baseLink, imgSrc, uploadedImageKeys, serverAction }: ProductFormProps) => {
 
   const inputFileRef = useRef<HTMLInputElement>(null);
   const [imageFiles, setImageFiles] = useState<File[]>([])
@@ -109,6 +110,10 @@ const ProductForm = ({ id, name, price, slug, description, imgSrc, uploadedImage
         <div className='input-box'>
           <label htmlFor='price-box' className='text-sub'>値段</label>
           <input type='text' id='price-box' name='price' defaultValue={price || ''} className='price bg-sub text-base' />
+        </div>
+        <div className='input-box'>
+          <label htmlFor='base-link-box' className='text-sub'>BASE</label>
+          <input type='text' id='base-link-box' name='base-link' defaultValue={baseLink || ''} className='base-link bg-sub text-base' />
         </div>
         <div className='input-box'>
           <label htmlFor='slug' className='text-sub'>スラグ</label>

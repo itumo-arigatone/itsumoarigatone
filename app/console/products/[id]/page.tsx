@@ -14,10 +14,11 @@ import '@/app/stylesheets/console/products/edit.css'
 
 interface Product {
   id: string;
-  name: string;
+  name?: string;
   price: number;
   description: string;
   slug: string;
+  baseLink?: string;
   images: [key: string]
 }
 
@@ -100,11 +101,12 @@ function imageUpdate(keyObj: ImageKeyWithId) {
 async function UpdateProduct(data: FormData) {
   'use server'
 
-  const id = data.get('id')?.toString();
-  const name = data.get('name')?.toString();
-  const description = data.get('description')?.toString();
-  const price = Number(data.get('price'));
-  const slug = data.get('slug')?.toString();
+  const id = data.get('id')?.toString()
+  const name = data.get('name')?.toString()
+  const description = data.get('description')?.toString()
+  const price = Number(data.get('price'))
+  const baseLink = data.get('base-link')?.toString() || null
+  const slug = data.get('slug')?.toString()
   const imageKeysJson = data.get('imageKeys')?.toString()
   const imageFiles = data.getAll('imageData')
   const deletedImageIdsJson = data.get('deletedImageIds')?.toString()
@@ -135,6 +137,7 @@ async function UpdateProduct(data: FormData) {
       name: name,
       description: description,
       price: price,
+      baseLink: baseLink,
       slug: slug,
       images: {
         upsert: imageUpdate(imageKeys)
@@ -192,12 +195,13 @@ export default function Page({ params }: { params: { id: string } }) {
       <ProductDeleteButton type='button' handleDelete={DeleteProduct} productId={params.id} />
       <ProductForm
         id={params.id}
-        name={product?.name || null}
-        price={product?.price || null}
-        slug={product?.slug || null}
-        description={product?.description || null}
+        name={product?.name}
+        price={product?.price}
+        slug={product?.slug}
+        description={product?.description}
         imgSrc={productInfo?.imgSrc}
         uploadedImageKeys={productInfo?.imageKeys || {}}
+        baseLink={product?.baseLink}
         serverAction={UpdateProduct} />
     </>
   );
