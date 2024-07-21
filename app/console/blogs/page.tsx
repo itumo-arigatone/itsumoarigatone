@@ -1,24 +1,32 @@
-import Link from 'next/link';
-import { PrismaClient } from '@prisma/client';
-import '@/stylesheets/blog/page.css';
-import { use } from 'react';
-import { formatDate } from '@/lib/formatDate';
+'use client'
 
-interface Blog {
+import Link from 'next/link';
+import { useState, useEffect } from 'react';
+import { formatDate } from '@/lib/formatDate';
+import { getActiveBlogs } from '@/lib/getActiveBlogs'
+import '@/stylesheets/blog/page.css';
+
+interface Post {
   id: number;
   title: string;
   content: string;
   created_at: Date;
 }
 
-async function GetBlogs() {
-  'use server'
-  const prisma = new PrismaClient();
-  return await prisma.post.findMany();
-}
-
 const BlogList = () => {
-  const posts: Blog[] = use(GetBlogs());
+  let [posts, setPosts] = useState<Post[]>([])
+  useEffect(() => {
+    async function fetchData() {
+      try {
+        const result = await getActiveBlogs();
+        setPosts(result || []);
+      } catch (error) {
+        console.error('Error fetching data:', error);
+      }
+    }
+
+    fetchData();
+  }, []);
 
   return (
     <div>

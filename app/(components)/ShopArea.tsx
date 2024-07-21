@@ -1,3 +1,5 @@
+'use client'
+
 import '@/app/stylesheets/components/shop_area.scss'
 
 const ShopArea = () => {

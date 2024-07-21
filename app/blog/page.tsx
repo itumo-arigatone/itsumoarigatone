@@ -1,26 +1,34 @@
+'use client'
+
 import Link from 'next/link';
 import Header from "@/app/(components)/SimpleHeader";
 import Footer from "@/app/(components)/Footer";
-import { PrismaClient } from '@prisma/client';
-import '../stylesheets/blog/page.css';
-import { use } from 'react';
-import { formatDate } from '../../lib/formatDate';
+import { useState, useEffect } from 'react';
+import { getActiveBlogs } from '@/lib/getActiveBlogs'
+import { formatDate } from '@/lib/formatDate';
+import '@/stylesheets/blog/page.css';
 
 interface Post {
-  id: string;
+  id: number;
   title: string;
   content: string;
-  created_at: string;
-}
-
-async function GetBlogs() {
-  'use server'
-  const prisma = new PrismaClient();
-  return await prisma.post.findMany();
+  created_at: Date;
 }
 
 const BlogList = () => {
-  const posts: Post[] = use(GetBlogs());
+  let [posts, setPosts] = useState<Post[]>([])
+  useEffect(() => {
+    async function fetchData() {
+      try {
+        const result = await getActiveBlogs();
+        setPosts(result || []);
+      } catch (error) {
+        console.error('Error fetching data:', error);
+      }
+    }
+
+    fetchData();
+  }, []);
 
   return (
     <>

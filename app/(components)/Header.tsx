@@ -1,3 +1,5 @@
+'use client'
+
 import '../stylesheets/header.scss'
 
 export default function Header() {
