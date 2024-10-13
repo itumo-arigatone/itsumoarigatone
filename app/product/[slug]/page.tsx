@@ -17,7 +17,7 @@ interface ProductProps {
   price: number;
   description: string;
   slug: string;
-  baseLink?: string;
+  baseLink?: string | null;
   created_at: Date;
   images?: ImagesProps[]
 }

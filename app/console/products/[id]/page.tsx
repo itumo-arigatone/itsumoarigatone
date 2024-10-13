@@ -19,7 +19,7 @@ interface ProductProps {
   price: number;
   description: string;
   slug: string;
-  baseLink?: string;
+  baseLink?: string | null;
   images: ImagesProps[]
 }
 
@@ -208,7 +208,7 @@ export default function Page({ params }: { params: { id: string } }) {
         description={product?.description}
         imgSrc={productInfo?.imgSrc}
         uploadedImageKeys={productInfo?.imageKeys || {}}
-        baseLink={product?.baseLink}
+        baseLink={product?.baseLink || null}
         serverAction={UpdateProduct} />
     </>
   );

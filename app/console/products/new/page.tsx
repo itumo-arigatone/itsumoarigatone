@@ -14,7 +14,7 @@ async function CreateProduct(data: FormData) {
   const name = data.get('name')?.toString()
   const description = data.get('description')?.toString()
   const price = Number(data.get('price'))
-  const baseLink = Number(data.get('base-link'))?.toString()
+  const baseLink = data.get('base-link')?.toString() || null
   const slug = data.get('slug')?.toString()
   const imageKeysJson = data.get('imageKeys')?.toString()
   const imageFiles = data.getAll('imageData')

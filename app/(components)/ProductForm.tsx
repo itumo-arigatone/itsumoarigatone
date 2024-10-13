@@ -10,7 +10,7 @@ type ProductFormProps = {
   price?: number,
   slug?: string,
   description?: string,
-  baseLink?: string,
+  baseLink?: string | null,
   imgSrc?: ImgSrc,
   uploadedImageKeys?: ImageKey,
   serverAction?: any,
