@@ -1,7 +1,7 @@
 'use client'
 
 import Link from 'next/link';
-import '@/stylesheets/blog/page.css';
+import '@/app/stylesheets/blog/page.css';
 import { GetAllProducts } from '@/app/console/products/GetAllProducts';
 import { useEffect, useState } from 'react';
 import { formatDate } from '@/lib/formatDate';

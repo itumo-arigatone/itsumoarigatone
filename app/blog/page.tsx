@@ -6,7 +6,7 @@ import Footer from "@/app/(components)/Footer";
 import { useState, useEffect } from 'react';
 import { getActiveBlogs } from '@/lib/getActiveBlogs'
 import { formatDate } from '@/lib/formatDate';
-import '@/stylesheets/blog/page.css';
+import '@/app/stylesheets/blog/page.css';
 
 interface Post {
   id: number;
