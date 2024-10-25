@@ -13,6 +13,7 @@ interface Post {
   title: string;
   content: string;
   created_at: Date;
+  updated_at: Date;
 }
 
 const BlogList = () => {
@@ -42,7 +43,7 @@ const BlogList = () => {
               <Link href={`/blog/${post.id}`}>
                 <h3 className="text-sub">{post.title}</h3>
                 <div className="text-accent blog-created">
-                  {formatDate(post.created_at)}
+                  {formatDate(post.updated_at)}
                 </div>
               </Link>
             </li>

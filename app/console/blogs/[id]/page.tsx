@@ -109,6 +109,7 @@ async function PatchBlog(data: FormData) {
             key: key
           }))
         },
+        updated_at: new Date()
       },
       create: {
         title: title,
