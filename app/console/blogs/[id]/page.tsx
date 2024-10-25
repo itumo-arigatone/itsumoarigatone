@@ -7,6 +7,7 @@ import { viewS3Client } from "@/lib/viewS3Client"
 import { getSignedUrl } from "@aws-sdk/s3-request-presigner";
 import { GetObjectCommand } from "@aws-sdk/client-s3";
 import { replaceImgSrc } from '@/lib/replaceImgSrc';
+import { deleteBlog } from "@/lib/blog/deleteBlog";
 
 import '@/app/stylesheets/console/blogs/page.scss'
 
@@ -67,29 +68,38 @@ async function PatchBlog(data: FormData) {
   'use server'
 
   const id = data.get('id')?.toString();
-  const title = data.get('title')?.toString();
-  const content = data.get('content')?.toString();
+  const action = data.get('action');
 
-  if (!id || !title || !content) {
-    return;
-  }
-
-  const prisma = new PrismaClient();
-
-  const result = await prisma.post.upsert({
-    where: { id: parseInt(id) },
-    update: {
-      title: title,
-      content: content,
-    },
-    create: {
-      title: title,
-      content: content,
-    },
-  });
-
-  if (result) {
+  if (action === 'delete') {
+    // delete
+    deleteBlog(Number(id))
     redirect('/console/blogs');
+  } else if (action === 'update') {
+    // patch
+    const title = data.get('title')?.toString();
+    const content = data.get('content')?.toString();
+
+    if (!id || !title || !content) {
+      return;
+    }
+
+    const prisma = new PrismaClient();
+
+    const result = await prisma.post.upsert({
+      where: { id: parseInt(id) },
+      update: {
+        title: title,
+        content: content,
+      },
+      create: {
+        title: title,
+        content: content,
+      },
+    });
+
+    if (result) {
+      redirect('/console/blogs');
+    }
   }
 }
 
@@ -103,7 +113,8 @@ export default function Page({ params }: { params: { id: string } }) {
       <input type='text' name='title' defaultValue={blog.title} className='title' />
       <TipTap blog={blog} />
       <div className="bottom-button-area bg-sub">
-        <button type="submit">登録</button>
+        <button type="submit" name="action" value="delete">削除</button>
+        <button type="submit" name="action" value="update">登録</button>
       </div>
     </form>
   );
