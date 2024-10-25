@@ -1,7 +1,7 @@
 import Footer from "@/app/(components)/Footer";
 import Header from "@/app/(components)/SimpleHeader";
 import SafeHTML from '@/app/(components)/SafeHTML';
-import '/app/stylesheets/blog/detail_page.css';
+import '/app/stylesheets/blog/detail_page.scss';
 import { parse } from 'node-html-parser';
 import { PrismaClient } from '@prisma/client';
 import { viewS3Client } from "@/lib/viewS3Client"
@@ -62,9 +62,16 @@ export default function Page({ params }: { params: { id: string } }) {
   return (
     <>
       <Header />
-      <div className="blog-contents">
-        <h1>{post.title}</h1>
-        <SafeHTML className="blog-content" html={post.content} />
+      <div className="blog-detail">
+        <a href="/blog" className="list-link">
+          <span>
+            一覧へ
+          </span>
+        </a>
+        <div className="blog-contents">
+          <h1>{post.title}</h1>
+          <SafeHTML className="blog-content" html={post.content} />
+        </div>
       </div>
       <Footer />
     </>

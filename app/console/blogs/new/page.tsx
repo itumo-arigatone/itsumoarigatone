@@ -11,8 +11,9 @@ import '@/app/stylesheets/console/blogs/page.scss'
 async function PostBlog(data: FormData) {
   'use server'
 
-  const id = data.get('id')?.toString();
-  const action = data.get('action');
+  const action = data.get('action')?.toString();
+  console.log(data)
+  console.log(action)
 
   if (action === 'save') {
     const title = data.get('title')?.toString()

@@ -75,7 +75,7 @@ async function PatchBlog(data: FormData) {
 
   if (action === 'delete') {
     // delete
-    deleteBlog(Number(id))
+    deleteBlog(Number(id));
     redirect('/console/blogs');
   } else if (action === 'update') {
     // patch

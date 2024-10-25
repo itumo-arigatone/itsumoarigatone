@@ -11,6 +11,8 @@ export const BlogEditor = ({ serverAction }: any) => {
   const handleSubmit = async (event: any) => {
     event.preventDefault();
     const formData = new FormData(event.target);
+    const action = event.nativeEvent.submitter.value;
+    formData.append('action', action);
     image.forEach(img => {
       formData.append('imageData', img)
     })

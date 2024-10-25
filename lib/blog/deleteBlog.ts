@@ -8,6 +8,11 @@ export async function deleteBlog(id: number) {
 
   const prisma = new PrismaClient();
 
+  // まず、関連するPostImageを削除する
+  await prisma.postImage.deleteMany({
+    where: { postId: id },
+  });
+
   const result = await prisma.post.delete({
     where: { id: id },
   });
