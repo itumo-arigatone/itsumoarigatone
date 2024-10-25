@@ -4,8 +4,8 @@ import { parse, HTMLElement } from 'node-html-parser';
 import { BlogEditor } from '@/app/(components)/BlogEditor';
 import { replaceImgSrc } from '@/lib/replaceImgSrc';
 import { uploadImages } from '@/lib/uploadImages';
-import { syncKeyAndFile } from '@/lib/syncKeyAndFile'
-import { convertToFiles } from '@/lib/convertToFiles'
+import { syncKeyAndFile } from '@/lib/syncKeyAndFile';
+import { convertToFiles } from '@/lib/convertToFiles';
 import '@/app/stylesheets/console/blogs/page.scss'
 
 async function PostBlog(data: FormData) {

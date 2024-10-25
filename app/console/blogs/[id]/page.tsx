@@ -1,5 +1,4 @@
 import { use } from 'react';
-import TipTap from "@/app/(components)/Tiptap";
 import { PrismaClient } from '@prisma/client';
 import { redirect } from 'next/navigation'
 import { parse, HTMLElement } from 'node-html-parser';
@@ -8,6 +7,10 @@ import { getSignedUrl } from "@aws-sdk/s3-request-presigner";
 import { GetObjectCommand } from "@aws-sdk/client-s3";
 import { replaceImgSrc } from '@/lib/replaceImgSrc';
 import { deleteBlog } from "@/lib/blog/deleteBlog";
+import { UpdateBlogEditor } from '@/app/(components)/UpdateBlogEditor';
+import { uploadImages } from '@/lib/uploadImages';
+import { syncKeyAndFile } from '@/lib/syncKeyAndFile';
+import { convertToFiles } from '@/lib/convertToFiles';
 
 import '@/app/stylesheets/console/blogs/page.scss'
 
@@ -68,7 +71,7 @@ async function PatchBlog(data: FormData) {
   'use server'
 
   const id = data.get('id')?.toString();
-  const action = data.get('action');
+  const action = data.get('action')?.toString();
 
   if (action === 'delete') {
     // delete
@@ -78,26 +81,52 @@ async function PatchBlog(data: FormData) {
     // patch
     const title = data.get('title')?.toString();
     const content = data.get('content')?.toString();
+    const imageFiles = data.getAll('imageData');
 
     if (!id || !title || !content) {
       return;
     }
 
     const prisma = new PrismaClient();
+    const domContent = parse(content)
+
+    // タグからキーを取得する
+    const imageKeys: string[] = [];
+    domContent.querySelectorAll('img.uploaded-image').forEach((img: HTMLElement) => {
+      const key = img.getAttribute('alt')
+      if (key) {
+        imageKeys.push(key)
+      }
+    })
 
     const result = await prisma.post.upsert({
       where: { id: parseInt(id) },
       update: {
         title: title,
-        content: content,
+        content: replaceImgSrc(domContent, {}), // 保存するときにimgタグのbase64を消してimageKeyだけ残しておく。
+        images: {
+          create: imageKeys?.map((key: string) => ({
+            key: key
+          }))
+        },
       },
       create: {
         title: title,
-        content: content,
+        content: replaceImgSrc(domContent, {}), // 保存するときにimgタグのbase64を消してimageKeyだけ残しておく。
+        images: {
+          create: imageKeys?.map((key: string) => ({
+            key: key
+          }))
+        },
       },
     });
 
     if (result) {
+      // s3にアップロード
+      let newKeys = { already: {}, new: imageKeys }
+      let files = convertToFiles(imageFiles)
+      const syncedFiles = syncKeyAndFile(newKeys, files)
+      await uploadImages(`blog/${result.id}/`, syncedFiles)
       redirect('/console/blogs');
     }
   } else {
@@ -110,17 +139,6 @@ export default function Page({ params }: { params: { id: string } }) {
   const blog = use(GetBlog(params.id)) as Blog;
 
   return (
-    <form action={PatchBlog} className="blog-editor">
-      <input type='hidden' name='id' value={blog.id.toString()} />
-      <input type='text' name='title' defaultValue={blog.title} className='title' />
-      <TipTap blog={blog} />
-      <div className="bottom-button-area bg-sub">
-        <div className='button-area-left'>
-          <button type="submit" name="action" value="cancel">キャンセル</button>
-          <button type="submit" name="action" value="delete">削除</button>
-        </div>
-        <button type="submit" name="action" value="update">登録</button>
-      </div>
-    </form>
+    <UpdateBlogEditor serverAction={PatchBlog} blog={blog} />
   );
 };
