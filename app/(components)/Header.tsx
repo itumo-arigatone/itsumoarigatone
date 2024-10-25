@@ -18,7 +18,7 @@ export default function Header() {
             </p>
             <h1 className="mt-1 text-center font-bold text-gray-900">
               <span className="block text-sub text-2xl sm:text-4xl sm:tracking-tight lg:text-7xl">
-                Itumoarigatone
+                Itsumoarigatone
               </span>
               <span className="block text-sub text-xs sm:text-2xl sm:tracking-tight lg:text-4xl">
                 いつもありがとね
