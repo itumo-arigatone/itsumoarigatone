@@ -22,7 +22,8 @@ export const BlogEditor = ({ serverAction }: any) => {
       <input type='text' name='title' className='title' />
       <TipTap setImage={setImage} />
       <div className="bottom-button-area bg-sub">
-        <button type="submit">登録</button>
+        <button type="submit" name="action" value="cancel">キャンセル</button>
+        <button type="submit" name="action" value="save">登録</button>
       </div>
     </form>
   )

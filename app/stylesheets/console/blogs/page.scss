@@ -15,9 +15,14 @@
     display: flex;
     flex-wrap: wrap;
     gap: 8px;
-    justify-content: flex-end;
+    justify-content: space-between;
     align-items: center;
     border-radius: 0 0 20px 20px;
+
+    .button-area-left {
+      display: flex;
+      gap: 8px;
+    }
 
     button {
       color: white;

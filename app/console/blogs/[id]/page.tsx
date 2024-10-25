@@ -100,6 +100,8 @@ async function PatchBlog(data: FormData) {
     if (result) {
       redirect('/console/blogs');
     }
+  } else {
+    redirect('/console/blogs')
   }
 }
 
@@ -113,7 +115,10 @@ export default function Page({ params }: { params: { id: string } }) {
       <input type='text' name='title' defaultValue={blog.title} className='title' />
       <TipTap blog={blog} />
       <div className="bottom-button-area bg-sub">
-        <button type="submit" name="action" value="delete">削除</button>
+        <div className='button-area-left'>
+          <button type="submit" name="action" value="cancel">キャンセル</button>
+          <button type="submit" name="action" value="delete">削除</button>
+        </div>
         <button type="submit" name="action" value="update">登録</button>
       </div>
     </form>
