@@ -49,3 +49,9 @@ ul {
     }
   }
 }
+
+.loading-wrapper {
+  margin: 40px auto;
+  display: flex;
+  justify-content: center;
+}
