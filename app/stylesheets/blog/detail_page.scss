@@ -1,30 +1,36 @@
 @use '@/app/stylesheets/config/mixin' as m;
 
 .blog-detail {
-  h1 {
-    font-size: 32px;
-    margin-bottom: 32px;
-  }
-
-  h2 {
-    font-size: 24px;
-  }
-
-  h3 {
-    font-size: 20px;
-  }
-
-  img {
-    width: 70%;
-    margin: 24px auto;
-  }
-
   .blog-contents {
     background: m.$main-sub-color;
     padding: 80px 24px;
     margin: 40px auto;
-    max-width: var(--content-width);
-    color: var(--main-base-color);
+    max-width: m.$content-width;
+    color: m.$main-base-color;
+    line-height: 150%;
+
+    h1 {
+      font-size: 32px;
+      margin-bottom: 32px;
+    }
+
+    h2 {
+      font-size: 24px;
+    }
+
+    h3 {
+      font-size: 20px;
+    }
+
+    img {
+      width: 70%;
+      margin: 24px auto;
+    }
+
+    p:empty::before {
+      content: '';
+      display: inline-block;
+    }
   }
 
   .list-link {

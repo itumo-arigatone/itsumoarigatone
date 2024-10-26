@@ -93,7 +93,9 @@ export default function Page({ params }: { params: { slug: string } }) {
               <div className="mt-10 mb-5 border-t bd-accent text-sub pt-10"></div>
               <div className="bg-sub p-3">
                 <div className="text-base font-bold">この商品について</div>
-                <p className="max-w-xl text-base">{productInfo.product.description}</p>
+                <p className="max-w-xl text-base product-description">
+                  {productInfo.product.description}
+                </p>
               </div>
             </div>
           </div>

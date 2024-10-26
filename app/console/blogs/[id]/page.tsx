@@ -62,7 +62,7 @@ async function GetBlog(id: string) {
     }
   }
 
-  post.content = replaceImgSrc(domContent, imgSrc)
+  post.content = replaceImgSrc(domContent, imgSrc);
 
   return post;
 }
@@ -134,7 +134,6 @@ async function PatchBlog(data: FormData) {
     redirect('/console/blogs')
   }
 }
-
 
 export default function Page({ params }: { params: { id: string } }) {
   const blog = use(GetBlog(params.id)) as Blog;

@@ -1,3 +1,5 @@
+@use '@/app/stylesheets/config/mixin' as m;
+
 .color {
   width: 20px;
   height: 20px;
@@ -5,7 +7,8 @@
 }
 
 .slide-image-area {
-  background: var(--main-sub-color);
+  background: m.$main-sub-color;
+  border-radius: 14px;
 
   img {
     max-height: 230px;
