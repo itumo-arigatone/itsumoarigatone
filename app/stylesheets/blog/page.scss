@@ -1,4 +1,5 @@
-@import url('/globals.css');
+@use '@/app/stylesheets/config/mixin' as m;
+
 
 section {
   margin: auto 24px;
