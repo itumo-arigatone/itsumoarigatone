@@ -8,6 +8,7 @@ import { getActiveBlogs } from '@/lib/blog/getActiveBlogs'
 import { formatDate } from '@/lib/formatDate';
 import LoadingAnimation from '@/app/(components)/LoadingAnimation';
 import { getFirstImage } from '@/lib/blog/getFirstImage';
+import clearTags from '@/lib/clearTags';
 import '@/app/stylesheets/blog/page.scss';
 
 interface Post {
@@ -67,22 +68,23 @@ const BlogList = () => {
             <LoadingAnimation />
           </div>
         ) : (
-          <ul>
+          <div className='blogs'>
             {posts.map((post) => (
-              <li key={post.id}>
-                <Link href={`/blog/${post.id}`}>
-                  <img src={post.imageUrl || "/logo_medium.svg"} className='thumbnail' />
-                  <div className='text-content'>
-                    <h2 className="text-sub">{post.title}</h2>
-                    <div className='post-preview'>{post.content}</div>
-                    <div className="text-accent blog-created">
-                    </div>
-                    {formatDate(post.updated_at)}
-                  </div>
-                </Link>
-              </li>
+              <Link href={`/blog/${post.id}`} className='blog' key={post.id}>
+                <div className='thumbnail'>
+                  <img src={post.imageUrl || "/logo_medium.svg"} className='' />
+                </div>
+                <div className='text-content'>
+                  <h2 className="text-sub">{post.title}</h2>
+                  <div className='post-preview'>{clearTags(post.content)}</div>
+                  <div className='read-more text-accent'>続きを見る</div>
+                </div>
+                <div className="text-sub blog-created">
+                  {formatDate(post.updated_at)}
+                </div>
+              </Link>
             ))}
-          </ul>
+          </div>
         )}
       </section>
       <Footer />
