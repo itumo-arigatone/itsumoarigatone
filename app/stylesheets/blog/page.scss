@@ -1,0 +1,95 @@
+@use '@/app/stylesheets/config/mixin' as m;
+
+
+section {
+  margin: auto 24px;
+}
+
+h1 {
+  font-size: 32px;
+  margin: 32px auto;
+}
+
+h2 {
+  font-size: 24px;
+  font-weight: 700;
+}
+
+h3 {
+  font-size: 20px;
+}
+
+.blogs {
+  max-width: var(--content-width);
+  margin: 40px auto;
+  display: grid;
+  gap: 30px;
+  grid-template-columns: repeat(3, 1fr);
+
+  @include m.under-md {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  @include m.under-sm {
+    grid-template-columns: repeat(1, 1fr);
+  }
+
+  .button-area {
+    display: flex;
+    justify-content: flex-end;
+
+    .create-button {
+      padding: 16px;
+      margin: 8px;
+      color: #fff;
+      padding: 16px;
+      border-radius: 8px;
+    }
+  }
+
+  .blog {
+    display: grid;
+    grid-template-rows: subgrid;
+    grid-row: span 3;
+    gap: 12px;
+
+    .thumbnail {
+      border-radius: 14px;
+      overflow: hidden;
+
+      img {
+        height: 100%;
+      }
+    }
+
+    .text-content {
+      padding: 0 12px;
+
+      .post-preview {
+        text-overflow: ellipsis;
+        overflow: hidden;
+        max-height: 3em;
+        -webkit-line-clamp: 2;
+        -webkit-box-orient: vertical;
+        display: -webkit-box;
+        color: m.$main-sub-color
+      }
+
+      .read-more {
+        text-align: right;
+      }
+
+    }
+
+    .blog-created {
+      text-align: right;
+      color: m.$main-sub-color2;
+    }
+  }
+}
+
+.loading-wrapper {
+  margin: 40px auto;
+  display: flex;
+  justify-content: center;
+}
