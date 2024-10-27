@@ -1,25 +1,25 @@
+'use client'
+
 import Footer from "@/app/(components)/Footer";
 import Header from "@/app/(components)/SimpleHeader"
 import ProductSlider from "@/app/(components)/ProductSlider"
-import { notFound } from 'next/navigation'
-import { PrismaClient } from '@prisma/client';
-import { use } from 'react';
-import { GetObjectCommand } from "@aws-sdk/client-s3";
-import { getSignedUrl } from "@aws-sdk/s3-request-presigner";
-import { viewS3Client } from "@/lib/viewS3Client"
+import LoadingAnimation from '@/app/(components)/LoadingAnimation';
+import { Product as ProductProps } from '@prisma/client';
+import { useState, useEffect } from 'react';
+import { getProduct } from "@/lib/product/getProduct";
 
 import 'swiper/css';
 import '@/app/stylesheets/product/detail_page.scss'
 
-interface ProductProps {
-  id: number;
-  name?: string;
-  price: number;
-  description: string;
-  slug: string;
-  baseLink?: string | null;
-  created_at: Date;
-  images?: ImagesProps[]
+interface ProductResultProps {
+  product?: ExtendedProduct;
+  images?: ImgSrcProps;
+  error: boolean;
+  errorMessage?: string;
+}
+
+interface ExtendedProduct extends ProductProps {
+  images?: ImagesProps[];
 }
 
 interface ImagesProps {
@@ -32,73 +32,66 @@ interface ImgSrcProps {
   [src: string]: string;
 }
 
-async function GetProduct(slug: string) {
-  'use server'
-
-  const prisma = new PrismaClient();
-  const Bucket = process.env.AMPLIFY_BUCKET;
-
-  if (!slug) {
-    return { error: 'slug is required' };
-  }
-
-  const product: ProductProps | null = await prisma.product.findUnique({
-    where: { slug: slug },
-    include: {
-      images: true
-    }
-  });
-
-  if (!product) {
-    return { error: 'Product not found' };
-  }
-
-  let imgSrc = {} as ImgSrcProps
-  product.images?.forEach(async record => {
-    let command = new GetObjectCommand({ Bucket, Key: `product/${product.id}/${record.key}` })
-    imgSrc[record.key] = await getSignedUrl(viewS3Client(), command, { expiresIn: 3600 });
-  })
-
-  return { product: product, images: imgSrc }
-}
-
 export default function Page({ params }: { params: { slug: string } }) {
-  // fetch
-  const productInfo = use(GetProduct(params.slug))
-
-  if (!productInfo.product) {
-    return notFound();
-  }
+  const [isLoading, setIsLoading] = useState<boolean>(true)
+  const [productInfo, setProductInfo] = useState<ProductResultProps | null>(null)
 
   const baseLogo = '/base_logo_horizontal_white.png'
   const amazonLogo = '/icons8-amazon.svg'
+
+  useEffect(() => {
+    async function fetchData() {
+      try {
+        const result = await getProduct(params.slug);
+        if (result.error) {
+          throw new Error(result.errorMessage);
+        } else {
+          setProductInfo(result);
+        }
+      } catch (error) {
+        console.error('Error fetching data:', error);
+      } finally {
+        setIsLoading(false);  // データ取得が完了したらローディングを解除
+      }
+    }
+
+    fetchData();
+  }, []);
 
   return (
     <>
       <Header />
       <main className="bg-base">
         <div className="product">
-          <ProductSlider images={productInfo.images || {}} />
-          <div className="flex flex-col">
-            <h1 className="mt-1 text-4xl font-bold text-sub sm:text-5xl sm:tracking-tight lg:text-5xl">{productInfo.product.name}</h1>
-            <div className="mt-3 text-xl font-bold text-sub sm:text-3xl sm:tracking-tight lg:text-3xl">￥{productInfo.product.price}</div>
-            <div className="grid grid-cols-2 gap-x-6 gap-y-6 lg:grid-cols-3 xl:grid-cols-4 xl:gap-x-8 pt-6">
-              <a href={productInfo.product.baseLink || 'https://itsumogatone.base.ec/'} className="group">
-                <div className="aspect-h-1 aspect-w-1 w-full overflow-hidden rounded-lg bg-accent xl:aspect-h-8 xl:aspect-w-7 flex justify-center">
-                  <img src={baseLogo} height={48} alt="ベイスリンク" className="max-h-12" />
+          {isLoading ? (
+            <div className="loading-wrapper">
+              <LoadingAnimation />
+            </div>
+          ) : productInfo?.product ? (
+            <>
+              <ProductSlider images={productInfo.images || {}} />
+              <div className="flex flex-col">
+                <h1 className="mt-1 text-4xl font-bold text-sub sm:text-5xl sm:tracking-tight lg:text-5xl">{productInfo.product.name}</h1>
+                <div className="mt-3 text-xl font-bold text-sub sm:text-3xl sm:tracking-tight lg:text-3xl">￥{productInfo.product.price}</div>
+                <div className="grid grid-cols-2 gap-x-6 gap-y-6 lg:grid-cols-3 xl:grid-cols-4 xl:gap-x-8 pt-6">
+                  <a href={productInfo.product.baseLink || 'https://itsumogatone.base.ec/'} className="group">
+                    <div className="aspect-h-1 aspect-w-1 w-full overflow-hidden rounded-lg bg-accent xl:aspect-h-8 xl:aspect-w-7 flex justify-center">
+                      <img src={baseLogo} height={48} alt="ベイスリンク" className="max-h-12" />
+                    </div>
+                  </a>
                 </div>
-              </a>
-            </div>
-            <div>
-              <div className="mt-10 mb-5 border-t bd-accent text-sub pt-10"></div>
-              <div className="bg-sub p-3">
-                <div className="text-base font-bold">この商品について</div>
-                <p className="max-w-xl text-base product-description">
-                  {productInfo.product.description}
-                </p>
+                <div>
+                  <div className="mt-10 mb-5 border-t bd-accent text-sub pt-10"></div>
+                  <div className="bg-sub p-3">
+                    <div className="text-base font-bold">この商品について</div>
+                    <p className="max-w-xl text-base product-description">
+                      {productInfo.product.description}
+                    </p>
+                  </div>
+                </div>
               </div>
-            </div>
-          </div>
+            </>
+          ) : (<div>商品情報の取得に失敗しました</div>)}
         </div>
       </main>
       <Footer />
