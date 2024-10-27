@@ -12,6 +12,7 @@
     h1 {
       font-size: 32px;
       margin-bottom: 32px;
+      line-height: 100%;
     }
 
     h2 {
@@ -30,6 +31,11 @@
     p:empty::before {
       content: '';
       display: inline-block;
+    }
+
+    .loading-wrapper {
+      display: flex;
+      justify-content: center;
     }
   }
 

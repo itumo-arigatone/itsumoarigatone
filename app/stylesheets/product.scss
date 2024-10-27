@@ -9,6 +9,7 @@
 .slide-image-area {
   background: m.$main-sub-color;
   border-radius: 14px;
+  overflow: hidden;
 
   img {
     max-height: 230px;

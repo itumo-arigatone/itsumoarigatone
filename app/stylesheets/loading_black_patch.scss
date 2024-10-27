@@ -1,0 +1,37 @@
+@use '@/app/stylesheets/config/mixin' as m;
+
+.loader:before,
+.loader:after {
+  filter: drop-shadow(0 0 1rem rgba(17, 13, 15, 0.75));
+}
+
+.loader:before {
+  box-shadow: inset 0 0 0 1rem m.$main-base-color;
+}
+
+.loader:after {
+  box-shadow: 0 0 0 0 m.$main-base-color;
+}
+
+@keyframes pulsIn {
+  0% {
+    box-shadow: inset 0 0 0 1rem m.$main-base-color;
+  }
+
+  50%,
+  100% {
+    box-shadow: inset 0 0 0 0 m.$main-base-color;
+  }
+}
+
+@keyframes pulsOut {
+
+  0%,
+  50% {
+    box-shadow: 0 0 0 0 m.$main-base-color;
+  }
+
+  100% {
+    box-shadow: 0 0 0 1rem m.$main-base-color;
+  }
+}
