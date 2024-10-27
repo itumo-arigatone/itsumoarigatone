@@ -8,7 +8,7 @@ const Footer = () => {
     <footer className="center mt-5 bg-sub text-base p-4 text-xs">
       <div className='link-area text-accent'>
         <Link href='/'>作品一覧</Link>
-        <Link href='blog'>ブログ</Link>
+        <Link href='/blog'>ブログ</Link>
       </div>
       <div className="copyright">Copyright © 2024 Itsumoarigatone. All Rights Reserved.</div>
     </footer>
