@@ -12,7 +12,7 @@ import { uploadImages } from '@/lib/uploadImages';
 import { syncKeyAndFile } from '@/lib/syncKeyAndFile';
 import { convertToFiles } from '@/lib/convertToFiles';
 
-import '@/app/stylesheets/console/blogs/page.scss'
+import '@/app/stylesheets/console/blogs/edit_page.scss'
 
 interface Blog {
   id: number;

@@ -23,7 +23,7 @@ h3 {
   max-width: var(--content-width);
   margin: 40px auto;
   display: grid;
-  gap: 30px;
+  gap: 50px 30px;
   grid-template-columns: repeat(3, 1fr);
 
   @include m.under-md {
@@ -81,7 +81,6 @@ h3 {
       .read-more {
         text-align: right;
       }
-
     }
 
     .blog-created {

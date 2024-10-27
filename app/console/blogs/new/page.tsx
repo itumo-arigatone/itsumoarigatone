@@ -6,7 +6,7 @@ import { replaceImgSrc } from '@/lib/replaceImgSrc';
 import { uploadImages } from '@/lib/uploadImages';
 import { syncKeyAndFile } from '@/lib/syncKeyAndFile';
 import { convertToFiles } from '@/lib/convertToFiles';
-import '@/app/stylesheets/console/blogs/page.scss'
+import '@/app/stylesheets/console/blogs/edit_page.scss'
 
 async function PostBlog(data: FormData) {
   'use server'

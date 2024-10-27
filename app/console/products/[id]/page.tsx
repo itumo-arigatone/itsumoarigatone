@@ -129,10 +129,12 @@ async function UpdateProduct(data: FormData) {
   }
 
   if (!id || !name || !description || !price || !slug) {
+    alert("登録に失敗しました。");
     return;
   }
 
   if (!isNumber(price)) {
+    alert("値段が数字じゃなくなっている");
     return;
   }
 

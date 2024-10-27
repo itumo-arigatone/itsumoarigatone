@@ -4,7 +4,7 @@ import Link from 'next/link';
 import { useState, useEffect } from 'react';
 import { formatDate } from '@/lib/formatDate';
 import { getActiveBlogs } from '@/lib/blog/getActiveBlogs'
-import '@/app/stylesheets/blog/page.scss';
+import '@/app/stylesheets/console/blogs/page.scss';
 
 interface Post {
   id: number;

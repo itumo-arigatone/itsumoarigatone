@@ -3,7 +3,7 @@
 import { useState } from 'react'
 import TipTap from "@/app/(components)/Tiptap";
 
-import '@/app/stylesheets/console/blogs/page.scss'
+import '@/app/stylesheets/console/blogs/edit_page.scss'
 
 export const BlogEditor = ({ serverAction }: any) => {
   const [image, setImage] = useState<File[]>([])
