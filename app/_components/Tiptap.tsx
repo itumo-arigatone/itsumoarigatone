@@ -4,7 +4,7 @@ import { useState } from 'react'
 import { EditorContent, useEditor } from '@tiptap/react'
 import StarterKit from '@tiptap/starter-kit'
 import Image from '@tiptap/extension-image'
-import TiptapMenuBar from '@/app/(components)/TiptapMenuBar'
+import TiptapMenuBar from '@/app/_components/TiptapMenuBar'
 import '@/app/stylesheets/tiptap.css'
 
 interface Param {

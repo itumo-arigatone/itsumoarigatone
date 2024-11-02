@@ -1,11 +1,11 @@
 'use client'
 
-import Footer from "@/app/(components)/Footer";
-import Header from "@/app/(components)/SimpleHeader";
-import SafeHTML from '@/app/(components)/SafeHTML';
+import Footer from "@/app/_components/Footer";
+import Header from "@/app/_components/SimpleHeader";
+import SafeHTML from '@/app/_components/SafeHTML';
 import { getBlog } from '@/lib/blog/getBlog';
 import { useEffect, useState } from 'react';
-import LoadingAnimation from '@/app/(components)/LoadingAnimation';
+import LoadingAnimation from '@/app/_components/LoadingAnimation';
 import '/app/stylesheets/blog/detail_page.scss';
 import '@/app/stylesheets/loading_black_patch.scss'
 

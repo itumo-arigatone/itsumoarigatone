@@ -1,9 +1,9 @@
 'use client'
 
-import Footer from "@/app/(components)/Footer";
-import Header from "@/app/(components)/SimpleHeader"
-import ProductSlider from "@/app/(components)/ProductSlider"
-import LoadingAnimation from '@/app/(components)/LoadingAnimation';
+import Footer from "@/app/_components/Footer";
+import Header from "@/app/_components/SimpleHeader"
+import ProductSlider from "@/app/_components/ProductSlider"
+import LoadingAnimation from '@/app/_components/LoadingAnimation';
 import { Product as ProductProps } from '@prisma/client';
 import { useState, useEffect } from 'react';
 import { getProduct } from "@/lib/product/getProduct";

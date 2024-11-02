@@ -1,6 +1,6 @@
 import { PrismaClient } from '@prisma/client';
 import { redirect } from 'next/navigation'
-import ProductForm from '@/app/(components)/ProductForm'
+import ProductForm from '@/app/_components/ProductForm'
 import { isNumber } from '@/lib/isNumber'
 import Link from 'next/link';
 import { uploadImages } from '@/lib/uploadImages';

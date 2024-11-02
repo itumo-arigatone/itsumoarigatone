@@ -1,12 +1,12 @@
 'use client'
 
 import Link from 'next/link';
-import Header from "@/app/(components)/SimpleHeader";
-import Footer from "@/app/(components)/Footer";
+import Header from "@/app/_components/SimpleHeader";
+import Footer from "@/app/_components/Footer";
 import { useState, useEffect } from 'react';
 import { getActiveBlogs } from '@/lib/blog/getActiveBlogs'
 import { formatDate } from '@/lib/formatDate';
-import LoadingAnimation from '@/app/(components)/LoadingAnimation';
+import LoadingAnimation from '@/app/_components/LoadingAnimation';
 import { getFirstImage } from '@/lib/blog/getFirstImage';
 import clearTags from '@/lib/clearTags';
 import '@/app/stylesheets/blog/page.scss';

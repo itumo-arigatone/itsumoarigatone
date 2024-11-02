@@ -3,13 +3,13 @@ import { use } from 'react';
 import { redirect } from 'next/navigation'
 import { isNumber } from '@/lib/isNumber'
 import Link from 'next/link';
-import ProductForm from '@/app/(components)/ProductForm'
+import ProductForm from '@/app/_components/ProductForm'
 import { GetObjectCommand } from "@aws-sdk/client-s3";
 import { getSignedUrl } from "@aws-sdk/s3-request-presigner";
 import { uploadImages } from '@/lib/uploadImages';
 import { viewS3Client } from "@/lib/viewS3Client"
 import { syncKeyAndFile } from '@/lib/syncKeyAndFile'
-import { ProductDeleteButton } from '@/app/(components)/ProductDeleteButton'
+import { ProductDeleteButton } from '@/app/_components/ProductDeleteButton'
 import { convertToFiles } from '@/lib/convertToFiles'
 import '@/app/stylesheets/console/products/edit.scss'
 

@@ -7,7 +7,7 @@ import { getSignedUrl } from "@aws-sdk/s3-request-presigner";
 import { GetObjectCommand } from "@aws-sdk/client-s3";
 import { replaceImgSrc } from '@/lib/replaceImgSrc';
 import { deleteBlog } from "@/lib/blog/deleteBlog";
-import { UpdateBlogEditor } from '@/app/(components)/UpdateBlogEditor';
+import { UpdateBlogEditor } from '@/app/_components/UpdateBlogEditor';
 import { uploadImages } from '@/lib/uploadImages';
 import { syncKeyAndFile } from '@/lib/syncKeyAndFile';
 import { convertToFiles } from '@/lib/convertToFiles';

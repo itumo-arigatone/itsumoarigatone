@@ -1,7 +1,7 @@
 import { redirect } from 'next/navigation'
 import { PrismaClient } from '@prisma/client';
 import { parse, HTMLElement } from 'node-html-parser';
-import { BlogEditor } from '@/app/(components)/BlogEditor';
+import { BlogEditor } from '@/app/_components/BlogEditor';
 import { replaceImgSrc } from '@/lib/replaceImgSrc';
 import { uploadImages } from '@/lib/uploadImages';
 import { syncKeyAndFile } from '@/lib/syncKeyAndFile';
