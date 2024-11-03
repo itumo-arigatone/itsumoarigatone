@@ -1,5 +1,13 @@
 header {
   border-bottom: solid 10px var(--main-accent-color);
+
+  .image-wrapper {
+    background: white;
+
+    .image-filter {
+      background: rgba(17, 13, 15, 0.85)
+    }
+  }
 }
 
 .simple-header {

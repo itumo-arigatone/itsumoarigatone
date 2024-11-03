@@ -7,8 +7,8 @@ export default function Header() {
     <header className="relative">
       <div className="mx-auto">
         <div className="relative shadow-xl sm:overflow-hidden">
-          <div className="absolute inset-0">
-            <div className="absolute inset-0 mix-blend-overlay">
+          <div className="absolute inset-0 image-wrapper">
+            <div className="absolute inset-0 image-filter">
               <img className="h-full w-full" src="/logo_medium.svg" alt="Itsumoarigatone" />
             </div>
           </div>
