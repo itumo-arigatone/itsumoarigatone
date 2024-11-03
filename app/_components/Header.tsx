@@ -16,12 +16,9 @@ export default function Header() {
             <p className="relative left-0 right-0 mx-auto mt-5 max-w-xl text-center sm:tracking-tight text-sm sm:text-xl lg:text-4xl font-semibold tracking-wide text-sub">
               革小物
             </p>
-            <h1 className="mt-1 text-center font-bold text-gray-900">
+            <h1 className="mt-1 text-center text-gray-200">
               <span className="block text-sub text-2xl sm:text-4xl sm:tracking-tight lg:text-7xl">
                 Itsumoarigatone
-              </span>
-              <span className="block text-sub text-xs sm:text-2xl sm:tracking-tight lg:text-4xl">
-                いつもありがとね
               </span>
             </h1>
           </div>

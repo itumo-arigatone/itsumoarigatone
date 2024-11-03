@@ -12,7 +12,8 @@
   overflow: hidden;
 
   img {
-    max-height: 230px;
+    height: 230px;
     margin: auto;
+    object-fit: contain;
   }
 }

@@ -32,7 +32,8 @@ export default function ProductsArea({ products }: { products: ProductPropsWithI
   return (
     <div id="products-area" className="grid grid-cols-1 gap-y-10 gap-x-6 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 xl:gap-x-8">
       {products?.map((product, index) => (
-        <Product key={index} images={product.images} title={product.product.name} price={product.product.price} colors={[]} product_key={product.product.slug} />
+        <Product key={index} images={product.images} title={product.product.name}
+          price={product.product.price} colors={[]} product_key={product.product.slug} touchMove={true} />
       ))}
     </div>
   )

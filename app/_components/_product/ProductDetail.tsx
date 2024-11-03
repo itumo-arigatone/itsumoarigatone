@@ -4,12 +4,14 @@ import Footer from "@/app/_components/Footer";
 import Header from "@/app/_components/SimpleHeader"
 import ProductSlider from "@/app/_components/ProductSlider"
 import LoadingAnimation from '@/app/_components/LoadingAnimation';
+import ProductRecommend from '@/app/_components/_product/ProductRecommend'
 import { Product as ProductProps } from '@prisma/client';
 import { useState, useEffect } from 'react';
 import { getProduct } from "@/lib/product/getProduct";
 
 import 'swiper/css';
 import '@/app/stylesheets/product/detail_page.scss'
+import { getWithoutCurrentProducts } from "@/lib/product/getWithoutCurrentProducts";
 
 interface Props {
   slug: string;
@@ -26,6 +28,11 @@ interface ExtendedProduct extends ProductProps {
   images?: ImagesProps[];
 }
 
+interface ProductPropsWithImg {
+  product: ProductProps
+  images: ImgSrcProps
+}
+
 interface ImagesProps {
   id: number;
   key: string;
@@ -38,7 +45,9 @@ interface ImgSrcProps {
 
 export default function ProductDetail({ slug }: Props) {
   const [isLoading, setIsLoading] = useState<boolean>(true)
+  const [isLoadingRecommend, setIsLoadingRecommend] = useState<boolean>(true)
   const [productInfo, setProductInfo] = useState<ProductResultProps | null>(null)
+  const [fiveProducts, setFiveProducts] = useState<ProductPropsWithImg[]>([])
 
   const baseLogo = '/base_logo_horizontal_white.png'
   const amazonLogo = '/icons8-amazon.svg'
@@ -60,6 +69,26 @@ export default function ProductDetail({ slug }: Props) {
     }
 
     fetchData();
+  }, []);
+
+  useEffect(() => {
+    async function fetchRecommendProduct() {
+      try {
+        const result = await getWithoutCurrentProducts(slug);
+        console.log(result)
+        if (result.error || !result.products) {
+          throw new Error(result.errorMessage);
+        } else {
+          setFiveProducts(result.products);
+        }
+      } catch (error) {
+        console.error('Error fetching data:', error);
+      } finally {
+        setIsLoadingRecommend(false);  // データ取得が完了したらローディングを解除
+      }
+    }
+
+    fetchRecommendProduct();
   }, []);
 
   return (
@@ -97,6 +126,16 @@ export default function ProductDetail({ slug }: Props) {
             </>
           ) : (<div>商品情報の取得に失敗しました</div>)}
         </div>
+        {isLoadingRecommend ? (
+          <div className="loading-wrapper">
+            <LoadingAnimation />
+          </div>
+        ) : fiveProducts ? (
+          <div className="recommend-section">
+            <h2 className="text-sub">その他の作品</h2>
+            <ProductRecommend products={fiveProducts} />
+          </div>
+        ) : (<div>商品情報の取得に失敗しました</div>)}
       </main>
       <Footer />
     </>

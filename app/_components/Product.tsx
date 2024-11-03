@@ -12,13 +12,14 @@ type ProductProps = {
   price: number,
   colors: Array<string>,
   product_key: string,
+  touchMove: boolean
 }
 
 interface ImgSrcProps {
   [key: string]: string;
 }
 
-const Product = ({ images, title, price, colors, product_key }: ProductProps) => {
+const Product = ({ images, title, price, colors, product_key, touchMove }: ProductProps) => {
   // 必要なデータ
   // 画像、タイトル、値段、色
   return (
@@ -27,6 +28,7 @@ const Product = ({ images, title, price, colors, product_key }: ProductProps) =>
         <Swiper
           spaceBetween={0}
           centeredSlides={true}
+          allowTouchMove={touchMove}
           autoplay={{
             delay: 2500,
             disableOnInteraction: false,

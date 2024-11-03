@@ -12,6 +12,7 @@ $lg-bp: 1024px;
 $xl-bp: 1280px;
 $xxl-bp: 1536px;
 $content-width: 920px;
+$content-wide-width: 1200px;
 
 @mixin under-lg {
   @media screen and (max-width: $lg-bp) {

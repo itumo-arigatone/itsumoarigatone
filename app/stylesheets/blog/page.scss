@@ -20,19 +20,11 @@ h3 {
 }
 
 .blogs {
-  max-width: var(--content-width);
+  max-width: m.$content-wide-width;
   margin: 40px auto;
   display: grid;
   gap: 50px 30px;
-  grid-template-columns: repeat(3, 1fr);
-
-  @include m.under-md {
-    grid-template-columns: repeat(2, 1fr);
-  }
-
-  @include m.under-sm {
-    grid-template-columns: repeat(1, 1fr);
-  }
+  grid-template-columns: repeat(auto-fit, minmax(285px, 1fr));
 
   .button-area {
     display: flex;
@@ -56,6 +48,7 @@ h3 {
     .thumbnail {
       border-radius: 14px;
       overflow: hidden;
+      background: m.$main-sub-color;
 
       img {
         height: 100%;
