@@ -126,16 +126,16 @@ export default function ProductDetail({ slug }: Props) {
             </>
           ) : (<div>商品情報の取得に失敗しました</div>)}
         </div>
-        {isLoadingRecommend ? (
-          <div className="loading-wrapper">
-            <LoadingAnimation />
-          </div>
-        ) : fiveProducts ? (
-          <div className="recommend-section">
-            <h2 className="text-sub">その他の作品</h2>
+        <div className="recommend-section">
+          <h2 className="text-sub">その他の作品</h2>
+          {isLoadingRecommend ? (
+            <div className="loading-wrapper">
+              <LoadingAnimation />
+            </div>
+          ) : fiveProducts ? (
             <ProductRecommend products={fiveProducts} />
-          </div>
-        ) : (<div>商品情報の取得に失敗しました</div>)}
+          ) : (<div>商品情報の取得に失敗しました</div>)}
+        </div>
       </main>
       <Footer />
     </>

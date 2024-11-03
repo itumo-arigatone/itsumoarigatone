@@ -32,11 +32,6 @@
       content: '';
       display: inline-block;
     }
-
-    .loading-wrapper {
-      display: flex;
-      justify-content: center;
-    }
   }
 
   .list-link {
@@ -97,5 +92,20 @@
   .list-link:hover::after {
     opacity: 0;
     transform: scale(0.1, 1);
+  }
+
+  .recommend-section {
+    margin: 36px auto 72px;
+
+    h2 {
+      text-align: center;
+      margin-bottom: 24px;
+      font-size: 24px;
+    }
+  }
+
+  .loading-wrapper {
+    display: flex;
+    justify-content: center;
   }
 }
