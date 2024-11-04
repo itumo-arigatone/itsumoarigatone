@@ -6,6 +6,12 @@ import StarterKit from '@tiptap/starter-kit'
 import Image from '@tiptap/extension-image'
 import TiptapMenuBar from '@/app/_components/TiptapMenuBar'
 import '@/app/stylesheets/tiptap.css'
+import { all, createLowlight } from 'lowlight'
+import CodeBlockLowlight from '@tiptap/extension-code-block-lowlight'
+import '@/app/stylesheets/components/code_highlight.scss';
+
+// create a lowlight instance with all languages loaded
+const lowlight = createLowlight(all)
 
 interface Param {
   blog?: Blog;
@@ -30,7 +36,10 @@ const Tiptap = (param: Param) => {
           allowBase64: true,
           class: 'uploaded-image',
         },
-      })
+      }),
+      CodeBlockLowlight.configure({
+        lowlight
+      }),
     ],
     content: content,
     onUpdate({ editor }) {

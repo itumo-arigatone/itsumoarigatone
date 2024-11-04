@@ -11,6 +11,7 @@ import { Product as ProductProps } from '@prisma/client';
 import ProductRecommend from '@/app/_components/_product/ProductRecommend'
 import '/app/stylesheets/blog/detail_page.scss';
 import '@/app/stylesheets/loading_black_patch.scss'
+import '@/app/stylesheets/components/code_highlight.scss';
 
 interface Props {
   id: string
