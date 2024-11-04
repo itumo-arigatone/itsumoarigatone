@@ -11,23 +11,24 @@
 
     h1 {
       font-size: 32px;
-      margin-bottom: 32px;
+      margin: 0 auto 32px;
       font-weight: 600;
     }
 
     h2 {
       font-size: 24px;
-      margin-bottom: 24px;
+      margin: 48px auto 24px;
     }
 
     h3 {
       font-size: 20px;
-      margin-bottom: 16px
+      margin: 32px auto 16px
     }
 
     img {
-      width: 70%;
+      max-width: 70%;
       margin: 24px auto;
+      max-height: 460px
     }
 
     p:empty::before {
