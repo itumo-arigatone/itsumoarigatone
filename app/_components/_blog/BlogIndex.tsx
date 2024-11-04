@@ -62,7 +62,19 @@ const BlogIndex = () => {
     <>
       <Header />
       <section>
-        <h1 className="text-center font-bold text-sub">Itsumoarigatoneのブログ</h1>
+        <a href="/" className="list-link">
+          <span>トップページへ</span>
+        </a>
+      </section>
+      <section>
+        <h1 className="text-center font-bold text-sub font-extralight flex flex-wrap justify-center">
+          <span>
+            Itsumoarigatoneの
+          </span>
+          <span>
+            ブログ
+          </span>
+        </h1>
         {isLoading ? (
           <div className="loading-wrapper">
             <LoadingAnimation />
