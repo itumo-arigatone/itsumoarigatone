@@ -84,16 +84,23 @@ async function PatchBlog(data: FormData) {
     const imageFiles = data.getAll('imageData');
 
     if (!id || !title || !content) {
-      return;
+      return { error: true, errorMessage: 'タイトルと内容を入力してください' };
     }
 
     const prisma = new PrismaClient();
-    const domContent = parse(content)
+
+    // `src` 属性を一時的に短縮する
+    const modifiedHtmlContent = content.replace(/src="data:image\/jpeg;base64,[^"]+"/g, 'src=""');
+    console.log(modifiedHtmlContent);
+    const domContent = parse(modifiedHtmlContent)
 
     // タグからキーを取得する
     const imageKeys: string[] = [];
     domContent.querySelectorAll('img.uploaded-image').forEach((img: HTMLElement) => {
-      const key = img.getAttribute('alt')
+      const key = img.getAttribute('alt');
+      console.log('------------img-------------------')
+      console.log(img)
+      console.log(key)
       if (key) {
         imageKeys.push(key)
       }

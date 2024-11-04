@@ -3,6 +3,7 @@
 import React from 'react'
 import { useRef } from 'react'
 import { createImagePreviewUrl } from '@/lib/createImagePreviewUrl'
+import { ReadHeic2Any } from '@/lib/ReadHeic2Any'
 
 import '@/app/stylesheets/tiptap_menu_bar.css'
 
@@ -16,9 +17,9 @@ export default function TiptapMenuBar(param: any) {
       return;
     }
 
-    const src = await createImagePreviewUrl(file)
-    param.setImage((prevImages: File[]) => [...prevImages, file]);
-
+    const convertedFile = await ReadHeic2Any(file);
+    const src = await createImagePreviewUrl(convertedFile)
+    param.setImage((prevImages: File[]) => [...prevImages, convertedFile]);
     editor.chain().focus().setImage({
       src: src,
       alt: file.name
