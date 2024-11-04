@@ -67,7 +67,7 @@ const BlogIndex = () => {
         </a>
       </section>
       <section>
-        <h1 className="text-center font-bold text-sub font-extralight flex flex-wrap justify-center">
+        <h1 className="text-center text-sub font-extralight flex flex-wrap justify-center">
           <span>
             Itsumoarigatoneの
           </span>
