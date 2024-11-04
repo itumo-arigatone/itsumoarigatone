@@ -13,6 +13,13 @@ export const UpdateBlogEditor = ({ serverAction, blog }: any) => {
     const formData = new FormData(event.target);
     const action = event.nativeEvent.submitter.value;
     formData.append('action', action);
+    // content の値を取得して img タグの src を空にする
+    let content = formData.get('content')?.toString() || '';
+    content = content.replace(/<img[^>]+src="[^"]*"[^>]*>/g, (imgTag) =>
+      imgTag.replace(/src="[^"]*"/, 'src=""')
+    );
+    formData.set('content', content);
+
     image.forEach(img => {
       formData.append('imageData', img)
     })
