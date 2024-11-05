@@ -39,8 +39,9 @@ export default function ProductRecommend({ products }: Props) {
           },
         }}
         centeredSlides={false}
+        loop={true}
         autoplay={{
-          delay: 2500,
+          delay: 5000,
           disableOnInteraction: true,
         }}
         modules={[Autoplay]}

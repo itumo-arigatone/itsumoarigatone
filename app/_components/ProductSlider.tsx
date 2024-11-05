@@ -19,11 +19,6 @@ const ProductSlider = ({ images }: ProductSliderProps) => {
       <Swiper
         spaceBetween={0}
         centeredSlides={true}
-        autoplay={{
-          delay: 2500,
-          disableOnInteraction: false,
-        }}
-        modules={[Autoplay]}
       >
         {
           Object.keys(images).map((key) => (
