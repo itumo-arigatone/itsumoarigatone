@@ -1,0 +1,5 @@
+User-agent: *
+Allow: /
+Disallow: /console/
+
+Sitemap: https://www.itsumoarigatone.com/sitemap.xml
