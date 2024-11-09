@@ -1,5 +1,8 @@
-import BlogIndex from '@/app/_components/_blog/BlogIndex'
 import { Metadata } from 'next';
+import BlogIndex from '@/app/_components/_blog/BlogIndex';
+import Header from '@/app/_components/SimpleHeader'
+import Footer from '@/app/_components/Footer'
+import '@/app/stylesheets/blog/page.scss';
 
 export const metadata: Metadata = {
   title: '【公式】Itsumoarigatoneコレクションサイト | ブログ一覧',
@@ -10,7 +13,26 @@ export const metadata: Metadata = {
 const page = () => {
   return (
     <>
-      <BlogIndex />
+      <Header />
+      <div className='content-area'>
+        <section>
+          <a href="/" className="list-link">
+            <span>トップページへ</span>
+          </a>
+        </section>
+        <section>
+          <h1 className="text-center text-sub font-extralight flex flex-wrap justify-center">
+            <span>
+              Itsumoarigatoneの
+            </span>
+            <span>
+              ブログ
+            </span>
+          </h1>
+          <BlogIndex />
+        </section>
+      </div >
+      <Footer />
     </>
   );
 };

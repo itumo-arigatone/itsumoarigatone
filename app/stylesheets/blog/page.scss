@@ -19,6 +19,10 @@ h3 {
   font-size: 20px;
 }
 
+.content-area {
+  min-height: calc(100vh - 75px - 88px)
+}
+
 .blogs {
   max-width: m.$content-wide-width;
   margin: 40px auto;

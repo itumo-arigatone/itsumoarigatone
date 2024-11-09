@@ -12,7 +12,7 @@ const ShopArea = () => {
       <div className="link-section">
         <a href="https://itsumogatone.base.ec/" className="group bg-accent">
           <div className="">
-            <img src={baseLogo} height={48} className="max-h-12"
+            <img src={baseLogo} height={48} width={119} className="max-h-12"
               alt="ベイスリンク" />
           </div>
         </a>

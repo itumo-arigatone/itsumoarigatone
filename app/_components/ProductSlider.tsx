@@ -1,7 +1,6 @@
 "use client"
 
 import { Swiper, SwiperSlide } from 'swiper/react';
-import { Autoplay } from 'swiper/modules';
 
 import 'swiper/css';
 
@@ -23,7 +22,7 @@ const ProductSlider = ({ images }: ProductSliderProps) => {
         {
           Object.keys(images).map((key) => (
             <SwiperSlide key={key}>
-              <img key={key} src={images[key]} alt={key} />
+              <img key={key} src={images[key]} alt={key} width={450} height={280} />
             </SwiperSlide>
           ))
         }

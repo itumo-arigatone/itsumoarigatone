@@ -1,6 +1,7 @@
 'use client'
 
 import '../stylesheets/header.scss'
+import Image from 'next/image'
 
 export default function Header() {
   return (
@@ -9,7 +10,7 @@ export default function Header() {
         <div className="relative shadow-xl sm:overflow-hidden">
           <div className="absolute inset-0 image-wrapper">
             <div className="absolute inset-0 image-filter">
-              <img className="h-full w-full" src="/logo_medium.svg" alt="Itsumoarigatone" />
+              <Image className="h-full w-full" src="/logo_medium.svg" alt="Itsumoarigatone" width={900} height={600} priority />
             </div>
           </div>
           <div className="relative px-4 py-16 sm:px-6 sm:py-24 lg:py-32 lg:px-8">

@@ -38,7 +38,7 @@ const Product = ({ images, title, price, colors, product_key, touchMove }: Produ
           {
             Object.keys(images).map((key: string) => (
               <SwiperSlide key={key}>
-                <img key={key} src={images[key] || ''} alt={key} />
+                <img key={key} src={images[key] || ''} alt={key} width={450} height={280} loading="lazy" />
               </SwiperSlide>
             ))
           }

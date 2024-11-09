@@ -1,15 +1,12 @@
 'use client'
 
 import Link from 'next/link';
-import Header from "@/app/_components/SimpleHeader";
-import Footer from "@/app/_components/Footer";
 import { useState, useEffect } from 'react';
 import { getActiveBlogs } from '@/lib/blog/getActiveBlogs'
 import { formatDate } from '@/lib/formatDate';
 import LoadingAnimation from '@/app/_components/LoadingAnimation';
 import { getFirstImage } from '@/lib/blog/getFirstImage';
 import clearTags from '@/lib/clearTags';
-import '@/app/stylesheets/blog/page.scss';
 
 interface Post {
   id: number;
@@ -58,48 +55,33 @@ const BlogIndex = () => {
     fetchData();
   }, []);
 
+  // ここSSRにするべきじゃね？なにしてん？
   return (
     <>
-      <Header />
-      <section>
-        <a href="/" className="list-link">
-          <span>トップページへ</span>
-        </a>
-      </section>
-      <section>
-        <h1 className="text-center text-sub font-extralight flex flex-wrap justify-center">
-          <span>
-            Itsumoarigatoneの
-          </span>
-          <span>
-            ブログ
-          </span>
-        </h1>
-        {isLoading ? (
-          <div className="loading-wrapper">
-            <LoadingAnimation />
-          </div>
-        ) : (
-          <div className='blogs'>
-            {posts.map((post) => (
-              <Link href={`/blog/${post.id}`} className='blog' key={post.id}>
-                <div className='thumbnail'>
-                  <img src={post.imageUrl || "/logo_medium.svg"} className='' />
-                </div>
-                <div className='text-content'>
-                  <h2 className="text-sub">{post.title}</h2>
-                  <div className='post-preview'>{clearTags(post.content)}</div>
-                  <div className='read-more text-accent'>続きを見る</div>
-                </div>
-                <div className="text-sub blog-created">
-                  {formatDate(post.updated_at)}
-                </div>
-              </Link>
-            ))}
-          </div>
-        )}
-      </section>
-      <Footer />
+
+      {isLoading ? (
+        <div className="loading-wrapper">
+          <LoadingAnimation />
+        </div>
+      ) : (
+        <div className='blogs'>
+          {posts.map((post) => (
+            <Link href={`/blog/${post.id}`} className='blog' key={post.id}>
+              <div className='thumbnail'>
+                <img src={post.imageUrl || "/logo_medium.svg"} alt={post.title} className='' width={400} height={300} />
+              </div>
+              <div className='text-content'>
+                <h2 className="text-sub">{post.title}</h2>
+                <div className='post-preview'>{clearTags(post.content)}</div>
+                <div className='read-more text-accent'>続きを見る</div>
+              </div>
+              <div className="text-sub blog-created">
+                {formatDate(post.updated_at)}
+              </div>
+            </Link>
+          ))}
+        </div>
+      )}
     </>
   );
 };
