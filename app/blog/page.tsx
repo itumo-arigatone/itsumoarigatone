@@ -7,6 +7,9 @@ import '@/app/stylesheets/blog/page.scss';
 export const metadata: Metadata = {
   title: '【公式】Itsumoarigatoneコレクションサイト | ブログ一覧',
   description: 'Itsumoarigatoneのブログ一覧です。Itsumoarigatone since 2023. 丁寧につくられた新作アイテムを紹介。レザーポーチ、財布、小物などなど。',
+  alternates: {
+    canonical: "https://www.itsumoarigatone.com/blog/",
+  },
 }
 
 

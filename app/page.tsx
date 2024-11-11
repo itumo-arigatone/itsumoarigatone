@@ -4,6 +4,9 @@ import { Metadata } from 'next';
 export const metadata: Metadata = {
   title: '【公式】Itsumoarigatoneコレクションサイト',
   description: 'Itsumoarigatone since 2023. 丁寧につくられた新作アイテムを紹介。レザーポーチ、財布、小物などなど。',
+  alternates: {
+    canonical: "https://www.itsumoarigatone.com/",
+  },
 }
 
 export default function page() {
