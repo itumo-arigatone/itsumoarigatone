@@ -7,6 +7,7 @@ import { formatDate } from '@/lib/formatDate';
 import LoadingAnimation from '@/app/_components/LoadingAnimation';
 import { getFirstImage } from '@/lib/blog/getFirstImage';
 import clearTags from '@/lib/clearTags';
+import '@/app/stylesheets/loading_black_patch.scss'
 
 interface Post {
   id: number;
@@ -29,6 +30,11 @@ interface PostImage {
 const BlogIndex = () => {
   const [posts, setPosts] = useState<Post[]>([]);
   const [isLoading, setIsLoading] = useState(true);
+  const [loadingPosts, setLoadingPosts] = useState<Record<string, boolean>>({});
+
+  const handleClick = (postId: number) => {
+    setLoadingPosts((prev) => ({ ...prev, [postId]: true }));
+  };
 
   useEffect(() => {
     async function fetchData() {
@@ -55,7 +61,6 @@ const BlogIndex = () => {
     fetchData();
   }, []);
 
-  // ここSSRにするべきじゃね？なにしてん？
   return (
     <>
 
@@ -66,9 +71,26 @@ const BlogIndex = () => {
       ) : (
         <div className='blogs'>
           {posts.map((post) => (
-            <Link href={`/blog/${post.id}`} className='blog' key={post.id}>
+            <Link
+              href={`/blog/${post.id}`}
+              className='blog'
+              key={post.id}
+              onClick={() => handleClick(post.id)}
+            >
               <div className='thumbnail'>
-                <img src={post.imageUrl || "/logo_medium.svg"} alt={post.title} className='' width={400} height={300} />
+                {loadingPosts[post.id] ? (
+                  <div className="loading-wrapper">
+                    <LoadingAnimation isBlack={true} />
+                  </div>
+                ) : (
+                  <img
+                    src={post.imageUrl || "/logo_medium.svg"}
+                    alt={post.title}
+                    className=''
+                    width={400}
+                    height={300}
+                  />
+                )}
               </div>
               <div className='text-content'>
                 <h2 className="text-sub">{post.title}</h2>
