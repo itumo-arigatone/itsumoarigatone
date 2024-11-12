@@ -1,37 +1,51 @@
 @use '@/app/stylesheets/config/mixin' as m;
 
-.loader:before,
-.loader:after {
+.black.loader:before,
+.black.loader:after {
+  content: "";
+  position: absolute;
+  border-radius: 50%;
+  animation: pulsOutBk 1.8s ease-in-out infinite;
   filter: drop-shadow(0 0 1rem rgba(17, 13, 15, 0.75));
 }
 
-.loader:before {
+.black.loader:before {
+  width: 100%;
+  padding-bottom: 100%;
   box-shadow: inset 0 0 0 1rem m.$main-base-color;
+  animation-name: pulsInBk;
 }
 
-.loader:after {
+.black.loader:after {
+  width: calc(100% - 2rem);
+  padding-bottom: calc(100% - 2rem);
   box-shadow: 0 0 0 0 m.$main-base-color;
 }
 
-@keyframes pulsIn {
+
+@keyframes pulsInBk {
   0% {
     box-shadow: inset 0 0 0 1rem m.$main-base-color;
+    opacity: 1;
   }
 
   50%,
   100% {
     box-shadow: inset 0 0 0 0 m.$main-base-color;
+    opacity: 0;
   }
 }
 
-@keyframes pulsOut {
+@keyframes pulsOutBk {
 
   0%,
   50% {
     box-shadow: 0 0 0 0 m.$main-base-color;
+    opacity: 0;
   }
 
   100% {
     box-shadow: 0 0 0 1rem m.$main-base-color;
+    opacity: 1;
   }
 }

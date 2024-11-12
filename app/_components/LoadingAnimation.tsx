@@ -2,9 +2,9 @@
 
 import '@/app/stylesheets/loading.scss'
 
-const LoadingAnimation = () => {
+const LoadingAnimation = ({ isBlack = false }) => {
   return (
-    <div className='loader'></div>
+    <div className={`loader ${isBlack ? 'black' : ''}`}></div>
   )
 }
 

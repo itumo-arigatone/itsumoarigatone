@@ -6,7 +6,6 @@ import { Metadata } from 'next';
 import { getBlog } from '@/lib/blog/getBlog';
 import { notFound } from 'next/navigation';
 import '/app/stylesheets/blog/detail_page.scss';
-import '@/app/stylesheets/loading_black_patch.scss'
 import '@/app/stylesheets/components/code_highlight.scss';
 import { Post as PrismaPost } from '@prisma/client';
 
