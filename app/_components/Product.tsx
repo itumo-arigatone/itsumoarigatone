@@ -27,7 +27,7 @@ const Product = ({ images, title, price, colors, product_key, touchMove }: Produ
   // 必要なデータ
   // 画像、タイトル、値段、色
   return (
-    <a className="text-sub group" href={`/product/${encodeURIComponent(product_key)}`} onClick={() => setLoading(true)}>
+    <a className="text-sub group" href={`/product/${encodeURIComponent(product_key)}/`} onClick={() => setLoading(true)}>
       <div className="slide-image-area">
         {loading ? (
           <div className="loading-wrapper black" >

@@ -40,7 +40,7 @@ export default async function Page({ params }: { params: { id: string } }) {
     <>
       <Header />
       <div className="blog-detail">
-        <a href="/blog" className="list-link">
+        <a href="/blog/" className="list-link">
           <span>一覧へ</span>
         </a>
         <div className="blog-contents">

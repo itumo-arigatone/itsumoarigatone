@@ -16,7 +16,7 @@ const ShopArea = () => {
               alt="ベイスリンク" />
           </div>
         </a>
-        <a href='/blog' className="group bg-accent blog-link">
+        <a href='/blog/' className="group bg-accent blog-link">
           <div className="blog-link-text">
             ブログ
           </div>

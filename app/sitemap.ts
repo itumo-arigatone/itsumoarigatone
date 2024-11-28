@@ -5,13 +5,13 @@ import { getActiveBlogsWithoutImage } from '@/lib/blog/getActiveBlogsWithoutImag
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   const products = await getAllProducts();
   const products_detail = products.map((product) => ({
-    url: `https://www.itsumoarigatone.com/product/${product.slug}`,
+    url: `https://www.itsumoarigatone.com/product/${product.slug}/`,
     lastModified: product.created_at,
   }));
 
   const blogs = await getActiveBlogsWithoutImage();
   const blogs_detail = blogs.map((blog) => ({
-    url: `https://www.itsumoarigatone.com/blog/${blog.id}`,
+    url: `https://www.itsumoarigatone.com/blog/${blog.id}/`,
     lastModified: blog.created_at,
   }));
 
