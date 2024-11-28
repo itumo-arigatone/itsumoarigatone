@@ -23,7 +23,6 @@ export default function BlogDetail() {
     async function fetchRecommendProduct() {
       try {
         const result = await getWithoutCurrentProducts();
-        console.log(result)
         if (result.error || !result.products) {
           throw new Error(result.errorMessage);
         } else {

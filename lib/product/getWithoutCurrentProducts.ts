@@ -39,7 +39,6 @@ export async function getWithoutCurrentProducts(slug: string | null = null) {
     }
   }
 
-  console.log(slug)
   const products = await prisma.product.findMany({
     where: {
       slug: {

@@ -12,8 +12,6 @@ async function PostBlog(data: FormData) {
   'use server'
 
   const action = data.get('action')?.toString();
-  console.log(data)
-  console.log(action)
 
   if (action === 'save') {
     const title = data.get('title')?.toString()

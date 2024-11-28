@@ -32,7 +32,6 @@ export default function ProductDetail({ slug }: Props) {
     async function fetchRecommendProduct() {
       try {
         const result = await getWithoutCurrentProducts(slug);
-        console.log(result)
         if (result.error || !result.products) {
           throw new Error(result.errorMessage);
         } else {
