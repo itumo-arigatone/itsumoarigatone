@@ -1,9 +1,6 @@
 'use server'
 
 import { PrismaClient } from '@prisma/client';
-import { GetObjectCommand } from "@aws-sdk/client-s3";
-import { getSignedUrl } from "@aws-sdk/s3-request-presigner";
-import { viewS3Client } from "@/lib/viewS3Client";
 import { cache } from "react";
 
 interface ProductProps {
@@ -43,9 +40,8 @@ export const GetAllProducts = cache(async () => {
   return products.map(product => {
     let imgSrc = {} as ImgSrcProps
     product.images.forEach(async (record: ImagesProps) => {
-      let command = new GetObjectCommand({ Bucket, Key: `product/${product.id}/${record.key}` })
       // TODO:認証けす
-      imgSrc[record.key] = await getSignedUrl(viewS3Client(), command, { expiresIn: 3600 });
+      imgSrc[record.key] = `${process.env.IMAGE_HOST}/product/${product.id}/${record.key}`
     })
 
     return { product: product, images: imgSrc }

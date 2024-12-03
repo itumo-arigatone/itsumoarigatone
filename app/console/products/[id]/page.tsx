@@ -4,10 +4,7 @@ import { redirect } from 'next/navigation'
 import { isNumber } from '@/lib/isNumber'
 import Link from 'next/link';
 import ProductForm from '@/app/_components/ProductForm'
-import { GetObjectCommand } from "@aws-sdk/client-s3";
-import { getSignedUrl } from "@aws-sdk/s3-request-presigner";
 import { uploadImages } from '@/lib/uploadImages';
-import { viewS3Client } from "@/lib/viewS3Client"
 import { syncKeyAndFile } from '@/lib/syncKeyAndFile'
 import { ProductDeleteButton } from '@/app/_components/ProductDeleteButton'
 import { convertToFiles } from '@/lib/convertToFiles'
@@ -71,11 +68,10 @@ async function GetProduct(id: string) {
 
   let imgSrc: ImgSrc = {}
   product.images.forEach(async record => {
-    let command = new GetObjectCommand({ Bucket, Key: `product/${id}/${record.key}` })
     if (!imgSrc[record.key]) {
       imgSrc[record.key] = {}
     }
-    imgSrc[record.key].url = await getSignedUrl(viewS3Client(), command, { expiresIn: 3600 });
+    imgSrc[record.key].url = `${process.env.IMAGE_HOST}/product/${id}/${record.key}`
     imgSrc[record.key].id = record.id
   })
 

@@ -3,9 +3,6 @@
 import { PrismaClient } from '@prisma/client';
 import { Post as PrismaPost } from '@prisma/client';
 import { parse } from 'node-html-parser';
-import { viewS3Client } from "@/lib/viewS3Client"
-import { getSignedUrl } from "@aws-sdk/s3-request-presigner";
-import { GetObjectCommand } from "@aws-sdk/client-s3";
 import { replaceImgSrc } from '@/lib/replaceImgSrc';
 
 interface ExtendedPost extends PrismaPost {
@@ -49,8 +46,7 @@ export async function getBlog(id: number) {
     const key = img.getAttribute('alt');
 
     if (key) {
-      const command = new GetObjectCommand({ Bucket, Key: `blog/${id}/${key}` });
-      imgSrc[key] = await getSignedUrl(viewS3Client(), command, { expiresIn: 3600 });
+      imgSrc[key] = `${process.env.IMAGE_HOST}/blog/${id}/${key}`
     }
   }
 
