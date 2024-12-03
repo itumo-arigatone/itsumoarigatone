@@ -8,7 +8,7 @@ export async function getFirstImage(id: number, keyParam: string) {
   const key = keyParam;
 
   if (key) {
-    imgSrc = `${process.env.IMAGE_HOST}/${process.env.AMPLIFY_BUCKET}/blog/${id}/${key}`
+    imgSrc = `${process.env.IMAGE_HOST}/blog/${id}/${key}`
   }
 
   return imgSrc;

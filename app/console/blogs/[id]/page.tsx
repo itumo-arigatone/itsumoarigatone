@@ -54,7 +54,7 @@ async function GetBlog(id: string) {
     const key = img.getAttribute('alt');
 
     if (key) {
-      imgSrc[key] = `${process.env.IMAGE_HOST}/${process.env.AMPLIFY_BUCKET}/blog/${id}/${key}`
+      imgSrc[key] = `${process.env.IMAGE_HOST}/blog/${id}/${key}`
     }
   }
 

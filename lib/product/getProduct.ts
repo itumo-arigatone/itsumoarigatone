@@ -39,7 +39,7 @@ export const getProduct = cache(async (slug: string) => {
 
   let imgSrc = {} as ImgSrcProps
   product.images?.forEach(async record => {
-    imgSrc[record.key] = `${process.env.IMAGE_HOST}/${process.env.AMPLIFY_BUCKET}/product/${product.id}/${record.key}`;
+    imgSrc[record.key] = `${process.env.IMAGE_HOST}/product/${product.id}/${record.key}`;
   })
 
   return { product: product, images: imgSrc, error: false, errorMessage: "" };

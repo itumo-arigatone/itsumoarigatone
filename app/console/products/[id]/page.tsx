@@ -71,7 +71,7 @@ async function GetProduct(id: string) {
     if (!imgSrc[record.key]) {
       imgSrc[record.key] = {}
     }
-    imgSrc[record.key].url = `${process.env.IMAGE_HOST}/${process.env.AMPLIFY_BUCKET}/product/${id}/${record.key}`
+    imgSrc[record.key].url = `${process.env.IMAGE_HOST}/product/${id}/${record.key}`
     imgSrc[record.key].id = record.id
   })
 
