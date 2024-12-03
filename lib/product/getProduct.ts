@@ -5,6 +5,7 @@ import { Product as PrismaProduct } from '@prisma/client';
 import { viewS3Client } from "@/lib/viewS3Client"
 import { getSignedUrl } from "@aws-sdk/s3-request-presigner";
 import { GetObjectCommand } from "@aws-sdk/client-s3";
+import { cache } from "react"
 
 interface ExtendedProduct extends PrismaProduct {
   images?: ImagesProps[];
@@ -20,7 +21,7 @@ interface ImagesProps {
   productId: number;
 }
 
-export async function getProduct(slug: string) {
+export const getProduct = cache(async (slug: string) => {
   const prisma = new PrismaClient();
   const Bucket = process.env.AMPLIFY_BUCKET;
 
@@ -45,5 +46,5 @@ export async function getProduct(slug: string) {
     imgSrc[record.key] = await getSignedUrl(viewS3Client(), command, { expiresIn: 3600 });
   })
 
-  return { product: product, images: imgSrc, error: false, errorMessage: "" }
-}
+  return { product: product, images: imgSrc, error: false, errorMessage: "" };
+});

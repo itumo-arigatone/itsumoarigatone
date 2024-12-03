@@ -33,6 +33,8 @@ interface ProductPropsWithImg {
   images: ImgSrcProps
 }
 
+export const revalidate = 3600
+
 export default function Page() {
   let [products, setProducts] = useState<ProductPropsWithImg[]>([])
   const [isLoading, setIsLoading] = useState(true);

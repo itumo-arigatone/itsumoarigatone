@@ -12,6 +12,7 @@ import { syncKeyAndFile } from '@/lib/syncKeyAndFile'
 import { ProductDeleteButton } from '@/app/_components/ProductDeleteButton'
 import { convertToFiles } from '@/lib/convertToFiles'
 import '@/app/stylesheets/console/products/edit.scss'
+import { revalidateTag } from 'next/cache';
 
 interface ProductProps {
   id: number;
@@ -108,6 +109,7 @@ function imageUpdate(keyObj: ImageKeyWithId) {
 async function UpdateProduct(data: FormData) {
   'use server'
 
+  revalidateTag('product')
   const id = data.get('id')?.toString()
   const name = data.get('name')?.toString()
   const description = data.get('description')?.toString()
@@ -172,6 +174,7 @@ async function UpdateProduct(data: FormData) {
 async function DeleteProduct(id: string) {
   'use server'
 
+  revalidateTag('product')
   const prisma = new PrismaClient()
 
   const deletedImageRecord = await prisma.productImage.deleteMany({

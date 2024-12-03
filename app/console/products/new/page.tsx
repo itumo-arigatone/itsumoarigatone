@@ -6,11 +6,13 @@ import Link from 'next/link';
 import { uploadImages } from '@/lib/uploadImages';
 import { syncKeyAndFile } from '@/lib/syncKeyAndFile'
 import { convertToFiles } from '@/lib/convertToFiles'
+import { revalidateTag } from 'next/cache';
 import '@/app/stylesheets/console/products/new.css'
 
 async function CreateProduct(data: FormData) {
   'use server'
 
+  revalidateTag('product')
   const name = data.get('name')?.toString()
   const description = data.get('description')?.toString()
   const price = Number(data.get('price'))
