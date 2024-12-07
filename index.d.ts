@@ -5,6 +5,8 @@ type ProductProps = {
   images: ProductImgProps[],
   description: string,
   slug: string,
+  updated_at: Date,
+  created_at: Date
 }
 
 type ProductImgProps = {

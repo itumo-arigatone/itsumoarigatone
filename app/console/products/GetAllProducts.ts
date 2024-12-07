@@ -3,22 +3,6 @@
 import { PrismaClient } from '@prisma/client';
 import { cache } from "react";
 
-interface ProductProps {
-  id: number;
-  name: string;
-  price: number;
-  description: string;
-  slug: string;
-  created_at: Date;
-  images: ImagesProps[];
-}
-
-interface ImagesProps {
-  id: number;
-  key: string;
-  productId: number;
-}
-
 export const GetAllProducts = cache(async () => {
   const prisma = new PrismaClient();
 

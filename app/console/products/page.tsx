@@ -6,33 +6,8 @@ import { useEffect, useState } from 'react';
 import { formatDate } from '@/lib/formatDate';
 import '@/app/stylesheets/console/products/page.scss';
 
-interface ProductProps {
-  id: number;
-  name: string;
-  price: number;
-  description: string;
-  slug: string;
-  created_at: Date;
-  images: ImagesProps[];
-}
-
-interface ImagesProps {
-  id: number;
-  key: string;
-  productId: number;
-}
-
-interface ImgSrcProps {
-  [src: string]: string;
-}
-
-interface ProductPropsWithImg {
-  product: ProductProps
-  images: ImgSrcProps
-}
-
 const Page = () => {
-  let [products, setProducts] = useState<ProductPropsWithImg[]>([])
+  const [products, setProducts] = useState<ProductProps[]>([])
   useEffect(() => {
     async function fetchData() {
       try {
@@ -56,11 +31,11 @@ const Page = () => {
             <Link href={'new'} className='create-button bg-accent'>新しい製品を登録</Link>
           </div>
           {products?.map((product) => (
-            <li key={product.product.id}>
-              <Link href={`${product.product.id}`}>
-                <h3 className="text-sub">{product.product.name}</h3>
+            <li key={product.id}>
+              <Link href={`${product.id}`}>
+                <h3 className="text-sub">{product.name}</h3>
                 <div className="text-accent blog-created">
-                  {formatDate(product.product.created_at)}
+                  {formatDate(product.created_at)}
                 </div>
               </Link>
             </li>
