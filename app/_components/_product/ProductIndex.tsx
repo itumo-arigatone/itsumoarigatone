@@ -24,19 +24,10 @@ interface ImagesProps {
   productId: number;
 }
 
-interface ImgSrcProps {
-  [src: string]: string;
-}
-
-interface ProductPropsWithImg {
-  product: ProductProps
-  images: ImgSrcProps
-}
-
 export const revalidate = 3600
 
 export default function Page() {
-  let [products, setProducts] = useState<ProductPropsWithImg[]>([])
+  const [products, setProducts] = useState<ProductProps[]>([])
   const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
@@ -50,7 +41,6 @@ export default function Page() {
         setIsLoading(false);  // データ取得が完了したらローディングを解除
       }
     }
-
     fetchData();
   }, []);
 

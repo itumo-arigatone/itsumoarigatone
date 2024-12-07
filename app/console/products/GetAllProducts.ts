@@ -19,31 +19,27 @@ interface ImagesProps {
   productId: number;
 }
 
-interface ImgSrcProps {
-  [src: string]: string;
-}
-
 export const GetAllProducts = cache(async () => {
   const prisma = new PrismaClient();
-  const Bucket = process.env.AMPLIFY_BUCKET;
 
-  const products: ProductProps[] = await prisma.product.findMany({
-    include: {
-      images: true
+  try {
+    const products: ProductProps[] = await prisma.product.findMany({
+      include: {
+        images: true,
+      },
+    });
+
+    if (!products || products.length === 0) {
+      console.warn("No products found.");
+      return null;
     }
-  });
 
-  if (!products) {
-    return null;
+    return products
+  } catch (error) {
+    console.error("Error fetching products from database:", error);
+    throw new Error("Failed to fetch products.");
+  } finally {
+    // PrismaClientを明示的に閉じる
+    await prisma.$disconnect();
   }
-
-  return products.map(product => {
-    let imgSrc = {} as ImgSrcProps
-    product.images.forEach(async (record: ImagesProps) => {
-      // TODO:認証けす
-      imgSrc[record.key] = `${process.env.IMAGE_HOST}/product/${product.id}/${record.key}`
-    })
-
-    return { product: product, images: imgSrc }
-  })
 });

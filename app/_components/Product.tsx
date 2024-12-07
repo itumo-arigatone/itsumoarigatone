@@ -2,7 +2,8 @@
 
 import { Swiper, SwiperSlide } from 'swiper/react';
 import { Autoplay } from 'swiper/modules';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
+import { imageUrl } from '@/lib/imageUrl';
 import LoadingAnimation from '@/app/_components/LoadingAnimation';
 import '@/app/stylesheets/loading_black_patch.scss'
 
@@ -10,7 +11,8 @@ import 'swiper/css';
 import "../stylesheets/product.scss";
 
 type ProductProps = {
-  images: ImgSrcProps,
+  product_id: number,
+  images: ProductImgProps[],
   title: string,
   price: number,
   colors: Array<string>,
@@ -18,12 +20,15 @@ type ProductProps = {
   touchMove: boolean
 }
 
-interface ImgSrcProps {
-  [key: string]: string;
+interface ProductImgProps {
+  id: number;
+  key: string;
+  productId: number;
 }
 
-const Product = ({ images, title, price, colors, product_key, touchMove }: ProductProps) => {
+const Product = ({ product_id, images, title, price, colors, product_key, touchMove }: ProductProps) => {
   const [loading, setLoading] = useState<boolean>(false);
+  const [url, setUrl] = useState<string>(imageUrl() || "");
   // 必要なデータ
   // 画像、タイトル、値段、色
   return (
@@ -45,9 +50,9 @@ const Product = ({ images, title, price, colors, product_key, touchMove }: Produ
             modules={[Autoplay]}
           >
             {
-              Object.keys(images).map((key: string) => (
-                <SwiperSlide key={key}>
-                  <img key={key} src={images[key] || ''} alt={key} width={450} height={280} loading="lazy" />
+              images.map((image: ProductImgProps, index: number) => (
+                <SwiperSlide key={index}>
+                  <img key={image.id} src={`${url}/product/${product_id}/${image.key}` || ''} alt={image.key} width={450} height={280} loading="lazy" />
                 </SwiperSlide>
               ))
             }
