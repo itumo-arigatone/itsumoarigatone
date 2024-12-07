@@ -32,7 +32,7 @@ export default async function Page({ params }: { params: { slug: string } }) {
       <Header />
       <main className="bg-base">
         <div className="product">
-          <ProductSlider images={productInfo.images || {}} />
+          <ProductSlider images={productInfo.product.images || []} />
           <div className="flex flex-col">
             <h1 className="mt-1 text-4xl font-bold text-sub sm:text-5xl sm:tracking-tight lg:text-5xl">{productInfo.product.name}</h1>
             <div className="mt-3 text-xl font-bold text-sub sm:text-3xl sm:tracking-tight lg:text-3xl">￥{productInfo.product.price}</div>

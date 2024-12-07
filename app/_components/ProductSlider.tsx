@@ -1,18 +1,22 @@
 "use client"
 
 import { Swiper, SwiperSlide } from 'swiper/react';
-
 import 'swiper/css';
+import { imageUrl } from '@/lib/imageUrl';
 
 interface ProductSliderProps {
-  images: ImgSrcProps;
+  images: ProductImgProps[];
 }
 
-interface ImgSrcProps {
-  [key: string]: string;
+interface ProductImgProps {
+  id: number;
+  key: string;
+  productId: number
 }
 
 const ProductSlider = ({ images }: ProductSliderProps) => {
+  const url = imageUrl();
+
   return (
     <div className="product-slide-area">
       <Swiper
@@ -20,9 +24,9 @@ const ProductSlider = ({ images }: ProductSliderProps) => {
         centeredSlides={true}
       >
         {
-          Object.keys(images).map((key) => (
-            <SwiperSlide key={key}>
-              <img key={key} src={images[key]} alt={key} width={450} height={280} />
+          images.map((image: ProductImgProps, index: number) => (
+            <SwiperSlide key={index}>
+              <img key={image.id} src={`${url}/product/${image.productId}/${image.key}` || ''} alt={image.key} width={450} height={280} />
             </SwiperSlide>
           ))
         }

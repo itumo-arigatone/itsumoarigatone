@@ -1,24 +1,10 @@
 'use client'
 
 import Product from '@/app/_components/Product';
-import { Product as ProductProps } from '@prisma/client';
 import { Swiper, SwiperSlide } from 'swiper/react';
 import { Autoplay } from 'swiper/modules';
 
-interface ImgSrcProps {
-  [src: string]: string;
-}
-
-interface Props {
-  products: ProductPropsWithImg[];
-}
-
-interface ProductPropsWithImg {
-  product: ProductProps
-  images: ImgSrcProps
-}
-
-export default function ProductRecommend({ products }: Props) {
+export default function ProductRecommend({ products }: { products: ProductProps[] }) {
   return (
     <div className="recommend-swiper">
       <Swiper
@@ -46,11 +32,11 @@ export default function ProductRecommend({ products }: Props) {
         }}
         modules={[Autoplay]}
       >
-        {products?.map((product: ProductPropsWithImg, index: number) => (
+        {products?.map((product: ProductProps, index: number) => (
           <SwiperSlide key={index}>
             <div>
-              <Product key={index} images={product.images} title={product.product.name}
-                price={product.product.price} colors={[]} product_key={product.product.slug}
+              <Product product_id={product.id} key={index} images={product.images} title={product.name}
+                price={product.price} colors={[]} product_key={product.slug}
                 touchMove={false} />
             </div>
           </SwiperSlide>

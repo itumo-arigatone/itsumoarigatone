@@ -2,7 +2,7 @@
 
 import { Swiper, SwiperSlide } from 'swiper/react';
 import { Autoplay } from 'swiper/modules';
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import { imageUrl } from '@/lib/imageUrl';
 import LoadingAnimation from '@/app/_components/LoadingAnimation';
 import '@/app/stylesheets/loading_black_patch.scss'
@@ -28,7 +28,7 @@ interface ProductImgProps {
 
 const Product = ({ product_id, images, title, price, colors, product_key, touchMove }: ProductProps) => {
   const [loading, setLoading] = useState<boolean>(false);
-  const [url, setUrl] = useState<string>(imageUrl() || "");
+  const url = imageUrl();
   // 必要なデータ
   // 画像、タイトル、値段、色
   return (

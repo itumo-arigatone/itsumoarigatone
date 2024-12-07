@@ -1,8 +1,7 @@
 'use client'
 
 import LoadingAnimation from '@/app/_components/LoadingAnimation';
-import ProductRecommend from '@/app/_components/_product/ProductRecommend'
-import { Product as ProductProps } from '@prisma/client';
+import ProductRecommend from '@/app/_components/_product/ProductRecommend';
 import { useState, useEffect } from 'react';
 
 import 'swiper/css';
@@ -13,20 +12,9 @@ interface Props {
   slug: string;
 }
 
-interface ProductPropsWithImg {
-  product: ProductProps
-  images: ImgSrcProps
-}
-
-interface ImgSrcProps {
-  [src: string]: string;
-}
-
 export default function ProductDetail({ slug }: Props) {
   const [isLoadingRecommend, setIsLoadingRecommend] = useState<boolean>(true)
-  const [fiveProducts, setFiveProducts] = useState<ProductPropsWithImg[]>([])
-
-
+  const [fiveProducts, setFiveProducts] = useState<ProductProps[]>([])
 
   useEffect(() => {
     async function fetchRecommendProduct() {

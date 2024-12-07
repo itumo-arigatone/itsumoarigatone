@@ -8,10 +8,6 @@ interface ExtendedProduct extends PrismaProduct {
   images?: ImagesProps[];
 }
 
-interface ImgSrcProps {
-  [src: string]: string;
-}
-
 interface ImagesProps {
   id: number;
   key: string;
@@ -37,10 +33,5 @@ export const getProduct = cache(async (slug: string) => {
     return { error: true, errorMessage: 'Product not found' };
   }
 
-  let imgSrc = {} as ImgSrcProps
-  product.images?.forEach(async record => {
-    imgSrc[record.key] = `${process.env.IMAGE_HOST}/product/${product.id}/${record.key}`;
-  })
-
-  return { product: product, images: imgSrc, error: false, errorMessage: "" };
+  return { product: product, error: false, errorMessage: "" };
 });

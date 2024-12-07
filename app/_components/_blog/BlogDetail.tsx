@@ -3,21 +3,11 @@
 import { useEffect, useState } from 'react';
 import LoadingAnimation from '@/app/_components/LoadingAnimation';
 import { getWithoutCurrentProducts } from "@/lib/product/getWithoutCurrentProducts";
-import { Product as ProductProps } from '@prisma/client';
 import ProductRecommend from '@/app/_components/_product/ProductRecommend'
-
-interface ProductPropsWithImg {
-  product: ProductProps
-  images: ImgSrcProps
-}
-
-interface ImgSrcProps {
-  [src: string]: string;
-}
 
 export default function BlogDetail() {
   const [isLoadingRecommend, setIsLoadingRecommend] = useState<boolean>(true)
-  const [fiveProducts, setFiveProducts] = useState<ProductPropsWithImg[]>([])
+  const [fiveProducts, setFiveProducts] = useState<ProductProps[]>([])
 
   useEffect(() => {
     async function fetchRecommendProduct() {

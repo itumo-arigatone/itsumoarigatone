@@ -3,10 +3,6 @@
 import { PrismaClient } from '@prisma/client';
 import { cache } from 'react'
 
-interface ImgSrcProps {
-  [src: string]: string;
-}
-
 export const getWithoutCurrentProducts = cache(async (slug: string | null = null) => {
   const prisma = new PrismaClient();
   const Bucket = process.env.AMPLIFY_BUCKET;
@@ -22,17 +18,10 @@ export const getWithoutCurrentProducts = cache(async (slug: string | null = null
       return { error: true, errorMessage: 'Product not found' };
     }
 
-    const productWithImages = products.map(product => {
-      let imgSrc = {} as ImgSrcProps
-      product.images?.forEach(async record => {
-        imgSrc[record.key] = `${process.env.IMAGE_HOST}/product/${product.id}/${record.key}`
-      });
-      return { product: product, images: imgSrc }
-    });
     return {
       error: false,
       errorMessage: "",
-      products: productWithImages,
+      products: products,
     }
   }
 
@@ -51,17 +40,9 @@ export const getWithoutCurrentProducts = cache(async (slug: string | null = null
     return { error: true, errorMessage: 'Product not found' };
   }
 
-  const productWithImages = products.map(product => {
-    let imgSrc = {} as ImgSrcProps
-    product.images?.forEach(async record => {
-      imgSrc[record.key] = `${process.env.IMAGE_HOST}/product/${product.id}/${record.key}`
-    });
-    return { product: product, images: imgSrc }
-  });
-
   return {
     error: false,
     errorMessage: "",
-    products: productWithImages,
+    products: products,
   }
 });
