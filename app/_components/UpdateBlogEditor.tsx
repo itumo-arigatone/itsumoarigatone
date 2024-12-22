@@ -12,6 +12,9 @@ export const UpdateBlogEditor = ({ serverAction, blog }: any) => {
     event.preventDefault();
     const formData = new FormData(event.target);
     const action = event.nativeEvent.submitter.value;
+    if (action === "delete" && !window.confirm('本当に削除しますか？')) {
+      return;
+    }
     formData.append('action', action);
     // content の値を取得して img タグの src を空にする
     let content = formData.get('content')?.toString() || '';
