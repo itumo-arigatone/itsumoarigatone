@@ -9,11 +9,21 @@ import { notFound } from 'next/navigation';
 export async function generateMetadata({ params }: { params: { slug: string } }): Promise<Metadata> {
   const productInfo = await getProduct(params.slug);
 
+  const getOgpUrl = () => {
+    if (productInfo.product && productInfo.product.images) {
+      return `${params.slug}/product/${productInfo.product?.id}/${productInfo.product.images[0].key}`
+    }
+    return "/ogp.png"
+  }
+
   return {
     title: `${productInfo.product?.name} |【公式】Itsumoarigatoneコレクションサイト・レザー商品詳細 `,
     description: `${productInfo.product?.name} |Itsumoarigatone since 2023. 丁寧につくられた新作アイテムを紹介。レザーポーチ、財布、小物などなど。`,
     alternates: {
       canonical: `https://www.itsumoarigatone.com/product/${params.slug}/`,
+    },
+    openGraph: {
+      images: [getOgpUrl()],
     },
   }
 }

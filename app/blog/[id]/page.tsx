@@ -12,6 +12,7 @@ import { Post as PrismaPost } from '@prisma/client';
 interface ExtendedPost extends PrismaPost {
   error?: boolean;
   errorMessage?: string;
+  ogp?: string;
 }
 
 export async function generateMetadata({ params }: { params: { id: string } }): Promise<Metadata> {
@@ -26,6 +27,9 @@ export async function generateMetadata({ params }: { params: { id: string } }): 
     description: 'Itsumoarigatoneのブログです。Itsumoarigatone since 2023. 丁寧につくられた新作アイテムを紹介。レザーポーチ、財布、小物などなど。',
     alternates: {
       canonical: `https://www.itsumoarigatone.com/blog/${params.id}/`,
+    },
+    openGraph: {
+      images: [post.ogp || "/ogp.png"],
     },
   }
 }

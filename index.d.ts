@@ -14,3 +14,9 @@ type ProductImgProps = {
   key: string,
   productId: number,
 }
+
+type PostImageProps = {
+  id: number,
+  key: string,
+  postId: number
+}

@@ -8,6 +8,7 @@ import { replaceImgSrc } from '@/lib/replaceImgSrc';
 interface ExtendedPost extends PrismaPost {
   error?: boolean;
   errorMessage?: string;
+  ogp?: string;
 }
 
 interface ImgSrc {
@@ -49,7 +50,7 @@ export async function getBlog(id: number) {
       imgSrc[key] = `${process.env.IMAGE_HOST}/blog/${id}/${key}`
     }
   }
-
+  post.ogp = imgElements.length > 0 ? `${process.env.IMAGE_HOST}/blog/${id}/${imgElements[0].getAttribute('alt')}` : "/ogp.png"
   post.content = replaceImgSrc(domContent, imgSrc);
   post.error = false;
   return post;
