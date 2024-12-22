@@ -26,11 +26,13 @@ async function CreateProduct(data: FormData) {
     imageKeys = JSON.parse(imageKeysJson)
   }
 
-  if (!name || !description || !price || !baseLink || !slug) {
+  if (!name || !description || !price || !slug) {
+    alert("登録に失敗しました。");
     return;
   }
 
   if (!isNumber(price)) {
+    alert("値段を数値にしろ");
     return;
   }
 
