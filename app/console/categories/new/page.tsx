@@ -30,6 +30,8 @@ async function CreateCategory(data: FormData) {
 
     const parentIdString = data.get('parentId');
     let parentClosures: CategoryClosure[] = [];
+    // 自身との自己参照関係を追加
+    const closureData = [{ ancestorId: newCategory.id, descendantId: newCategory.id }];
     if (parentIdString) {
       const parentId = Number(parentIdString);
 
@@ -39,20 +41,18 @@ async function CreateCategory(data: FormData) {
           where: { descendantId: parentId },
         })
         : [];
-    }
 
-    // 自身との自己参照関係を追加
-    const closureData = [
-      { ancestorId: newCategory.id, descendantId: newCategory.id },
-      ...parentClosures.map((parentClosure) => ({
+      // 自己参照関係を追加
+      closureData.push(...parentClosures.map((parentClosure) => ({
         ancestorId: parentClosure.ancestorId,
         descendantId: newCategory.id,
-      })),
-    ];
-    closureData.push({ ancestorId: parentId, descendantId: newCategory.id });
-    await prisma.categoryClosure.createMany({
-      data: closureData,
-    });
+      })))
+
+      closureData.push({ ancestorId: parentId, descendantId: newCategory.id });
+      await prisma.categoryClosure.createMany({
+        data: closureData,
+      });
+    }
 
     redirect('/console/categories/');
   } catch (error) {
