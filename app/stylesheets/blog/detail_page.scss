@@ -38,6 +38,14 @@
       content: '';
       display: inline-block;
     }
+
+    ul {
+      padding-left: 24px;
+
+      li {
+        list-style: circle;
+      }
+    }
   }
 
   .recommend-section {
