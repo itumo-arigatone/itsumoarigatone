@@ -24,9 +24,10 @@ const CategoryForm = ({ id, name, slug, description, serverAction }: categoryFor
   }
 
   useEffect(() => {
-    (async () => {
+    const getCategory = (async () => {
       setCategories(await getAllCategories());
     });
+    getCategory();
   }, []);
 
   // 必要なデータ
@@ -41,20 +42,22 @@ const CategoryForm = ({ id, name, slug, description, serverAction }: categoryFor
         </div>
         <div className='input-box'>
           <label htmlFor="category-select" className='text-sub'>親カテゴリを選択:</label>
-          <select
-            id="category-select"
-            value={selectedCategory ?? ''}
-            onChange={(e) => setSelectedCategory(e.target.value ? Number(e.target.value) : '')}
-          >
-            <option value="" disabled>
-              -- 親カテゴリを選択 --
-            </option>
-            {categories.map((category) => (
-              <option key={category.id} value={category.id}>
-                {category.name}
+          {(categories ?
+            <select
+              id="category-select"
+              name="parentId"
+              value={selectedCategory ?? ''}
+              onChange={(e) => setSelectedCategory(e.target.value ? Number(e.target.value) : '')}
+            >
+              <option value="" disabled>
+                -- 親カテゴリを選択 --
               </option>
-            ))}
-          </select>
+              {categories.map((category) => (
+                <option key={category.id} value={category.id}>
+                  {category.name}
+                </option>
+              ))}
+            </select> : <div>Getting all categories... wait...</div>)}
         </div>
         <div className='input-box'>
           <label htmlFor='slug' className='text-sub'>スラグ</label>

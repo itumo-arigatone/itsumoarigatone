@@ -18,6 +18,7 @@ async function CreateCategory(data: FormData) {
     return;
   }
   try {
+    //TODO: トランザクションをはる
     const prisma = new PrismaClient();
     const newCategory = await prisma.category.create({
       data: {
@@ -49,10 +50,10 @@ async function CreateCategory(data: FormData) {
       })))
 
       closureData.push({ ancestorId: parentId, descendantId: newCategory.id });
-      await prisma.categoryClosure.createMany({
-        data: closureData,
-      });
     }
+    await prisma.categoryClosure.createMany({
+      data: closureData,
+    });
 
     redirect('/console/categories/');
   } catch (error) {
