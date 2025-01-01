@@ -8,7 +8,6 @@ import '@/app/stylesheets/console/products/new.css'
 async function CreateCategory(data: FormData) {
   'use server'
 
-  revalidateTag('category');
   const name = data.get('name')?.toString();
   const description = data.get('description')?.toString();
   const slug = data.get('slug')?.toString();
@@ -17,47 +16,59 @@ async function CreateCategory(data: FormData) {
     alert("項目を入力してください");
     return;
   }
-  try {
-    //TODO: トランザクションをはる
-    const prisma = new PrismaClient();
-    const newCategory = await prisma.category.create({
-      data: {
-        name: name,
-        description: description,
-        slug: slug,
-      },
+  let errorFlg = false;
+  const prisma = new PrismaClient();
+  await prisma.$transaction(
+    async (tx) => {
+      //TODO: トランザクションをはる
+      const newCategory = await tx.category.create({
+        data: {
+          name: name,
+          description: description,
+          slug: slug,
+        },
+      })
+
+
+      const parentIdString = data.get('parentId');
+      let parentClosures: CategoryClosure[] = [];
+      // 自身との自己参照関係を追加
+      const closureData = [{ ancestorId: newCategory.id, descendantId: newCategory.id }];
+      if (parentIdString) {
+        const parentId = Number(parentIdString);
+
+        // クロージャーテーブルの更新
+        parentClosures = parentId
+          ? await tx.categoryClosure.findMany({
+            where: { descendantId: parentId },
+          })
+          : [];
+
+        // 自己参照関係を追加
+        closureData.push(...parentClosures.map((parentClosure) => ({
+          ancestorId: parentClosure.ancestorId,
+          descendantId: newCategory.id,
+        })))
+
+        closureData.push({ ancestorId: parentId, descendantId: newCategory.id });
+      }
+      await tx.categoryClosure.createMany({
+        data: closureData,
+      });
+
+    }
+  )
+    .catch((error) => {
+      console.error(error);
+      errorFlg = true;
+    })
+    .finally(async () => {
+      await prisma.$disconnect();
     })
 
-
-    const parentIdString = data.get('parentId');
-    let parentClosures: CategoryClosure[] = [];
-    // 自身との自己参照関係を追加
-    const closureData = [{ ancestorId: newCategory.id, descendantId: newCategory.id }];
-    if (parentIdString) {
-      const parentId = Number(parentIdString);
-
-      // クロージャーテーブルの更新
-      parentClosures = parentId
-        ? await prisma.categoryClosure.findMany({
-          where: { descendantId: parentId },
-        })
-        : [];
-
-      // 自己参照関係を追加
-      closureData.push(...parentClosures.map((parentClosure) => ({
-        ancestorId: parentClosure.ancestorId,
-        descendantId: newCategory.id,
-      })))
-
-      closureData.push({ ancestorId: parentId, descendantId: newCategory.id });
-    }
-    await prisma.categoryClosure.createMany({
-      data: closureData,
-    });
-
+  revalidateTag('category');
+  if (!errorFlg) {
     redirect('/console/categories/');
-  } catch (error) {
-    console.error(error);
   }
 }
 
