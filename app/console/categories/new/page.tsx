@@ -37,7 +37,7 @@ async function CreateCategory(data: FormData) {
       if (parentIdString) {
         const parentId = Number(parentIdString);
 
-        // クロージャーテーブルの更新
+        // ここからクロージャーテーブルの更新
         parentClosures = parentId
           ? await tx.categoryClosure.findMany({
             where: { descendantId: parentId },
@@ -52,10 +52,16 @@ async function CreateCategory(data: FormData) {
 
         closureData.push({ ancestorId: parentId, descendantId: newCategory.id });
       }
-      await tx.categoryClosure.createMany({
-        data: closureData,
-      });
 
+      const uniqueClosureData = Array.from(
+        new Map(
+          closureData.map((item) => [`${item.ancestorId}-${item.descendantId}`, item])
+        ).values()
+      );
+
+      await tx.categoryClosure.createMany({
+        data: uniqueClosureData,
+      });
     }
   )
     .catch((error) => {
