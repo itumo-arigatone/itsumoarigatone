@@ -20,7 +20,6 @@ async function CreateCategory(data: FormData) {
   const prisma = new PrismaClient();
   await prisma.$transaction(
     async (tx) => {
-      //TODO: トランザクションをはる
       const newCategory = await tx.category.create({
         data: {
           name: name,

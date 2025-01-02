@@ -55,6 +55,7 @@ const CategoryForm = ({ id, name, slug, description, serverAction }: categoryFor
               <option value="" disabled>
                 -- 親カテゴリを選択 --
               </option>
+              {/* TODO: フルパスのカテゴリを出す */}
               {categories.map((category) => (
                 <option key={category.id} value={category.id}>
                   {category.name}
