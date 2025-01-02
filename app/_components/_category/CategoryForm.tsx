@@ -34,6 +34,9 @@ const CategoryForm = ({ id, name, slug, description, serverAction }: categoryFor
   // 画像、タイトル、値段、色
   return (
     <form onSubmit={handleSubmit} className="product-editor">
+      <div className='text-sub'>
+        親が別のカテゴリを追加する際は新規にカテゴリを追加してください
+      </div>
       <input type='hidden' name='id' value={id} />
       <section className='input-section'>
         <div className='input-box'>
