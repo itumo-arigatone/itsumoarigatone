@@ -6,21 +6,21 @@
 
 generator client {
   provider = "prisma-client-js"
+  previewFeatures = ["interactiveTransactions"]
 }
 
 datasource db {
-  provider = "postgresql"
-  url      = env("DATABASE_URL")
-  directUrl = env("POSTGRES_URL_NON_POOLING")
+  provider  = "postgresql"
+  url       = env("DATABASE_URL")
 }
 
 model Post {
-  id          Int      @id @default(autoincrement())
-  title       String
-  content     String
-  images      PostImage[]
-  created_at  DateTime @default(now())
-  updated_at  DateTime @default(now())
+  id         Int         @id @default(autoincrement())
+  title      String
+  content    String
+  images     PostImage[]
+  created_at DateTime    @default(now())
+  updated_at DateTime    @default(now())
 }
 
 model PostImage {
@@ -29,19 +29,21 @@ model PostImage {
   postId     Int
   created_at DateTime @default(now())
   updated_at DateTime @default(now())
-  post       Post  @relation(fields: [postId], references: [id], onDelete: Cascade)
+  post       Post     @relation(fields: [postId], references: [id], onDelete: Cascade)
 }
 
 model Product {
-  id          Int      @id @default(autoincrement())
+  id          Int            @id @default(autoincrement())
   name        String
   price       Int
   images      ProductImage[]
   description String
-  slug        String @unique
+  slug        String         @unique
   baseLink    String?
-  created_at  DateTime @default(now())
-  updated_at  DateTime @default(now())
+  created_at  DateTime       @default(now())
+  updated_at  DateTime       @default(now())
+
+  categories Category[] @relation("CategoryProduct")
 }
 
 model ProductImage {
@@ -51,4 +53,25 @@ model ProductImage {
   created_at DateTime @default(now())
   updated_at DateTime @default(now())
   product    Product  @relation(fields: [productId], references: [id])
+}
+
+model Category {
+  id          Int      @id @default(autoincrement())
+  name        String
+  slug        String
+  description String
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  products Product[]         @relation("CategoryProduct") // 商品との多対多リレーション
+  closure  CategoryClosure[] // クロージャーテーブルとのリレーション
+}
+
+model CategoryClosure {
+  ancestorId   Int // 親カテゴリのID
+  descendantId Int // 子カテゴリのID
+  Category     Category? @relation(fields: [categoryId], references: [id])
+  categoryId   Int?
+
+  @@id([ancestorId, descendantId]) // 親子のペアを一意に識別
 }

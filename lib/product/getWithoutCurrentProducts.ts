@@ -5,7 +5,6 @@ import { cache } from 'react'
 
 export const getWithoutCurrentProducts = cache(async (slug: string | null = null) => {
   const prisma = new PrismaClient();
-  const Bucket = process.env.AMPLIFY_BUCKET;
 
   if (!slug) {
     const products = await prisma.product.findMany({

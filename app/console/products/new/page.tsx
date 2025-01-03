@@ -20,13 +20,14 @@ async function CreateProduct(data: FormData) {
   const slug = data.get('slug')?.toString()
   const imageKeysJson = data.get('imageKeys')?.toString()
   const imageFiles = data.getAll('imageData')
+  const categoryId = Number(data.get('categoryId')) // 最初は一つしか選択できないようにする
 
   let imageKeys = []
   if (imageKeysJson) {
     imageKeys = JSON.parse(imageKeysJson)
   }
 
-  if (!name || !description || !price || !slug) {
+  if (!name || !description || !price || !slug || !categoryId) {
     alert("登録に失敗しました。");
     return;
   }
@@ -49,6 +50,11 @@ async function CreateProduct(data: FormData) {
         create: imageKeys.new?.map((key: string) => ({
           key: key
         }))
+      },
+      categories: {
+        connect: [
+          { id: categoryId },
+        ],
       },
     },
   })
