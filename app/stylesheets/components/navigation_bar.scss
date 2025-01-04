@@ -1,0 +1,6 @@
+@use '@/app/stylesheets/config/mixin' as m;
+
+.navbar {
+  background-color: m.$main-sub-color;
+  opacity: 0.3;
+}
