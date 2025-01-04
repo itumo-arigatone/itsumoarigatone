@@ -1,6 +1,7 @@
 'use client'
 
-import Header from '@/app/_components/Header';
+import TopFirstView from '@/app/_components/TopFirstView';
+import Header from '@/app/_components/SimpleHeader'
 import ProductArea from '@/app/_components/ProductsArea';
 import ShopArea from '@/app/_components/ShopArea';
 import Footer from '@/app/_components/Footer';
@@ -47,6 +48,7 @@ export default function Page() {
   return (
     <>
       <Header />
+      <TopFirstView />
       <main className="flex min-h-screen flex-col items-center justify-between p-8">
         <ShopArea />
         {isLoading ? (

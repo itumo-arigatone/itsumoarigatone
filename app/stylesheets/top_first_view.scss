@@ -1,10 +1,5 @@
-.simple-header {
-  position: sticky;
-  top: 0;
-  color: white;
-  z-index: 1000;
-  padding: 10px;
-  box-shadow: 0px 2px 5px rgba(0, 0, 0, 0.2);
+.top-first-view {
+  border-bottom: solid 10px var(--main-accent-color);
 
   .image-wrapper {
     background: white;
