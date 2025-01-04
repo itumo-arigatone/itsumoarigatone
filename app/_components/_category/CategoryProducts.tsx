@@ -1,6 +1,6 @@
 'use client'
 
-import { useState, useEffect, use } from 'react';
+import { useState, useEffect } from 'react';
 import '@/app/stylesheets/product_form.scss';
 import LoadingAnimation from '@/app/_components/LoadingAnimation'
 import ProductArea from '@/app/_components/ProductsArea';
@@ -31,7 +31,6 @@ const CategoryProducts = ({ categoryId }: Props) => {
 
   return (
     <div>
-
       {isLoading ? (
         <div className="loading-wrapper">
           <LoadingAnimation />
