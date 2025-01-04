@@ -50,7 +50,6 @@ export default function Page() {
       <Header />
       <TopFirstView />
       <main className="flex min-h-screen flex-col items-center justify-between p-8">
-        <ShopArea />
         {isLoading ? (
           <div className="loading-wrapper">
             <LoadingAnimation />
@@ -58,7 +57,6 @@ export default function Page() {
         ) : (
           <ProductArea products={products} />
         )}
-        < ShopArea />
       </main>
       <Footer />
     </>
