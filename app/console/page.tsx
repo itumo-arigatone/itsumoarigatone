@@ -7,6 +7,7 @@ export default function Page() {
     <div className='menu'>
       <Link href={`blogs/`} className='text-accent'>ブログ一覧</Link>
       <Link href={`products/`} className='text-accent'>商品一覧</Link>
+      <Link href={`categories/`} className='text-accent'>カテゴリ一覧</Link>
     </div>
   );
 };
