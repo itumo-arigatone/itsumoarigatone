@@ -11,6 +11,7 @@ import { convertToFiles } from '@/lib/convertToFiles'
 import { Category } from '@prisma/client';
 import '@/app/stylesheets/console/products/edit.scss'
 import { revalidateTag } from 'next/cache';
+import updateProductCategory from "@/lib/updateProductCategory"
 
 interface ProductProps {
   id: number;
@@ -46,6 +47,11 @@ type ImageKeyWithId = {
   new: string[],
   already: ImageKey
 }
+
+type CategoryProdctRelation = {
+  categoriesToConnect: number[]
+  categoriesToDisconnect: number[]
+} | null
 
 async function GetProduct(id: string) {
   'use server'
@@ -141,6 +147,8 @@ async function UpdateProduct(data: FormData) {
 
   const prisma = new PrismaClient();
 
+  const prodCategory: CategoryProdctRelation = await updateProductCategory(prisma, Number(id), categoryId)
+
   const result = await prisma.product.update({
     where: { id: parseInt(id) },
     data: {
@@ -153,9 +161,8 @@ async function UpdateProduct(data: FormData) {
         upsert: imageUpdate(imageKeys)
       },
       categories: {
-        connect: [
-          { id: categoryId },
-        ],
+        connect: prodCategory?.categoriesToConnect.map(id => ({ id })), // 新しく追加するカテゴリ
+        disconnect: prodCategory?.categoriesToDisconnect.map(id => ({ id })), // 削除するカテゴリ
       },
     }
   })
