@@ -4,13 +4,13 @@ import { Metadata } from 'next';
 import { getCategory } from '@/lib/category/getCategory';
 import Footer from "@/app/_components/Footer";
 import Header from "@/app/_components/SimpleHeader"
+import CategoryProducts from '@/app/_components/_category/CategoryProducts';
 
 function arrayToPath(array: string[]): string {
   // 配列を結合し、"/"を前後に付加
   return `${array.join('/')}/`;
 }
 
-/*
 export async function generateMetadata({ params }: { params: { slug: string[] } }): Promise<Metadata> {
   const query = params.slug
   const slugs: string[] = Array.isArray(query)
@@ -33,7 +33,7 @@ export async function generateMetadata({ params }: { params: { slug: string[] } 
     },
   }
 }
-*/
+
 export default async function Page({ params }: { params: { slug: string[] } }) {
   const query = params.slug
   const slugs: string[] = Array.isArray(query)
@@ -43,7 +43,6 @@ export default async function Page({ params }: { params: { slug: string[] } }) {
       : []; // undefined の場合は空配列
 
   const result = await getCategory(slugs);
-  console.log(result)
 
   if (!result || result.error || !result.category) {
     if (result?.error) console.error(result.errorMessage);
@@ -59,7 +58,7 @@ export default async function Page({ params }: { params: { slug: string[] } }) {
         <div className='description'>{result.category.description}</div>
       </div>
       <section className='product-list'>
-        {/* TODO */}
+        <CategoryProducts categoryId={result.category.id} />
       </section>
       <Footer />
     </div>

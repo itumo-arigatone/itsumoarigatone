@@ -54,7 +54,7 @@ const ProductForm = ({ id, name, price, slug, description, baseLink, imgSrc, upl
   const [imageKeys, setImageKeys] = useState<ImageKeyWithId>({ new: [], already: uploadedImageKeys || {} })
   const [deletedImageIds, setDeletedImageIds] = useState<number[]>([])
   const [categoriesState, setCategoriesState] = useState<Category[]>([]);
-  const [selectedCategory, setSelectedCategory] = useState<number | ''>(categories?.[0].id || '');
+  const [selectedCategory, setSelectedCategory] = useState<number | ''>(categories?.[0]?.id || '');
 
   useEffect(() => {
     const getCategory = (async () => {
