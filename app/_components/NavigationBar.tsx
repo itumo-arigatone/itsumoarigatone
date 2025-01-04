@@ -1,14 +1,19 @@
 'use client'
 
-import '../stylesheets/navigation-bar.scss'
+import '@/app/stylesheets/components/navigation_bar.scss'
 
 export default function NavigationBar() {
   // TODO: set for console page
   return (
     <nav className='navbar'>
-      <a href="/category/bag/">バッグ</a>
-      <a href="/category/wallet/">財布</a>
-      <a href="/category/accessory/">その他小物</a>
+      <div className='categories flexbox'>
+        <a className="list-link" href="/category/bag/">バッグ</a>
+        <a className="list-link" href="/category/wallet/">財布</a>
+        <a className="list-link" href="/category/accessory/">その他小物</a>
+      </div>
+      <div className='other flexbox'>
+        <a className="list-link" href="/blog/">ブログ</a>
+      </div>
     </nav>
   )
 }

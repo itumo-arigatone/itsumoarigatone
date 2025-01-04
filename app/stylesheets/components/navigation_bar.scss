@@ -1,6 +1,24 @@
 @use '@/app/stylesheets/config/mixin' as m;
 
 .navbar {
+  @include m.under-md {
+    display: none;
+  }
+
   background-color: m.$main-sub-color;
-  opacity: 0.3;
+  color: m.$main-accent-color;
+  display: flex;
+  justify-content: space-between;
+  width: 100%;
+
+  .flexbox {
+    display: flex;
+    gap: 24px;
+    font-size: 14px;
+    margin: auto;
+  }
+
+  .list-link {
+    margin: auto;
+  }
 }
