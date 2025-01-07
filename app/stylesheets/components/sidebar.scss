@@ -1,3 +1,5 @@
+@use '@/app/stylesheets/config/mixin' as m;
+
 .sidebar {
   position: fixed;
   top: 0;
@@ -5,10 +7,10 @@
   /* 初期状態は画面外 */
   width: 250px;
   height: 100%;
-  background-color: #333;
+  background-color: m.$main-base-color;
   color: #fff;
   transition: left 0.3s ease;
-  z-index: 1000;
+  z-index: 10;
   padding: 20px;
 }
 
@@ -19,6 +21,7 @@
 
 .sidebar ul {
   list-style: none;
+  margin-top: 64px;
   padding: 0;
 }
 
@@ -32,25 +35,23 @@
   font-size: 18px;
 }
 
-.sidebar ul li a:hover {
-  text-decoration: underline;
-}
-
 /* トグルボタン */
 .sidebar-toggle {
-  position: fixed;
-  top: 20px;
   left: 20px;
-  background-color: #333;
-  color: #fff;
+  color: m.$main-base-color;
   border: none;
-  padding: 10px 20px;
   cursor: pointer;
-  z-index: 1100;
+  z-index: 11;
+  display: none;
+
+  @include m.under-md {
+    display: block;
+    position: fixed;
+  }
 }
 
 .sidebar-toggle:hover {
-  background-color: #555;
+  opacity: 0.8;
 }
 
 /* オーバーレイ */
@@ -64,7 +65,7 @@
   opacity: 0;
   visibility: hidden;
   transition: opacity 0.3s ease;
-  z-index: 900;
+  z-index: 1;
 }
 
 .overlay.show {
