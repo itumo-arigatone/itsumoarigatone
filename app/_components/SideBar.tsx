@@ -30,6 +30,11 @@ const Sidebar: React.FC = () => {
             <a className="" href="/category/accessory/">その他小物</a>
           </li>
         </ul>
+        <ul>
+          <li>
+            <a className="" href="/blog/">ブログ</a>
+          </li>
+        </ul>
       </div>
       <div className={`overlay ${isOpen ? "show" : ""}`} onClick={toggleSidebar}></div>
     </>
