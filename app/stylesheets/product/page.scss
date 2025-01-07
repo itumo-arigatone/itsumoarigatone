@@ -28,3 +28,17 @@
   display: flex;
   justify-content: center;
 }
+
+section {
+  margin-top: 60px;
+
+  h2 {
+    color: m.$main-sub-color;
+    font-size: 24px;
+    margin-bottom: 24px;
+  }
+
+  &.products-section {
+    width: 100%;
+  }
+}

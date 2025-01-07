@@ -1,11 +1,11 @@
 'use client'
 
-import '../stylesheets/header.scss'
+import '../stylesheets/top_first_view.scss'
 import Image from 'next/image'
 
-export default function Header() {
+export default function TopFistView() {
   return (
-    <header className="relative">
+    <div className="relative top-first-view">
       <div className="mx-auto">
         <div className="relative shadow-xl sm:overflow-hidden">
           <div className="absolute inset-0 image-wrapper">
@@ -25,6 +25,6 @@ export default function Header() {
           </div>
         </div>
       </div>
-    </header>
+    </div>
   )
 }

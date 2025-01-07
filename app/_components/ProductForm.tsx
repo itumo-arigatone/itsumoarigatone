@@ -1,6 +1,8 @@
 'use client'
 
-import { useRef, useState } from 'react'
+import { useRef, useState, useEffect } from 'react'
+import { getAllCategories } from '@/lib/category/getAllCategories'
+import { Category } from '@prisma/client'
 import '@/app/stylesheets/product_form.scss'
 import { createImagePreviewUrl } from '@/lib/createImagePreviewUrl'
 
@@ -12,6 +14,7 @@ type ProductFormProps = {
   description?: string,
   baseLink?: string | null,
   imgSrc?: ImgSrc,
+  categories?: Category[],
   uploadedImageKeys?: ImageKey,
   serverAction?: any,
 }
@@ -43,13 +46,22 @@ function deleteValueFromAlready(obj: ImageKey, valueToDelete: string) {
   return obj
 }
 
-const ProductForm = ({ id, name, price, slug, description, baseLink, imgSrc, uploadedImageKeys, serverAction }: ProductFormProps) => {
+const ProductForm = ({ id, name, price, slug, description, baseLink, imgSrc, uploadedImageKeys, categories, serverAction }: ProductFormProps) => {
 
   const inputFileRef = useRef<HTMLInputElement>(null);
   const [imageFiles, setImageFiles] = useState<File[]>([])
   const [imageUrls, setImageUrls] = useState<ImgSrc>(imgSrc || {});
   const [imageKeys, setImageKeys] = useState<ImageKeyWithId>({ new: [], already: uploadedImageKeys || {} })
   const [deletedImageIds, setDeletedImageIds] = useState<number[]>([])
+  const [categoriesState, setCategoriesState] = useState<Category[]>([]);
+  const [selectedCategory, setSelectedCategory] = useState<number | ''>(categories?.[0]?.id || '');
+
+  useEffect(() => {
+    const getCategory = (async () => {
+      setCategoriesState(await getAllCategories());
+    });
+    getCategory();
+  }, []);
 
   const handleSubmit = async (event: any) => {
     event.preventDefault();
@@ -107,6 +119,25 @@ const ProductForm = ({ id, name, price, slug, description, baseLink, imgSrc, upl
           <label htmlFor='name-box' className='text-sub'>名前</label>
           <input type='text' id='name-box' name='name' defaultValue={name || ''} className='name bg-sub text-base' />
         </div>
+        {(categoriesState.length === 0 ?
+          <div>Getting all categories... wait...</div>
+          :
+          <select
+            id="category-select"
+            name="categoryId"
+            value={selectedCategory ?? ''}
+            onChange={(e) => setSelectedCategory(e.target.value ? Number(e.target.value) : '')}
+          >
+            <option value="" disabled>
+              -- 親カテゴリを選択 --
+            </option>
+            {/* TODO: フルパスのカテゴリを出す */}
+            {categoriesState.map((category) => (
+              <option key={category.id} value={category.id}>
+                {category.name}
+              </option>
+            ))}
+          </select>)}
         <div className='input-box'>
           <label htmlFor='price-box' className='text-sub'>値段</label>
           <input type='text' id='price-box' name='price' defaultValue={price || ''} className='price bg-sub text-base' />

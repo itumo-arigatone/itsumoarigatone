@@ -1,5 +1,16 @@
-header {
-  border-bottom: solid 10px var(--main-accent-color);
+.simple-header {
+  position: sticky;
+  top: 0;
+  color: white;
+  z-index: 1000;
+  padding: 10px;
+  box-shadow: 0px 2px 5px rgba(0, 0, 0, 0.2);
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  gap: 12px;
+  transition: all 0.3s ease;
+
 
   .image-wrapper {
     background: white;
@@ -11,6 +22,14 @@ header {
 
   h1 {
     font-weight: 200;
+  }
+
+  &.scrolled {
+    opacity: 0.8;
+  }
+
+  &:hover {
+    opacity: 1;
   }
 }
 

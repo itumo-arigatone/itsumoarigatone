@@ -1,8 +1,8 @@
 'use client'
 
-import Header from '@/app/_components/Header';
-import ProductArea from '@/app/_components/ProductsArea';
-import ShopArea from '@/app/_components/ShopArea';
+import TopFirstView from '@/app/_components/TopFirstView';
+import Header from '@/app/_components/SimpleHeader'
+import ProductArea from '@/app/_components/ProductsArea'
 import Footer from '@/app/_components/Footer';
 import LoadingAnimation from '@/app/_components/LoadingAnimation'
 import { GetAllProducts } from '@/app/console/products/GetAllProducts';
@@ -47,16 +47,18 @@ export default function Page() {
   return (
     <>
       <Header />
+      <TopFirstView />
       <main className="flex min-h-screen flex-col items-center justify-between p-8">
-        <ShopArea />
-        {isLoading ? (
-          <div className="loading-wrapper">
-            <LoadingAnimation />
-          </div>
-        ) : (
-          <ProductArea products={products} />
-        )}
-        < ShopArea />
+        <section className='products-section'>
+          <h2>作品たち</h2>
+          {isLoading ? (
+            <div className="loading-wrapper">
+              <LoadingAnimation />
+            </div>
+          ) : (
+            <ProductArea products={products} />
+          )}
+        </section>
       </main>
       <Footer />
     </>

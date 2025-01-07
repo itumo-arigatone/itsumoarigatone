@@ -8,8 +8,10 @@ import { uploadImages } from '@/lib/uploadImages';
 import { syncKeyAndFile } from '@/lib/syncKeyAndFile'
 import { ProductDeleteButton } from '@/app/_components/ProductDeleteButton'
 import { convertToFiles } from '@/lib/convertToFiles'
+import { Category } from '@prisma/client';
 import '@/app/stylesheets/console/products/edit.scss'
 import { revalidateTag } from 'next/cache';
+import updateProductCategory from "@/lib/updateProductCategory"
 
 interface ProductProps {
   id: number;
@@ -18,7 +20,8 @@ interface ProductProps {
   description: string;
   slug: string;
   baseLink?: string | null;
-  images: ImagesProps[]
+  images: ImagesProps[];
+  categories: Category[];
 }
 
 interface ImagesProps {
@@ -45,11 +48,15 @@ type ImageKeyWithId = {
   already: ImageKey
 }
 
+type CategoryProdctRelation = {
+  categoriesToConnect: number[]
+  categoriesToDisconnect: number[]
+} | null
+
 async function GetProduct(id: string) {
   'use server'
 
   const prisma = new PrismaClient();
-  const Bucket = process.env.AMPLIFY_BUCKET;
 
   if (!id) {
     return null;
@@ -59,6 +66,7 @@ async function GetProduct(id: string) {
     where: { id: parseInt(id) },
     include: {
       images: true,
+      categories: true,
     },
   });
 
@@ -115,6 +123,7 @@ async function UpdateProduct(data: FormData) {
   const imageKeysJson = data.get('imageKeys')?.toString()
   const imageFiles = data.getAll('imageData')
   const deletedImageIdsJson = data.get('deletedImageIds')?.toString()
+  const categoryId = Number(data.get('categoryId')) // 最初は一つしか選択できないようにする
 
   let imageKeys = { new: [], already: {} }
   if (imageKeysJson) {
@@ -138,6 +147,8 @@ async function UpdateProduct(data: FormData) {
 
   const prisma = new PrismaClient();
 
+  const prodCategory: CategoryProdctRelation = await updateProductCategory(prisma, Number(id), categoryId)
+
   const result = await prisma.product.update({
     where: { id: parseInt(id) },
     data: {
@@ -148,6 +159,10 @@ async function UpdateProduct(data: FormData) {
       slug: slug,
       images: {
         upsert: imageUpdate(imageKeys)
+      },
+      categories: {
+        connect: prodCategory?.categoriesToConnect.map(id => ({ id })), // 新しく追加するカテゴリ
+        disconnect: prodCategory?.categoriesToDisconnect.map(id => ({ id })), // 削除するカテゴリ
       },
     }
   })
@@ -209,6 +224,7 @@ export default function Page({ params }: { params: { id: string } }) {
         description={product?.description}
         imgSrc={productInfo?.imgSrc}
         uploadedImageKeys={productInfo?.imageKeys || {}}
+        categories={product?.categories}
         baseLink={product?.baseLink || null}
         serverAction={UpdateProduct} />
     </>
