@@ -6,8 +6,12 @@
   justify-content: center;
   align-items: center;
   gap: 16px;
-  margin-top: 40px;
+  margin: 40px auto;
   color: m.$main-sub-color;
+
+  .description {
+    white-space: pre-wrap;
+  }
 
   h1 {
     font-size: 24px;
