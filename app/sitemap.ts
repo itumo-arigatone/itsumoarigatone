@@ -1,6 +1,7 @@
 import type { MetadataRoute } from 'next'
 import { getAllProducts } from '@/lib/product/getAllProducts';
 import { getActiveBlogsWithoutImage } from '@/lib/blog/getActiveBlogsWithoutImage'
+import generateCategoryPaths from '@/lib/category/generateCategoryPaths';
 
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   const products = await getAllProducts();
@@ -15,6 +16,13 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     lastModified: blog.created_at,
   }));
 
+  const categories = await generateCategoryPaths();
+  const categoriesUrl = categories.map((categoryPath) => ({
+    url: `https://www.itsumoarigatone.com/category${categoryPath}/`,
+    lastModified: '2024-01-09T00:00:00.000Z',
+  }))
+
+
   const list = [
     {
       url: 'https://www.itsumoarigatone.com',
@@ -26,5 +34,5 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     }
   ];
   // 配列の結合
-  return [...list, ...products_detail, ...blogs_detail];
+  return [...list, ...products_detail, ...blogs_detail, ...categoriesUrl];
 }
