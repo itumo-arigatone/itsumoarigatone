@@ -2,12 +2,15 @@
 
 .blog-detail {
   .blog-contents {
-    background: m.$main-sub-color;
+    background: m.$main-base-color;
     padding: 80px 24px;
     margin: 40px auto;
     max-width: m.$content-width;
-    color: m.$main-base-color;
+    color: m.$main-sub-color;
     line-height: 150%;
+    border: solid 1px m.$main-sub-color;
+    border-radius: 34px;
+    box-shadow: 0px 0px 38px m.$main-sub-color;
 
     h1 {
       font-size: 32px;
