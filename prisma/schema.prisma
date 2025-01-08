@@ -64,14 +64,15 @@ model Category {
   updatedAt   DateTime @updatedAt
 
   products Product[]         @relation("CategoryProduct") // 商品との多対多リレーション
-  closure  CategoryClosure[] // クロージャーテーブルとのリレーション
+  closuresAsAncestor    CategoryClosure[]  @relation("AncestorRelation")
+  closuresAsDescendant  CategoryClosure[]  @relation("DescendantRelation")
 }
 
 model CategoryClosure {
   ancestorId   Int // 親カテゴリのID
   descendantId Int // 子カテゴリのID
-  Category     Category? @relation(fields: [categoryId], references: [id])
-  categoryId   Int?
+  ancestor     Category @relation("AncestorRelation", fields: [ancestorId], references: [id])
+  descendant   Category @relation("DescendantRelation", fields: [descendantId], references: [id])
 
   @@id([ancestorId, descendantId]) // 親子のペアを一意に識別
 }
