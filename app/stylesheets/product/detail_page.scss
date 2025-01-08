@@ -13,7 +13,8 @@
     width: 50%;
 
     @include m.under-lg {
-      width: auto;
+      margin: auto -24px;
+      width: 100vw;
     }
 
     img {
