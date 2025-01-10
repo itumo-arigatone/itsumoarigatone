@@ -53,13 +53,15 @@ export default async function Page({ params }: { params: { slug: string[] } }) {
   return (
     <div>
       <Header />
-      <div className='category'>
-        <h1>{result.category.name}の作品一覧</h1>
-        <div className='description'>{result.category.description}</div>
-      </div>
-      <section className='product-list'>
-        <CategoryProducts categoryId={result.category.id} />
-      </section>
+      <main className='p-8'>
+        <div className='category'>
+          <h1>{result.category.name}の作品一覧</h1>
+          <div className='description'>{result.category.description}</div>
+        </div>
+        <section className='product-list'>
+          <CategoryProducts categoryId={result.category.id} />
+        </section>
+      </main>
       <Footer />
     </div>
   );
