@@ -7,7 +7,8 @@
     "build": "npx prisma generate && npx prisma migrate deploy && next build",
     "start": "next start",
     "lint": "next lint",
-    "db_migrate": "npx prisma migrate dev --name init"
+    "db_migrate": "npx prisma migrate dev --name init",
+    "test": "vitest"
   },
   "dependencies": {
     "@aws-sdk/client-s3": "^3.600.0",
@@ -38,6 +39,12 @@
     "typescript": "5.1.6"
   },
   "devDependencies": {
-    "sass": "^1.77.8"
+    "@testing-library/dom": "^10.4.0",
+    "@testing-library/react": "^16.1.0",
+    "@vitejs/plugin-react": "^4.3.4",
+    "jsdom": "^26.0.0",
+    "sass": "^1.77.8",
+    "vite-tsconfig-paths": "^5.1.4",
+    "vitest": "^2.1.8"
   }
 }
