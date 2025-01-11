@@ -1,7 +1,6 @@
 import { render, screen } from "@testing-library/react";
 import { generateMetadata } from "@/app/product/[slug]/page";
 import Page from "@/app/product/[slug]/page";
-import { getProduct } from "@/lib/product/getProduct";
 import { vi, describe, it, expect } from "vitest";
 
 const mockProductInfo = {

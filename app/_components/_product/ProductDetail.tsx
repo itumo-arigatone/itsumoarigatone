@@ -15,6 +15,7 @@ interface Props {
 export default function ProductDetail({ slug }: Props) {
   const [isLoadingRecommend, setIsLoadingRecommend] = useState<boolean>(true)
   const [fiveProducts, setFiveProducts] = useState<ProductProps[]>([])
+  const [isError, setIsError] = useState<boolean>(false)
 
   useEffect(() => {
     async function fetchRecommendProduct() {
@@ -27,6 +28,7 @@ export default function ProductDetail({ slug }: Props) {
         }
       } catch (error) {
         console.error('Error fetching data:', error);
+        setIsError(true);
       } finally {
         setIsLoadingRecommend(false);  // データ取得が完了したらローディングを解除
       }
@@ -41,7 +43,7 @@ export default function ProductDetail({ slug }: Props) {
         <div className="loading-wrapper">
           <LoadingAnimation />
         </div>
-      ) : fiveProducts ? (
+      ) : fiveProducts && !isError ? (
         <ProductRecommend products={fiveProducts} />
       ) : (<div>商品情報の取得に失敗しました</div>)}
     </>
