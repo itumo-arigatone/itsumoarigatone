@@ -3,7 +3,7 @@
 import { useState, useEffect } from 'react';
 import '@/app/stylesheets/product_form.scss';
 import LoadingAnimation from '@/app/_components/LoadingAnimation'
-import ProductArea from '@/app/_components/ProductsArea';
+import ProductsArea from '@/app/_components/ProductsArea';
 import { getCategoryProducts } from '@/lib/product/getCategoryProducts';
 
 type Props = {
@@ -13,6 +13,7 @@ type Props = {
 const CategoryProducts = ({ categoryId }: Props) => {
   const [products, setProducts] = useState<ProductProps[]>([])
   const [isLoading, setIsLoading] = useState(true);
+  const [isError, setIsError] = useState<boolean>(false)
 
   useEffect(() => {
     async function fetchData() {
@@ -22,6 +23,7 @@ const CategoryProducts = ({ categoryId }: Props) => {
         setProducts(result.products || []);
       } catch (error) {
         console.error('Error fetching data:', error);
+        setIsError(true);
       } finally {
         setIsLoading(false);  // データ取得が完了したらローディングを解除
       }
@@ -35,9 +37,12 @@ const CategoryProducts = ({ categoryId }: Props) => {
         <div className="loading-wrapper">
           <LoadingAnimation />
         </div>
-      ) : (
-        <ProductArea products={products} />
-      )}
+      ) : isError ? (
+        <div>商品情報の取得に失敗しました</div>
+      ) :
+        (
+          <ProductsArea products={products} />
+        )}
     </div>
   )
 }
